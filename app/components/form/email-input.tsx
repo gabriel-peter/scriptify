@@ -1,12 +1,13 @@
+import AbstractInput from "./abstract-input";
 import { inputStyling } from "./styling";
 
-export default function EmailInput({ label }: { label: string }) {
+export default function EmailInput({ errorState, label }: { errorState: string[] | undefined, label: string }) {
     return (
         <div className="sm:col-span-4">
             <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
                 {label}
             </label>
-            <div className="mt-2">
+            <AbstractInput error={errorState} errorMessage="Invalid Email.">
                 <input
                     id="email"
                     name="email"
@@ -14,7 +15,7 @@ export default function EmailInput({ label }: { label: string }) {
                     autoComplete="email"
                     className={inputStyling}
                 />
-            </div>
+            </AbstractInput>
         </div>
     )
 }

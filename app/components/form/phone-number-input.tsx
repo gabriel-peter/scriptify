@@ -1,11 +1,13 @@
+import AbstractInput from "./abstract-input";
 import { inputStyling } from "./styling";
 
-export default function PhoneNumberInput({label}: {label: string}) {
+export default function PhoneNumberInput({ errorState, label }: { errorState: string[] | undefined, label: string }) {
     return (
         <div className="sm:col-span-4">
             <label htmlFor="phone-number" className="block text-sm font-medium leading-6 text-gray-900">
-                Phone Number
+                {label}
             </label>
+            <AbstractInput error={errorState} errorMessage="Invalid Email.">
             <input
                 type="text"
                 name="phone-number"
@@ -13,6 +15,7 @@ export default function PhoneNumberInput({label}: {label: string}) {
                 className={inputStyling}
                 placeholder="+1 (555) 987-6543"
             />
+            </AbstractInput>
         </div>
     )
 }

@@ -1,3 +1,5 @@
+import { SubmitButton } from "@/app/components/form/submit-button";
+
 export default function ClinicalPreference() {
   const langaugePreferences = [
     'English',
@@ -35,10 +37,14 @@ export default function ClinicalPreference() {
   ]
   return (
     <div className="flex flex-col my-10 mx-2.5">
-     <Dropdown label="Language" options={langaugePreferences}/>
-     <Dropdown label="Meeting Environment" options={meetingPreference} />
-     <Dropdown label="Identified Race" options={race} />
-     <Dropdown label="Sexual Orientation" options={sexualOrientation} /> 
+     <Dropdown id="language" label="Language" options={langaugePreferences}/>
+     <Dropdown id="meeting-environment" label="Meeting Environment" options={meetingPreference} />
+     <Dropdown id="race" label="Identified Race" options={race} />
+     <Dropdown id="sexual-orientation" label="Sexual Orientation" options={sexualOrientation} /> 
+     <div className="mt-6 flex items-center justify-end gap-x-6">
+        {/* TODO previous button that goes to previous page */}
+        <SubmitButton />
+      </div>
     </div>
   );
 }
@@ -57,7 +63,7 @@ export default function ClinicalPreference() {
   }
   ```
 */
-export function Dropdown({label, options}: {label: string, options: string[]}) {
+export function Dropdown({id, label, options}: {id: string, label: string, options: string[]}) {
   return (
     <div className="flex flex-col my-1 mx-2.5">
     <label htmlFor="location" className="block text-sm font-medium leading-6 text-gray-900">

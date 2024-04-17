@@ -37,7 +37,7 @@ export default function Layout({
     <ProgressionBar steps={steps}/>
     </header>
     {children}
-    <div className="mt-6 items-center gap-x-6 flex justify-between items-center">
+    {/* <div className="mt-6 items-center gap-x-6 flex justify-between items-center">
     <Link
         type="button"
         href={steps[previousPageIndex].href}
@@ -52,7 +52,7 @@ export default function Layout({
       >
         Next
       </Link>
-      </div>
+      </div> */}
     </>);
     
 }

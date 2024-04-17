@@ -6,12 +6,17 @@ import { CheckIcon } from '@heroicons/react/24/outline'
 import { CreditCardInput } from '@/app/components/payment/credit-card-input'
 import MedicalInsuranceInfo from '@/app/components/payment/insurance-details'
 import SavedCreditCard from '@/app/components/payment/credit-card-details'
+import { SubmitButton } from '@/app/components/form/submit-button'
 
 export default function PaymentPage() {
   return (
     <div className="flex flex-col">
       <MedicalInsuranceInfo />
       <SavedCreditCard />
+      <div className="mt-6 flex items-center justify-end gap-x-6">
+        {/* TODO previous button that goes to previous page */}
+        <SubmitButton />
+      </div>
     </div>
   )
 }

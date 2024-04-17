@@ -26,21 +26,22 @@ const initialState = {
   message: '',
 }
 
-export default function PatientPersonalInformationForm() {
-  const [state, formAction] = useFormState(addPersonalInformation, initialState)
+export default function PatientPersonalInformationForm({userId}: {userId: string}) {
+  const addPersonalInformationWithUserId = addPersonalInformation.bind(null, "user-id");
+  const [state, formAction] = useFormState(addPersonalInformationWithUserId, initialState)
   return (
     <form action={formAction}>
       <div className="space-y-12 mt-5">
         <div className="border-b border-gray-900/10 pb-12">
           <h2 className="text-base font-semibold leading-7 text-gray-900">Personal Information</h2>
           <p className="mt-1 text-sm leading-6 text-gray-600">
-            {state?.message}
+            {state?.error && "There were errors in your form"}
           </p>
           <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-            <NameInput />
-            <EmailInput label={'Add your Email'} />
-            <PhoneNumberInput label={'Add your Phone Number'} />
-            <AddressSubForm />
+            <NameInput errorState={state?.error} />
+            <EmailInput errorState={state?.error?.email} label={'Add your Email'} />
+            <PhoneNumberInput errorState={state?.error?.phoneNumber} label={'Add your Phone Number'} />
+            <AddressSubForm errorState={state?.error} />
           </div >
         </div>
         <UploadFileInput title='Upload Drivers License' instruction='Upload a file' supportedFileTypes={['PNG', 'JPG', 'GIF']} maxSize='10MB' />

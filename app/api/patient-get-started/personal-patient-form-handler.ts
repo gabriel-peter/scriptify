@@ -1,9 +1,9 @@
 'use server'
- 
+
 import { redirect } from 'next/navigation'
 import { revalidateTag } from 'next/cache'
 import { z } from 'zod'
- 
+
 const formDataSchema = z.object({
     firstName: z.string().min(1),
     lastName: z.string().min(1),
@@ -15,35 +15,39 @@ const formDataSchema = z.object({
     region: z.string().min(1),
     postalCode: z.string()
     // .regex(/^\d{5}(?:[-\s]\d{4})?$/),
-  });
- 
-export async function addPersonalInformation(prevState: any, formData: FormData) { 
+});
+export type validatedFieldsType = z.inferFlattenedErrors<typeof formDataSchema>["fieldErrors"]
+export async function addPersonalInformation(userId: string, prevState: any, formData: FormData) {
     const rawFormData = {
-      firstName: formData.get('first-name'),
-      lastName: formData.get('last-name'),
-      email: formData.get('email'),
-      phoneNumber: formData.get('phone-number'),
-      streetAddress: formData.get('street-address'),
-      city: formData.get('city'),
-      region: formData.get('region'),
-      postalCode: formData.get('postal-code')
+        firstName: formData.get('first-name'),
+        lastName: formData.get('last-name'),
+        email: formData.get('email'),
+        phoneNumber: formData.get('phone-number'),
+        streetAddress: formData.get('street-address'),
+        city: formData.get('city'),
+        region: formData.get('region'),
+        postalCode: formData.get('postal-code')
     }
 
     const validatedFields = formDataSchema.safeParse(rawFormData)
-     
-      // Return early if the form data is invalid
-      if (!validatedFields.success) {
+    console.log(userId)
+    // Return early if the form data is invalid
+    if (!validatedFields.success) {
         console.log("Validation Failed.")
         console.log(validatedFields.error.flatten().fieldErrors)
         return {
-          errors: validatedFields.error.flatten().fieldErrors,
+            error: validatedFields.error.flatten().fieldErrors,
         }
-      }
+    } else {
+        console.log(validatedFields.data);
+        // redirect('/get-started/patient/transfer') // Navigate to the new page
+        // SAVE DATA TO DB
+        // mutate data
+        // revalidate cache
+        // Advance Page,
+        return {
+            message: "SUCCESS"
+        }
 
-    console.log(validatedFields.data);
- 
-    // mutate data
-    // revalidate cache
-    // Advance Page,
-    redirect('/get-started/patient/transfer') // Navigate to the new page
-  }
+    }
+}
