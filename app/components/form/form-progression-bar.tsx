@@ -12,7 +12,7 @@ export default function ProgressionBar({steps}: {steps: any}) {
             role="list"
             className="overflow-hidden rounded-md lg:flex lg:rounded-none lg:border-l lg:border-r lg:border-gray-200"
           >
-            {steps.map((step, stepIdx) => (
+            {steps.map((step, stepIdx: number) => (
               <li key={step.id} className="relative overflow-hidden lg:flex-1">
                 <div
                   className={classNames(
