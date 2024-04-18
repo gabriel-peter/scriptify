@@ -1,10 +1,10 @@
 "use client";
 import { transferPrescription } from "@/app/api/patient-get-started/transfer-subscriptions-form";
+import AbstractForm from "@/app/components/form/abstract-form";
 import AddressSubForm from "@/app/components/form/address-sub-form";
 import EmailInput from "@/app/components/form/email-input";
 import GenericInput from "@/app/components/form/generic-input";
 import PhoneNumberInput from "@/app/components/form/phone-number-input";
-import { SubmitButton } from "@/app/components/form/submit-button";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useFormState } from "react-dom";
@@ -51,38 +51,27 @@ function TransferForm({ setOpenForm, userId }: { setOpenForm: any, userId: strin
     const transferPrescriptionWithUserId = transferPrescription.bind(null, userId)
     const [state, formAction] = useFormState(transferPrescriptionWithUserId, initialState)
     return (
-        <form action={formAction}>
-            <div className="space-y-12">
-                {/* <div className="border-b border-gray-900/10 pb-12">
-          <h2 className="text-base font-semibold leading-7 text-gray-900">Profile</h2> */}
-
-
-                <div className="border-b border-gray-900/10 pb-12">
-                    <h2 className="text-base font-semibold leading-7 text-gray-900">Prescription Transfer Form</h2>
-                    <p className="mt-1 text-sm leading-6 text-gray-600">TODO</p>
-
-                    <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                        <GenericInput
-                            label="Pharmacy Name"
-                            id="pharmacy-name"
-                            errorState={state?.error?.pharmacyName}
-                            errorMessage={"Invalid Pharmacy Name"}
-                        />
-                        <EmailInput label="Email of your Pharmacy" errorState={state?.error?.email} />
-                        <PhoneNumberInput label="Phone Number of your Pharmacy" errorState={state?.error?.phoneNumber} />
-                        <AddressSubForm errorState={state.error} />
-                    </div>
-                </div>
-            </div>
-            <div className="mt-6 flex items-center justify-end gap-x-6">
-                <button
-                    type="button"
-                    onClick={() => setOpenForm(false)}
-                    className="text-sm font-semibold leading-6 text-gray-900">
-                    Cancel
-                </button>
-                <SubmitButton redirectUrl={state?.error && "/get-started/patient/clinical"} />
-            </div>
-        </form>
+        <AbstractForm
+            formAction={formAction}
+            state={state}
+            header="Transfer Your Prescriptions"
+            redirectUrl="/get-started/patient/clinical"
+        >
+            <GenericInput
+                label="Pharmacy Name"
+                id="pharmacy-name"
+                errorState={state?.error?.pharmacyName}
+                errorMessage={"Invalid Pharmacy Name"}
+            />
+            <EmailInput
+                label="Email of your Pharmacy"
+                errorState={state?.error?.email}
+            />
+            <PhoneNumberInput
+                label="Phone Number of your Pharmacy"
+                errorState={state?.error?.phoneNumber}
+            />
+            <AddressSubForm errorState={state.error} />
+        </AbstractForm>
     )
 }

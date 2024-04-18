@@ -51,14 +51,14 @@ const creditCardInfo = {
     expiration: '12/23',
 };
 
-export type validatedFieldsType = z.inferFlattenedErrors<typeof creditCardSchema>["fieldErrors"]
+export type CreditCardFormvalidatedFieldsType = z.inferFlattenedErrors<typeof creditCardSchema>["fieldErrors"]
 export async function savePatientPaymentInformation(userId: string, prevState: any, formData: FormData) {
     const rawFormData = {
         creditCardNumber: formData.get("card-number"),
         expiration: formData.get("card-expiration-date"),
         cvv: formData.get("card-cvc")
     }
-    const validationResult = creditCardSchema.safeParse(creditCardInfo);
+    const validationResult = creditCardSchema.safeParse(rawFormData);
 
     if (!validationResult.success) {
         console.log('Valid credit card information');

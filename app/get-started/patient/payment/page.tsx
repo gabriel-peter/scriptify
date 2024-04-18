@@ -4,45 +4,21 @@ import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { CheckIcon } from '@heroicons/react/24/outline'
 import { CreditCardInput } from '@/app/components/payment/credit-card-input'
-import { SubmitButton } from '@/app/components/form/submit-button'
-import MedicalInsuranceInput from '@/app/components/payment/medical-insurance-input'
-import { savePatientPaymentInformation } from "@/app/api/patient-get-started/payment-form-handler";
+import { CreditCardFormvalidatedFieldsType, savePatientPaymentInformation } from "@/app/api/patient-get-started/payment-form-handler";
 import { useFormState } from "react-dom";
+import AbstractForm from '@/app/components/form/abstract-form'
 
-export default function PaymentPage() {
+export default function PaymentPage({userId}: {userId: string}) {
   const savePatientPaymentInformationWithUserId = savePatientPaymentInformation.bind(null, userId);
     const [state, formAction] = useFormState(savePatientPaymentInformationWithUserId, {message: ''})
   return (
     <div className="flex flex-col">
-      <form>
-        <MedicalInsuranceInput/>
-        <CreditCardInput errorState={state.error} userId={'test-user-id'} />
-        <div className="mt-6 flex items-center justify-end gap-x-6">
-          {/* TODO previous button that goes to previous page */}
-          <SubmitButton redirectUrl={undefined} />
-        </div>
-      </form>
+      <AbstractForm<CreditCardFormvalidatedFieldsType> formAction={formAction} state={state} header='Enter your Payment Information' redirectUrl='/get-started/patient/complete'>
+        <CreditCardInput errorState={state?.error} userId={userId} />
+      </AbstractForm>
     </div>
   )
 }
-
-
-/*
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-    ],
-  }
-  ```
-*/
-
-
 
 export function AddCreditCardModal({ open, setOpen }) {
 

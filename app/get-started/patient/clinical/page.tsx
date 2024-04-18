@@ -1,8 +1,8 @@
 "use client"
 import savePatientClinicalPreferences from "@/app/api/patient-get-started/clinical-preferences-form";
 import { langaugePreferences, meetingPreference, race, sexualOrientation, chronicConditions } from "@/app/api/patient-get-started/options"
+import AbstractForm from "@/app/components/form/abstract-form";
 import CheckboxGroup from "@/app/components/form/checkbox-group";
-import { SubmitButton } from "@/app/components/form/submit-button";
 import { useFormState } from "react-dom";
 
 const initialState = {
@@ -14,16 +14,13 @@ export default function ClinicalPreference() {
   const [state, formAction] = useFormState(savePatientClinicalPreferencesWithUserId, initialState)
   return (
     <div className="flex flex-col my-10 mx-2.5">
-      <form action={formAction}>
+      <AbstractForm formAction={formAction} state={state} redirectUrl="/get-started/patient/payment" header="Clinical Preferences">
         <Dropdown id="language" label="Language" options={langaugePreferences} />
         <Dropdown id="meeting-environment" label="Meeting Environment" options={meetingPreference} />
         <Dropdown id="race" label="Identified Race" options={race} />
         <Dropdown id="sexual-orientation" label="Sexual Orientation" options={sexualOrientation} />
         <CheckboxGroup label="Select if you have any of the chronic Condiitions" options={chronicConditions} />
-        <div className="mt-6 flex items-center justify-end gap-x-6">
-          <SubmitButton redirectUrl={state.message && "/get-started/patient/payment"} />
-        </div>
-      </form>
+      </AbstractForm>
     </div>
   );
 }

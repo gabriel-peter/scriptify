@@ -1,8 +1,7 @@
-import { validatedFieldsType } from "@/app/api/patient-get-started/payment-form-handler";
+import { CreditCardFormvalidatedFieldsType } from "@/app/api/patient-get-started/payment-form-handler";
 import AbstractInput from "../form/abstract-input";
 
-
-export function CreditCardInput({ userId, errorState }: { userId: string, errorState: validatedFieldsType }) {
+export function CreditCardInput({ userId, errorState }: { userId: string, errorState: CreditCardFormvalidatedFieldsType| undefined }) {
   return (
     <div>
       <fieldset>
@@ -12,7 +11,7 @@ export function CreditCardInput({ userId, errorState }: { userId: string, errorS
             <label htmlFor="card-number" className="sr-only">
               Card number
             </label>
-            <AbstractInput error={errorState.creditCardNumber} errorMessage="Invalid Credit Card Number.">
+            <AbstractInput error={errorState?.creditCardNumber} errorMessage="Invalid Credit Card Number.">
               <input
                 type="text"
                 name="card-number"
@@ -27,7 +26,7 @@ export function CreditCardInput({ userId, errorState }: { userId: string, errorS
               <label htmlFor="card-expiration-date" className="sr-only">
                 Expiration date
               </label>
-              <AbstractInput error={errorState.expiration} errorMessage="Invalid Expiration Date.">
+              <AbstractInput error={errorState?.expiration} errorMessage="Invalid Expiration Date.">
                 <input
                   type="text"
                   name="card-expiration-date"
@@ -41,7 +40,7 @@ export function CreditCardInput({ userId, errorState }: { userId: string, errorS
               <label htmlFor="card-cvc" className="sr-only">
                 CVC
               </label>
-              <AbstractInput error={errorState.cvv} errorMessage="Invalid CVV.">
+              <AbstractInput error={errorState?.cvv} errorMessage="Invalid CVV.">
                 <input
                   type="text"
                   name="card-cvc"
