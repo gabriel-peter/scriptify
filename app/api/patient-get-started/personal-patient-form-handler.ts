@@ -2,21 +2,21 @@
 
 import { redirect } from 'next/navigation'
 import { revalidateTag } from 'next/cache'
-import { z } from 'zod'
+import { z } from 'zod';
 
 const formDataSchema = z.object({
     firstName: z.string().min(1),
     lastName: z.string().min(1),
     email: z.string().email(),
-    phoneNumber: z.string(),
+    phoneNumber: z.string().min(1),
     // .regex(/^\+?\d{1,3}\s?\d{3}\s?\d{3}\s?\d{4}$/),
     streetAddress: z.string().min(1),
     city: z.string().min(1),
     region: z.string().min(1),
-    postalCode: z.string()
+    postalCode: z.string().min(1)
     // .regex(/^\d{5}(?:[-\s]\d{4})?$/),
 });
-export type validatedFieldsType = z.inferFlattenedErrors<typeof formDataSchema>["fieldErrors"]
+export type validatedFieldsType = z.inferFlattenedErrors<typeof formDataSchema>["fieldErrors"];
 export async function addPersonalInformation(userId: string, prevState: any, formData: FormData) {
     const rawFormData = {
         firstName: formData.get('first-name'),

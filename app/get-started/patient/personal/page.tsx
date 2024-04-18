@@ -49,7 +49,7 @@ export default function PatientPersonalInformationForm({userId}: {userId: string
       </div>
       <div className="mt-6 flex items-center justify-end gap-x-6">
         {/* TODO previous button that goes to previous page */}
-        <SubmitButton />
+        <SubmitButton redirectUrl={state?.message && "/get-started/patient/transfer"}/>
       </div>
     </form>
   )

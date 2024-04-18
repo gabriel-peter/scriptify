@@ -4,20 +4,24 @@ import { Dialog, Transition } from '@headlessui/react'
 import { CheckIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 import { PaperClipIcon } from '@heroicons/react/20/solid'
+import MedicalInsuranceInfo from '@/app/components/payment/insurance-details'
+import SavedCreditCard from '@/app/components/payment/credit-card-details'
 
 
 export default function CompleteProfilePage() {
-    const [open, setOpen] = useState(false)
-    return (
-        <>
-        <Review setOpen={setOpen}/>
-        <Example open={open} setOpen={setOpen}/>
-        </>
-    )
+  const [open, setOpen] = useState(false)
+  return (
+    <>
+      <Review setOpen={setOpen} />
+      <MedicalInsuranceInfo />
+      <SavedCreditCard />
+      <Example open={open} setOpen={setOpen} />
+    </>
+  )
 }
 
 
-export function Review({setOpen}: {setOpen: any}) {
+export function Review({ setOpen }: { setOpen: any }) {
   return (
     <div>
       <div className="px-4 sm:px-0">
@@ -88,20 +92,20 @@ export function Review({setOpen}: {setOpen: any}) {
         </dl>
       </div>
       <div className="mt-6 flex items-center justify-end gap-x-6">
-                <button
-                    // type="submit"
-                    onClick={() => setOpen(true)}
-                    className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                >
-                    Complete Profile Creation
-                </button>
-            </div>
+        <button
+          // type="submit"
+          onClick={() => setOpen(true)}
+          className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+        >
+          Complete Profile Creation
+        </button>
+      </div>
     </div>
   )
 }
 
 
-function Example({open, setOpen}) {
+function Example({ open, setOpen }) {
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={setOpen}>

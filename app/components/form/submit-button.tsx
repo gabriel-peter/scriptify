@@ -1,9 +1,19 @@
 'use client'
 
 import { useFormStatus } from 'react-dom'
+import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 
-export function SubmitButton() {
+
+export function SubmitButton({redirectUrl}: {redirectUrl: string | undefined}) {
     const { pending } = useFormStatus()
+    const router = useRouter()
+
+    useEffect(() => {
+        if (redirectUrl !== undefined) {
+            router.push(redirectUrl);
+        }
+    }, [redirectUrl, router])
 
     return (
         <button

@@ -4,19 +4,20 @@ import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { CheckIcon } from '@heroicons/react/24/outline'
 import { CreditCardInput } from '@/app/components/payment/credit-card-input'
-import MedicalInsuranceInfo from '@/app/components/payment/insurance-details'
-import SavedCreditCard from '@/app/components/payment/credit-card-details'
 import { SubmitButton } from '@/app/components/form/submit-button'
+import MedicalInsuranceInput from '@/app/components/payment/medical-insurance-input'
 
 export default function PaymentPage() {
   return (
     <div className="flex flex-col">
-      <MedicalInsuranceInfo />
-      <SavedCreditCard />
-      <div className="mt-6 flex items-center justify-end gap-x-6">
-        {/* TODO previous button that goes to previous page */}
-        <SubmitButton />
-      </div>
+      <form>
+        <MedicalInsuranceInput/>
+        <CreditCardInput />
+        <div className="mt-6 flex items-center justify-end gap-x-6">
+          {/* TODO previous button that goes to previous page */}
+          <SubmitButton />
+        </div>
+      </form>
     </div>
   )
 }
@@ -45,11 +46,11 @@ export function AddCreditCardModal({ open, setOpen }) {
     async function asyncDelay() {
       // Simulate asynchronous delay using setTimeout
       await new Promise((resolve) => setTimeout(resolve, 1000)); // 1000 milliseconds delay
-  
+
       // After the delay, setModal(false)
-      
+
     }
-  
+
     // Call the async function
     asyncDelay().then(() => setOpen(false));
   }
@@ -90,7 +91,7 @@ export function AddCreditCardModal({ open, setOpen }) {
                       Add Payment Info
                     </Dialog.Title>
                     <div className="mt-2">
-                     <CreditCardInput/>
+                      
                     </div>
                   </div>
                 </div>

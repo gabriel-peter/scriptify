@@ -33,7 +33,7 @@ export default function Layout({
   const previousPageIndex = Math.max(currentPageIndex - 1, 0)
 
     return (<>
-    <header className="bg-white shadow-sm">
+    <header>
     <ProgressionBar steps={steps}/>
     </header>
     {children}

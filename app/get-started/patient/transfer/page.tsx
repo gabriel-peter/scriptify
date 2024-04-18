@@ -1,47 +1,57 @@
 "use client";
 import { transferPrescription } from "@/app/api/patient-get-started/transfer-subscriptions-form";
 import AddressSubForm from "@/app/components/form/address-sub-form";
-import CheckboxGroup from "@/app/components/form/checkbox-group";
 import EmailInput from "@/app/components/form/email-input";
+import GenericInput from "@/app/components/form/generic-input";
 import PhoneNumberInput from "@/app/components/form/phone-number-input";
 import { SubmitButton } from "@/app/components/form/submit-button";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useFormState } from "react-dom";
 
-const chronicConditions = [
-    'Diabetes/Obesity',
-    'Arthritis/Chronic Pain',
-    'COPD',
-    'Chronic Kidney Disease',
-    'Cancer',
-    'Asthma',
-    'Depression',
-    'Thyroid',
-    'Anxiety',
-    'High Blood Pressure',
-    'High Cholesterol Menopause/Hormone Disorders Seizure Disorder /Epilepsy'
-]
-
-export default function TransferPrescriptions() {
+export default function TransferPrescriptions({ userId }: { userId: string }) {
+    const router = useRouter();
     const [openForm, setOpenForm] = useState(false);
     return (
         <>
-            {!openForm ?
-                (<div className="flex align-center my-10 space-y-12 justify-center">
-                    <button
-                        type="button"
-                        onClick={() => setOpenForm(true)}
-                        className="w-64 h-64 bg-indigo-50 rounded-lg text-lg font-semibold text-indigo-600 shadow-lg hover:bg-indigo-100 flex justify-center items-center mx-4">
-                        Transfer Prescriptions
-                    </button>
-                </div>) :
-                <TransferForm setOpenForm={setOpenForm} />}
+            <div className="space-y-12 mt-5">
+                <div className="border-b border-gray-900/10 pb-12">
+                    <div className="flex justify-center mt-10">
+                        <h2 className="text-base font-semibold leading-7 text-gray-900">Do you have current prescription you would like to transfer?</h2>
+                    </div>
+                    {!openForm ?
+                        (
+                            <div className="flex my-10 space-y-12 items-center justify-center">
+                                <div></div>
+                                <button
+                                    type="button"
+                                    onClick={() => router.push("/get-started/patient/clinical")}
+                                    className="w-64 h-64 bg-red-50 rounded-lg text-lg font-semibold text-red-600 shadow-lg hover:bg-red-100 flex justify-center items-center mx-4">
+                                    No
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => setOpenForm(true)}
+                                    className="w-64 h-64 bg-green-50 rounded-lg text-lg font-semibold text-green-600 shadow-lg hover:bg-green-100 flex justify-center items-center mx-4">
+                                    Yes
+                                </button>
+                            </div>
+                        ) :
+                        <TransferForm userId={userId} setOpenForm={setOpenForm} />}
+                </div>
+            </div>
         </>);
 }
 
-function TransferForm({ setOpenForm }: { setOpenForm: any }) {
+const initialState = {
+    message: '',
+}
+
+function TransferForm({ setOpenForm, userId }: { setOpenForm: any, userId: string }) {
+    const transferPrescriptionWithUserId = transferPrescription.bind(null, userId)
+    const [state, formAction] = useFormState(transferPrescriptionWithUserId, initialState)
     return (
-        <form action={transferPrescription}>
+        <form action={formAction}>
             <div className="space-y-12">
                 {/* <div className="border-b border-gray-900/10 pb-12">
           <h2 className="text-base font-semibold leading-7 text-gray-900">Profile</h2> */}
@@ -52,24 +62,15 @@ function TransferForm({ setOpenForm }: { setOpenForm: any }) {
                     <p className="mt-1 text-sm leading-6 text-gray-600">TODO</p>
 
                     <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                        <div className="sm:col-span-4">
-                            <label htmlFor="first-name" className="block text-sm font-medium leading-6 text-gray-900">
-                                Pharmacy Name
-                            </label>
-                            <div className="mt-2">
-                                <input
-                                    type="text"
-                                    name="first-name"
-                                    id="first-name"
-                                    autoComplete="given-name"
-                                    className="block w-full rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                />
-                            </div>
-                        </div>
-                        <EmailInput label="Email of your Pharmacy" />
-                        <PhoneNumberInput label="Phone Number of your Pharmacy" />
-                        <AddressSubForm />
-                        <CheckboxGroup label="Select if you have any of the chronic Condiitions" options={chronicConditions} />
+                        <GenericInput
+                            label="Pharmacy Name"
+                            id="pharmacy-name"
+                            errorState={state?.error?.pharmacyName}
+                            errorMessage={"Invalid Pharmacy Name"}
+                        />
+                        <EmailInput label="Email of your Pharmacy" errorState={state?.error?.email} />
+                        <PhoneNumberInput label="Phone Number of your Pharmacy" errorState={state?.error?.phoneNumber} />
+                        <AddressSubForm errorState={state.error} />
                     </div>
                 </div>
             </div>
@@ -80,7 +81,7 @@ function TransferForm({ setOpenForm }: { setOpenForm: any }) {
                     className="text-sm font-semibold leading-6 text-gray-900">
                     Cancel
                 </button>
-                <SubmitButton />
+                <SubmitButton redirectUrl={state?.error && "/get-started/patient/clinical"} />
             </div>
         </form>
     )
