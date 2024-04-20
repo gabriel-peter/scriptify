@@ -1,17 +1,3 @@
-/*
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-    ],
-  }
-  ```
-*/
 'use client'
 import { addPersonalInformation } from '@/app/api/patient-get-started/personal-patient-form-handler'
 import AbstractForm from '@/app/components/form/abstract-form'

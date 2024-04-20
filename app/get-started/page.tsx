@@ -13,7 +13,7 @@ export default function Page() {
       <br />
       <Link
         type="button"
-        href="get-started/pharmacist"
+        href="get-started/pharmacist/personal"
         className="w-64 h-64 bg-indigo-50 rounded-lg text-lg font-semibold text-indigo-600 shadow-lg hover:bg-indigo-100 flex justify-center items-center mx-4"      >
         I am a new pharmacist
       </Link>
