@@ -1,6 +1,5 @@
 "use client";
 import ProgressionBar from '@/app/components/form/form-progression-bar';
-import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 import { usePathname } from 'next/navigation';
 
 const steps = [
@@ -10,7 +9,7 @@ const steps = [
   { id: '05', name: 'Complete', href: '/get-started/patient/complete' },
 ]
 
-export default withPageAuthRequired(function Layout({
+export default function Layout({
   user,
   children, // will be a page or nested layout
 }: {
@@ -31,6 +30,6 @@ export default withPageAuthRequired(function Layout({
       {children}
     </>
   );
-});
+};
 
 
