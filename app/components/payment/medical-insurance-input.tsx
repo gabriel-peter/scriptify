@@ -1,17 +1,19 @@
-import { insuranceFormValidatedFieldsType } from "@/app/api/patient-get-started/insurance-form-handler";
+import { InsuranceFormValidatedFieldsType } from "@/app/api/patient-get-started/insurance-form-handler";
 import GenericInput from "../form/generic-input";
+import NameInput from "../form/name-input";
 
-export default function MedicalInsuranceInput({errorState} : {errorState: insuranceFormValidatedFieldsType | undefined}) {
+export default function MedicalInsuranceInput({ errorState }: { errorState: InsuranceFormValidatedFieldsType | undefined }) {
     return (
         <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+            <NameInput errorState={errorState} />
             <div className="sm:col-span-2 sm:col-start-1">
-            <GenericInput label={"Insurance Name:"} id={"insurance-name"} errorState={errorState?.insuranceName} errorMessage={"Invalid Name."} />
+                <GenericInput label={"Insurance Name:"} id={"insurance-name"} errorState={errorState?.insuranceName} errorMessage={"Invalid Name."} />
             </div>
             <div className="sm:col-span-2">
-            <GenericInput label={"Insurance ID #:"} id={"insurance-id"} errorState={errorState?.insuranceId} errorMessage={"Invalid ID."} />
+                <GenericInput label={"Insurance ID #:"} id={"insurance-id"} errorState={errorState?.insuranceId} errorMessage={"Invalid ID."} />
             </div>
             <div className="sm:col-span-2">
-            <GenericInput label={"RX Group #:"} id={"rx-group"} errorState={errorState?.rxGroup} errorMessage={"Invalid RX Group."} />
+                <GenericInput label={"RX Group #:"} id={"rx-group"} errorState={errorState?.rxGroup} errorMessage={"Invalid RX Group."} />
             </div>
             <GenericInput label={"BIN:"} id={"bin"} errorState={errorState?.bin} errorMessage={"Invalid BIN."} />
             <GenericInput label={"PCN:"} id={"pcn"} errorState={errorState?.pcn} errorMessage={"Invalid PCN."} />

@@ -1,6 +1,6 @@
 "use client";
 import ProgressionBar from '@/app/components/form/form-progression-bar';
-import Link from 'next/link';
+import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 import { usePathname } from 'next/navigation';
 
 const steps = [
@@ -10,10 +10,12 @@ const steps = [
   { id: '05', name: 'Complete', href: '/get-started/patient/complete' },
 ]
 
-export default function Layout({
+export default withPageAuthRequired(function Layout({
+  user,
   children, // will be a page or nested layout
 }: {
-  children: React.ReactNode
+  children: React.ReactNode,
+  user: any // TODO
 }) {
   const pathname = usePathname();
   steps.map((e) => { return ({ ...e, status: e.href === pathname ? "current" : "upcoming" }) })
@@ -21,14 +23,14 @@ export default function Layout({
   const nextPageIndex = Math.min(currentPageIndex + 1, steps.length - 1)
   const previousPageIndex = Math.max(currentPageIndex - 1, 0)
 
-   return (<>
-    <header>
-      <ProgressionBar steps={steps} />
-    </header>
-    {children}
-  </>
+  return (
+    <>
+      <header>
+        <ProgressionBar steps={steps} />
+      </header>
+      {children}
+    </>
   );
-
-}
+});
 
 
