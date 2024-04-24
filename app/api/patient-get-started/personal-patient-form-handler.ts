@@ -2,6 +2,7 @@
 
 import { redirect } from 'next/navigation'
 import { revalidateTag } from 'next/cache'
+import { createClient } from '@/utils/supabase/server';
 import { z } from 'zod';
 
 const formDataSchema = z.object({
@@ -16,8 +17,13 @@ const formDataSchema = z.object({
     postalCode: z.string().min(1)
     // .regex(/^\d{5}(?:[-\s]\d{4})?$/),
 });
+const supabase = createClient();
 export type validatedFieldsType = z.inferFlattenedErrors<typeof formDataSchema>["fieldErrors"];
 export async function addPersonalInformation(userId: string, prevState: any, formData: FormData) {
+    console.log(userId);
+    return {
+        message: "TEST"
+    }
     const rawFormData = {
         firstName: formData.get('first-name'),
         lastName: formData.get('last-name'),
@@ -43,11 +49,31 @@ export async function addPersonalInformation(userId: string, prevState: any, for
         // redirect('/get-started/patient/transfer') // Navigate to the new page
         // SAVE DATA TO DB
         // mutate data
+        const {error} = await supabase
+            .from('profiles').update(
+                {
+                    first_name: validatedFields.data.firstName,
+                    last_name: validatedFields.data.lastName,
+                    mailing_address: {
+                        street_address: validatedFields.data.streetAddress,
+                        city: validatedFields.data.city,
+                        region: validatedFields.data.region,
+                        postal_code: validatedFields.data.postalCode
+                    }
+                }
+            ).eq('id', 1)
+        console.log(error)
+        if (error) {
+            return {
+                error: "DATABASE ERROR"
+            }
+        }
         // revalidate cache
         // Advance Page,
         return {
             message: "SUCCESS"
         }
+
 
     }
 }

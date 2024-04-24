@@ -5,7 +5,6 @@ create table profiles (
   last_name text not null,
   mailing_address jsonb,
   driver_license_url text,
-  postal_code text,
   avatar_url text,
   preferences jsonb
   -- constraint username_length check (char_length(username) >= 3)
