@@ -1,8 +1,5 @@
+import { cn } from '@/utils/cn'
 import { CheckIcon } from '@heroicons/react/24/solid'
-
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(' ')
-}
 
 export default function ProgressionBar({steps}: {steps: any}) {
     return (
@@ -15,7 +12,7 @@ export default function ProgressionBar({steps}: {steps: any}) {
             {steps.map((step, stepIdx: number) => (
               <li key={stepIdx} className="relative overflow-hidden lg:flex-1">
                 <div
-                  className={classNames(
+                  className={cn(
                     stepIdx === 0 ? 'rounded-t-md border-b-0' : '',
                     stepIdx === steps.length - 1 ? 'rounded-b-md border-t-0' : '',
                     'overflow-hidden border border-gray-200 lg:border-0'
@@ -28,7 +25,7 @@ export default function ProgressionBar({steps}: {steps: any}) {
                         aria-hidden="true"
                       />
                       <span
-                        className={classNames(
+                        className={cn(
                           stepIdx !== 0 ? 'lg:pl-9' : '',
                           'flex items-start px-6 py-5 text-sm font-medium'
                         )}
@@ -51,7 +48,7 @@ export default function ProgressionBar({steps}: {steps: any}) {
                         aria-hidden="true"
                       />
                       <span
-                        className={classNames(
+                        className={cn(
                           stepIdx !== 0 ? 'lg:pl-9' : '',
                           'flex items-start px-6 py-5 text-sm font-medium'
                         )}
@@ -74,7 +71,7 @@ export default function ProgressionBar({steps}: {steps: any}) {
                         aria-hidden="true"
                       />
                       <span
-                        className={classNames(
+                        className={cn(
                           stepIdx !== 0 ? 'lg:pl-9' : '',
                           'flex items-start px-6 py-5 text-sm font-medium'
                         )}
