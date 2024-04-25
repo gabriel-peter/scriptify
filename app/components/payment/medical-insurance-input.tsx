@@ -1,4 +1,4 @@
-import { InsuranceFormValidatedFieldsType } from "@/app/api/patient-get-started/insurance-form-handler";
+import { InsuranceFormValidatedFieldsType } from "@/app/get-started/patient/insurance/insurance-form-handler";
 import GenericInput from "../form/generic-input";
 import NameInput from "../form/name-input";
 

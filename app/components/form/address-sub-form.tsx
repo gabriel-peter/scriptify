@@ -1,4 +1,4 @@
-import { validatedFieldsType } from "@/app/api/patient-get-started/personal-patient-form-handler";
+import { validatedFieldsType } from "@/app/get-started/patient/personal/personal-patient-form-handler";
 import AbstractInput from "./abstract-input";
 import { inputStyling } from "./styling";
 

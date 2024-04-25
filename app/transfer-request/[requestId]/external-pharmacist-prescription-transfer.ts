@@ -1,6 +1,7 @@
-"use client"
+"use server"
+import { customDateSchema } from '@/app/api/utils/schema-validators';
+import { createClient } from '@/utils/supabase/server';
 import { z } from 'zod';
-import { customDateSchema } from '../utils/schema-validators';
 
 // Define the schema for transferring pharmacy information
 const transferringPharmacySchema = z.object({
@@ -26,7 +27,8 @@ const transferPrescriptionFormSchema = z.object({
 export type TransferringPharmacyValidatedFieldType = z.inferFlattenedErrors<typeof transferringPharmacySchema>["fieldErrors"]
 export type TransferPrescriptionFormValidatedFieldsType = z.inferFormattedError<typeof transferPrescriptionFormSchema>
 export type PrescriptionFormatedErrorType = z.inferFormattedError<typeof prescriptionSchema>
-export default function handlePrescriptionTransferRequestForm(userId: string, prevState: any, formData: FormData) {
+export default async function handlePrescriptionTransferRequestForm(userId: string, prevState: any, formData: FormData) {
+    const supabase = createClient()
     const transferringPharmacyData = {
         ncpdp: formData.get('ncpdp'),
         transferringPharmacistFirstName: formData.get('transferring-pharmacist-first-name'),
@@ -64,6 +66,19 @@ export default function handlePrescriptionTransferRequestForm(userId: string, pr
 
     if (validationResult.success) {
         console.log('Valid form data');
+        // SAVE TO DATABASE
+        validationResult.data.prescriptions.forEach(async (prescription) => {
+            const {error} = await supabase.from("prescription_transfers").insert({
+                created_at: new Date().toISOString(),
+                drug_name: prescription.drugName,
+                rx_name: prescription.rxName,
+                refill_date: prescription.estimatedDateToFill,
+                pharmacist_first_name: validationResult.data.transferringPharmacy.transferringPharmacistFirstName,
+                pharmacist_last_name: validationResult.data.transferringPharmacy.transferringPharmacistLastName,
+                pharmacist_license_number: validationResult.data.transferringPharmacy.transferringPharmacistLicenseNumber
+            })
+            console.log(error)
+        })
         return {
             message: "SUCCESS"
         }

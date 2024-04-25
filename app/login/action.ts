@@ -5,6 +5,8 @@ import { redirect } from 'next/navigation'
 
 import { createClient } from '@/utils/supabase/server'
 import { NextResponse } from 'next/server'
+import { SupabaseClient, User } from '@supabase/supabase-js'
+import { Database } from '@/types_db'
 
 export async function login(formData: FormData) {
   const supabase = createClient()
@@ -22,6 +24,7 @@ export async function login(formData: FormData) {
   // Errors to handle:
   // - AuthApiError: Email not confirmed
   // - AuthApiError: Email rate limit exceeded
+  // - AuthApiError: Invalid login credentials
   if (error) {
     redirect('/error')
   }
@@ -40,14 +43,22 @@ export async function signup(formData: FormData) {
     password: formData.get('password') as string,
   }
 
-  const { error } = await supabase.auth.signUp(data)
-
-  console.log(error)
+  const { error, data: {user} } = await supabase.auth.signUp(data)
+  if (user) {
+    createUserProfile(supabase, user);
+  }
 
   if (error) {
+    console.log(error)
     redirect('/error')
   }
 
   revalidatePath('/*', 'layout')
   redirect("/get-started")
+}
+
+async function createUserProfile(supabase: SupabaseClient<Database>, user: User) {
+  return await supabase.from('profiles').insert({
+    id: user.id
+  });
 }

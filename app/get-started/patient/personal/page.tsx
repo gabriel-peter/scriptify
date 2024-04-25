@@ -4,7 +4,7 @@ import { createClient } from "@/utils/supabase/server"
 import PatientPersonalInformationForm from "./form"
 
 export default async function Page() {
-    const supabase = createClient()
+  const supabase = createClient()
 
   const {
     data: { user },
@@ -12,5 +12,5 @@ export default async function Page() {
   if (!user) {
     return <div>NO USER :(</div>
   }
-  return <PatientPersonalInformationForm userId={user?.id}/>
+  return <PatientPersonalInformationForm userId={user?.id} />
 }

@@ -43,3 +43,18 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 ```
 yarn supabase:start
 ```
+
+- [Dumping local database into seed.sql](https://supabase.com/blog/partial-postgresql-data-dumps-with-rls)
+```shell
+pg_dump \ 
+-h localhost \
+-U postgres \
+-d postgres \
+-n 'public|auth' \  
+--data-only \
+--enable-row-security \
+--port=54322 > supabase/seed.sql
+```
+
+#### Troubleshooting
+[AuthApiError: Database error saving new user from db trigger](https://github.com/orgs/supabase/discussions/13043)

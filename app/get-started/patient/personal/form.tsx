@@ -1,5 +1,5 @@
 'use client'
-import { addPersonalInformation } from '@/app/api/patient-get-started/personal-patient-form-handler'
+import { addPersonalInformation } from '@/app/get-started/patient/personal/personal-patient-form-handler'
 import AbstractForm from '@/app/components/form/abstract-form'
 import AddressSubForm from '@/app/components/form/address-sub-form'
 import EmailInput from '@/app/components/form/email-input'

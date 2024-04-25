@@ -1,3 +1,4 @@
+"use server";
 import { z } from 'zod';
 
 // Define the schema for the insurance form
@@ -13,19 +14,8 @@ const insuranceFormSchema = z.object({
     ssn: z.string().min(9).max(9), // Assuming the SSN is in the format XXX-XX-XXXX
 });
 
-// Example usage
-const insuranceFormData = {
-    insuranceName: 'ABC Insurance',
-    insuranceId: '123456',
-    rxGroup: 'RX123',
-    bin: 'BIN123',
-    pcn: 'PCN123',
-    insuranceNumber: 'INS456',
-    ssn: '123-45-6789',
-};
-
 export type InsuranceFormValidatedFieldsType = z.inferFlattenedErrors<typeof insuranceFormSchema>["fieldErrors"]
-export default function saveMedicalInsuranceForm(userId: string, prevState: any, formData: FormData) {
+export default async function saveMedicalInsuranceForm(userId: string, prevState: any, formData: FormData) {
     const insuranceFormData = {
         insuranceName: formData.get("insurance-name"),
         insuranceId: formData.get("insurance-id"),

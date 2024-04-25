@@ -14,12 +14,15 @@ create table profiles (
 -- TODO create CRUD reusable fields
 
 create table transfer_requests (
-    id uuid,-- TODO auto increment
+    id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
+    pharmacy_name text,
+    pharmacy_email text,
+    pharmacy_phone_number text,
+    mailing_address jsonb,
     updated_at timestamp with time zone,
     created_at timestamp with time zone,
     user_id uuid references auth.users not null,
-    magic_url_key text not null
-    -- Pharmacy Data
+    magic_url_key text
 );
 
 create table prescription_transfers (
@@ -72,17 +75,17 @@ create policy "Users can update own profile." on profiles
 
 -- This trigger automatically creates a profile entry when a new user signs up via Supabase Auth.
 -- See https://supabase.com/docs/guides/auth/managing-user-data#using-triggers for more details.
-create function public.handle_new_user()
-returns trigger as $$
-begin
-  insert into public.profiles (id, avatar_url)
-  values (new.id, new.raw_user_meta_data->>'avatar_url');
-  return new;
-end;
-$$ language plpgsql security definer;
-create trigger on_auth_user_created
-  after insert on auth.users
-  for each row execute procedure public.handle_new_user();
+-- create function public.handle_new_user() -- NOT USEFUL CAUSE ITS HARD TO DO IN A LOCAL ENV
+-- returns trigger as $$
+-- begin
+--   insert into public.profiles (id, avatar_url)
+--   values (new.id, new.raw_user_meta_data->>'avatar_url');
+--   return new;
+-- end;
+-- $$ language plpgsql security definer;
+-- create trigger on_auth_user_created
+--   after insert on auth.users
+--   for each row execute procedure public.handle_new_user();
 
 -- Set up Storage!
 insert into storage.buckets

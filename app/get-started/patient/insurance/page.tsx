@@ -1,21 +1,16 @@
-"use client"
-import saveMedicalInsuranceForm, { InsuranceFormValidatedFieldsType } from "@/app/api/patient-get-started/insurance-form-handler";
-import AbstractForm from "@/app/components/form/abstract-form";
-import MedicalInsuranceInput from "@/app/components/payment/medical-insurance-input";
-import { useFormState } from "react-dom";
+"use server"
 
-export default function InsuranceInputPage({ userId }: { userId: string }) {
-    const saveMedicalInsuranceFormWithUserId = saveMedicalInsuranceForm.bind(null, userId)
-    const [state, formAction] = useFormState(saveMedicalInsuranceFormWithUserId, { message: '' })
-    return (
-        <AbstractForm<InsuranceFormValidatedFieldsType>
-            formAction={formAction}
-            state={state}
-            redirectUrl={"/get-started/patient/payment-details"}
-            description=""
-            header={"Insurance Information"}
-        >
-            <MedicalInsuranceInput errorState={state.error} />
-        </AbstractForm>
-    )
+import { createClient } from "@/utils/supabase/server"
+import InsuranceInputPage from "./form"
+
+export default async function Page() {
+    const supabase = createClient()
+
+    const {
+        data: { user },
+    } = await supabase.auth.getUser()
+    if (!user) {
+        return <div>NO USER :(</div>
+    }
+    return <InsuranceInputPage userId={user.id} />
 }

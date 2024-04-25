@@ -109,33 +109,30 @@ export type Database = {
         Row: {
           avatar_url: string | null
           driver_license_url: string | null
-          first_name: string
+          first_name: string | null
           id: string
-          last_name: string
+          last_name: string | null
           mailing_address: Json | null
-          postal_code: string | null
           preferences: Json | null
           updated_at: string | null
         }
         Insert: {
           avatar_url?: string | null
           driver_license_url?: string | null
-          first_name: string
+          first_name?: string | null
           id: string
-          last_name: string
+          last_name?: string | null
           mailing_address?: Json | null
-          postal_code?: string | null
           preferences?: Json | null
           updated_at?: string | null
         }
         Update: {
           avatar_url?: string | null
           driver_license_url?: string | null
-          first_name?: string
+          first_name?: string | null
           id?: string
-          last_name?: string
+          last_name?: string | null
           mailing_address?: Json | null
-          postal_code?: string | null
           preferences?: Json | null
           updated_at?: string | null
         }
@@ -152,22 +149,43 @@ export type Database = {
       transfer_requests: {
         Row: {
           created_at: string | null
-          id: string | null
-          magic_url_key: string
+          id: string
+          magic_url_key: string | null
+          mailing_address: Json | null
+          pharmacy_email: string | null
+          pharmacy_name: string | null
+          pharmacy_phone_number: string | null
+          request_status:
+            | Database["public"]["Enums"]["transfer_request_status"]
+            | null
           updated_at: string | null
           user_id: string
         }
         Insert: {
           created_at?: string | null
-          id?: string | null
-          magic_url_key: string
+          id?: string
+          magic_url_key?: string | null
+          mailing_address?: Json | null
+          pharmacy_email?: string | null
+          pharmacy_name?: string | null
+          pharmacy_phone_number?: string | null
+          request_status?:
+            | Database["public"]["Enums"]["transfer_request_status"]
+            | null
           updated_at?: string | null
           user_id: string
         }
         Update: {
           created_at?: string | null
-          id?: string | null
-          magic_url_key?: string
+          id?: string
+          magic_url_key?: string | null
+          mailing_address?: Json | null
+          pharmacy_email?: string | null
+          pharmacy_name?: string | null
+          pharmacy_phone_number?: string | null
+          request_status?:
+            | Database["public"]["Enums"]["transfer_request_status"]
+            | null
           updated_at?: string | null
           user_id?: string
         }
@@ -189,7 +207,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      transfer_request_status: "pending" | "pharmacist-filled" | "complete"
     }
     CompositeTypes: {
       [_ in never]: never
