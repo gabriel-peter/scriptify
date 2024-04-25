@@ -24,7 +24,7 @@ export default function PatientPersonalInformationForm({userId}:{userId: string}
       <div>
         <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
           <NameInput errorState={state?.error} />
-          <EmailInput errorState={state?.error?.email} label={'Add your Email'} />
+          {/* <EmailInput errorState={state?.error?.email} label={'Add your Email'} /> */}
           <PhoneNumberInput errorState={state?.error?.phoneNumber} label={'Add your Phone Number'} />
           <AddressSubForm errorState={state?.error} />
         </div >

@@ -1,4 +1,5 @@
-"use client";
+"use server";
+import ProtectedPage from '@/app/components/auth/protected-page';
 import GetStartedLayout from '@/app/components/layouts/get-started-layout';
 
 var steps = [
@@ -10,14 +11,16 @@ var steps = [
   { id: '06', name: 'Review', href: '/get-started/patient/complete' },
 ]
 
-export default function Layout({
+export default async function Layout({
   children, // will be a page or nested layout
 }: {
   children: React.ReactNode
 }) {
   return (
-    <GetStartedLayout steps={steps}>
-      {children}
-    </GetStartedLayout>
+    <ProtectedPage>
+      <GetStartedLayout steps={steps}>
+        {children}
+      </GetStartedLayout>
+    </ProtectedPage>
   );
 }

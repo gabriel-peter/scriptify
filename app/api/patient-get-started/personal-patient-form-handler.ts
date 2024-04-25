@@ -8,7 +8,6 @@ import { z } from 'zod';
 const formDataSchema = z.object({
     firstName: z.string().min(1),
     lastName: z.string().min(1),
-    email: z.string().email(),
     phoneNumber: z.string().min(1),
     // .regex(/^\+?\d{1,3}\s?\d{3}\s?\d{3}\s?\d{4}$/),
     streetAddress: z.string().min(1),
@@ -21,13 +20,9 @@ const supabase = createClient();
 export type validatedFieldsType = z.inferFlattenedErrors<typeof formDataSchema>["fieldErrors"];
 export async function addPersonalInformation(userId: string, prevState: any, formData: FormData) {
     console.log(userId);
-    return {
-        message: "TEST"
-    }
     const rawFormData = {
         firstName: formData.get('first-name'),
         lastName: formData.get('last-name'),
-        email: formData.get('email'),
         phoneNumber: formData.get('phone-number'),
         streetAddress: formData.get('street-address'),
         city: formData.get('city'),
@@ -45,10 +40,8 @@ export async function addPersonalInformation(userId: string, prevState: any, for
             error: validatedFields.error.flatten().fieldErrors,
         }
     } else {
-        console.log(validatedFields.data);
-        // redirect('/get-started/patient/transfer') // Navigate to the new page
+        console.log("Fields validated", validatedFields.data);
         // SAVE DATA TO DB
-        // mutate data
         const {error} = await supabase
             .from('profiles').update(
                 {
@@ -61,7 +54,7 @@ export async function addPersonalInformation(userId: string, prevState: any, for
                         postal_code: validatedFields.data.postalCode
                     }
                 }
-            ).eq('id', 1)
+            ).eq('id', userId)
         console.log(error)
         if (error) {
             return {
