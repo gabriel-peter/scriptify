@@ -1,6 +1,6 @@
 import { InsuranceFormValidatedFieldsType } from "@/app/get-started/patient/insurance/insurance-form-handler";
-import GenericInput from "../form/generic-input";
-import NameInput from "../form/name-input";
+import GenericInput from "../forms/generic-input";
+import NameInput from "../forms/name-input";
 
 export default function MedicalInsuranceInput({ errorState }: { errorState: InsuranceFormValidatedFieldsType | undefined }) {
     return (

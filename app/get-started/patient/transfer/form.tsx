@@ -1,10 +1,10 @@
 "use client";
 import { transferPrescription } from "@/app/get-started/patient/transfer/patient-prescription-transfer-request-form";
-import AbstractForm from "@/app/components/form/abstract-form";
-import AddressSubForm from "@/app/components/form/address-sub-form";
-import EmailInput from "@/app/components/form/email-input";
-import GenericInput from "@/app/components/form/generic-input";
-import PhoneNumberInput from "@/app/components/form/phone-number-input";
+import AbstractForm from "@/app/components/forms/abstract-form";
+import AddressSubForm from "@/app/components/forms/address-sub-form";
+import EmailInput from "@/app/components/forms/email-input";
+import GenericInput from "@/app/components/forms/generic-input";
+import PhoneNumberInput from "@/app/components/forms/phone-number-input";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useFormState } from "react-dom";

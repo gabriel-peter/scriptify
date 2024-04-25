@@ -1,7 +1,7 @@
 "use client";
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import ProgressionBar from '../form/form-progression-bar';
+import ProgressionBar from '../forms/form-progression-bar';
 import { useEffect, useState } from 'react';
 
 export default function GetStartedLayout({

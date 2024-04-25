@@ -5,7 +5,7 @@ import { CheckIcon } from '@heroicons/react/24/outline'
 import { CreditCardInput } from '@/app/components/payment/credit-card-input'
 import { CreditCardFormvalidatedFieldsType, savePatientPaymentInformation } from "@/app/api/patient-get-started/payment-form-handler";
 import { useFormState } from "react-dom";
-import AbstractForm from '@/app/components/form/abstract-form'
+import AbstractForm from '@/app/components/forms/abstract-form'
 
 export default function PaymentPage({userId}: {userId: string}) {
   const savePatientPaymentInformationWithUserId = savePatientPaymentInformation.bind(null, userId);

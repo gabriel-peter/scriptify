@@ -7,12 +7,6 @@ import { type User } from '@supabase/supabase-js'
 import Image from 'next/image'
 import { cn } from '@/utils/cn';
 
-const navigation = [
-    { name: 'About Us', href: '/about-us', current: true },
-    { name: 'Learn', href: '/learn', current: false },
-    { name: 'Get Started', href: '/get-started', current: false },
-]
-
 export default function DashboardNavigationBar() {
     const supabase = createClient()
     const [loggedInUser, setLoggedInUser] = useState<User | null>(null);
@@ -26,14 +20,24 @@ export default function DashboardNavigationBar() {
         getUser()
     }, [getUser])
 
-    var userNavigation = [
+
+    var navigation = [
+        { name: 'About Us', href: '/about-us', current: true },
+        { name: 'Learn', href: '/learn', current: false },
+        { name: 'Get Started', href: '/get-started', current: false },
+    ]
+
+    var userMenuOptions = [
         { name: 'Sign-in', href: "/login" },
     ]
     if (loggedInUser) {
-        var userNavigation = [
+        var userMenuOptions = [
             { name: 'Your Profile', href: '#' },
             { name: 'Settings', href: '#' },
             { name: 'Sign out', href: '/auth/signout' }
+        ]
+        var navigation = [
+            { name: 'Dashboard', href: '/my-dashboard/patient', current: true },
         ]
     }
 
@@ -118,7 +122,7 @@ export default function DashboardNavigationBar() {
                                                     leaveTo="transform opacity-0 scale-95"
                                                 >
                                                     <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                                                        {userNavigation.map((item) => (
+                                                        {userMenuOptions.map((item) => (
                                                             <Menu.Item key={item.name}>
                                                                 {({ active }) => (
                                                                     <a
@@ -199,7 +203,7 @@ export default function DashboardNavigationBar() {
                                         </button>
                                     </div>
                                     <div className="mt-3 space-y-1 px-2">
-                                        {userNavigation.map((item) => (
+                                        {userMenuOptions.map((item) => (
                                             <Disclosure.Button
                                                 key={item.name}
                                                 as="a"

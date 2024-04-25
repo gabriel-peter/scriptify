@@ -1,5 +1,5 @@
 "use client";
-import ProgressionBar from '@/app/components/form/form-progression-bar';
+import ProgressionBar from '@/app/components/forms/form-progression-bar';
 import { usePathname } from 'next/navigation';
 
 const steps = [

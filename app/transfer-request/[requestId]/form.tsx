@@ -1,6 +1,6 @@
 "use client"
-import AbstractForm from "@/app/components/form/abstract-form";
-import GenericInput from "@/app/components/form/generic-input";
+import AbstractForm from "@/app/components/forms/abstract-form";
+import GenericInput from "@/app/components/forms/generic-input";
 import { useState } from "react";
 import { useFormState } from "react-dom";
 import handlePrescriptionTransferRequestForm, { PrescriptionFormatedErrorType, TransferPrescriptionFormValidatedFieldsType } from "./external-pharmacist-prescription-transfer";
@@ -9,7 +9,7 @@ export default function TransferPage({ params, metadata }: { params: { requestId
     const handlePrescriptionTransferRequestFormWithRequestId = handlePrescriptionTransferRequestForm.bind(null, params.requestId);
     const [state, formAction] = useFormState(handlePrescriptionTransferRequestFormWithRequestId, { message: '' })
     return (
-        <AbstractForm<TransferPrescriptionFormValidatedFieldsType> formAction={formAction} state={state} header={`Transfer Prescription for ${metadata["first_name"]} ${metadata["last_name"]}`} redirectUrl={undefined}>
+        <AbstractForm<TransferPrescriptionFormValidatedFieldsType> formAction={formAction} state={state} header={`Transfer Prescription for ${metadata["first_name"]} ${metadata["last_name"]}`} redirectUrl={`/transfer-request/${params.requestId}/review`}>
             <p>To be filled by {metadata['pharmacy_name']} -- {metadata['pharmacy_email']}</p>
             <div className="my-5"></div>
             <GenericInput label={"Pharmacy NCPDP"} id={"ncpdp"} errorState={state.error?.transferringPharmacy?.ncpdp} errorMessage={"Invalid NCPDP."} />

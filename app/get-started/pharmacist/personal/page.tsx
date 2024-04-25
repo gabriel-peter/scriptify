@@ -1,11 +1,11 @@
 'use client'
 import { addPersonalInformation } from '@/app/get-started/patient/personal/personal-patient-form-handler'
-import AbstractForm from '@/app/components/form/abstract-form'
-import AddressSubForm from '@/app/components/form/address-sub-form'
-import EmailInput from '@/app/components/form/email-input'
-import NameInput from '@/app/components/form/name-input'
-import PhoneNumberInput from '@/app/components/form/phone-number-input'
-import UploadFileInput from '@/app/components/form/upload-file-input'
+import AbstractForm from '@/app/components/forms/abstract-form'
+import AddressSubForm from '@/app/components/forms/address-sub-form'
+import EmailInput from '@/app/components/forms/email-input'
+import NameInput from '@/app/components/forms/name-input'
+import PhoneNumberInput from '@/app/components/forms/phone-number-input'
+import UploadFileInput from '@/app/components/forms/upload-file-input'
 import { useFormState } from 'react-dom'
 
 const initialState = {

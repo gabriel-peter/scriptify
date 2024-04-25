@@ -1,8 +1,8 @@
 "use client"
 import savePatientClinicalPreferences from "@/app/api/patient-get-started/clinical-preferences-form";
 import { langaugePreferences, meetingPreference, race, sexualOrientation, chronicConditions } from "@/app/api/patient-get-started/options"
-import AbstractForm from "@/app/components/form/abstract-form";
-import CheckboxGroup from "@/app/components/form/checkbox-group";
+import AbstractForm from "@/app/components/forms/abstract-form";
+import CheckboxGroup from "@/app/components/forms/checkbox-group";
 import { useFormState } from "react-dom";
 
 const initialState = {

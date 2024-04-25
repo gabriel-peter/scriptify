@@ -32,7 +32,8 @@ create table prescription_transfers (
     pharmacist_first_name text not null,
     pharmacist_last_name text not null,
     pharmacist_license_number text not null,
-    created_at timestamp with time zone
+    created_at timestamp with time zone,
+    transfer_request_id uuid references transfer_requests not null
 );
 
 create table insurance_details (

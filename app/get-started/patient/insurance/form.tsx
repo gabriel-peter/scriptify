@@ -1,6 +1,6 @@
 "use client"
 import saveMedicalInsuranceForm, { InsuranceFormValidatedFieldsType } from "@/app/get-started/patient/insurance/insurance-form-handler";
-import AbstractForm from "@/app/components/form/abstract-form";
+import AbstractForm from "@/app/components/forms/abstract-form";
 import MedicalInsuranceInput from "@/app/components/payment/medical-insurance-input";
 import { useFormState } from "react-dom";
 
