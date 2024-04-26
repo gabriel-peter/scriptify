@@ -43,7 +43,7 @@ export async function transferPrescription(userId: string, prevState: any, formD
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString(),
             pharmacy_name: validatedFields.data.pharmacyName,
-            pharmacy_email: validatedFields.data.pharmacyName,
+            pharmacy_email: validatedFields.data.email,
             user_id: userId,
             pharmacy_phone_number: validatedFields.data.phoneNumber,
             mailing_address: {

@@ -42,7 +42,36 @@ export async function addPersonalInformation(userId: string, prevState: any, for
     } else {
         console.log("Fields validated", validatedFields.data);
         // SAVE DATA TO DB
-        const {error} = await supabase
+        const error = await savePersonalInformation(validatedFields, userId).then(
+            async (error) => {
+                if (error)  return { error: "DATABASE ERROR" }
+                else {
+                    const { error } = await supabase.from("patient_on_boaring_complete").insert({
+                        id: userId,
+                        steps: {
+                            personal: true
+                        }
+                    }) // TODO needs to be upser
+                    return (error)
+                }
+            } 
+        )
+        if (error) {
+            console.log(error)
+            return {
+                error: "DATABASE ERROR"
+            }
+        }
+        return {
+            message: "SUCCESS"
+        }
+
+
+    }
+}
+
+async function savePersonalInformation(validatedFields: z.SafeParseSuccess<typeof formDataSchema>, userId: string) {
+    const {error} = await supabase
             .from('profiles').update(
                 {
                     first_name: validatedFields.data.firstName,
@@ -54,19 +83,6 @@ export async function addPersonalInformation(userId: string, prevState: any, for
                         postal_code: validatedFields.data.postalCode
                     }
                 }
-            ).eq('id', userId)
-        console.log(error)
-        if (error) {
-            return {
-                error: "DATABASE ERROR"
-            }
-        }
-        // revalidate cache
-        // Advance Page,
-        return {
-            message: "SUCCESS"
-        }
-
-
-    }
+            ).eq('id', userId)  
+    return error
 }

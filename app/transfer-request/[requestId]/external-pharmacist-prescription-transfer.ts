@@ -27,7 +27,7 @@ const transferPrescriptionFormSchema = z.object({
 export type TransferringPharmacyValidatedFieldType = z.inferFlattenedErrors<typeof transferringPharmacySchema>["fieldErrors"]
 export type TransferPrescriptionFormValidatedFieldsType = z.inferFormattedError<typeof transferPrescriptionFormSchema>
 export type PrescriptionFormatedErrorType = z.inferFormattedError<typeof prescriptionSchema>
-export default async function handlePrescriptionTransferRequestForm(userId: string, prevState: any, formData: FormData) {
+export default async function handlePrescriptionTransferRequestForm(tranferRequestId: string, prevState: any, formData: FormData) {
     const supabase = createClient()
     const transferringPharmacyData = {
         ncpdp: formData.get('ncpdp'),
@@ -69,6 +69,7 @@ export default async function handlePrescriptionTransferRequestForm(userId: stri
         // SAVE TO DATABASE
         validationResult.data.prescriptions.forEach(async (prescription) => {
             const {error} = await supabase.from("prescription_transfers").insert({
+                transfer_request_id: tranferRequestId,
                 created_at: new Date().toISOString(),
                 drug_name: prescription.drugName,
                 rx_name: prescription.rxName,

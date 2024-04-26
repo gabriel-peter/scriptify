@@ -9,11 +9,11 @@ export default function PhoneNumberInput({ errorState, label }: { errorState: st
             </label>
             <AbstractInput error={errorState} errorMessage="Invalid Email.">
             <input
-                type="text"
+                type="tel"
                 name="phone-number"
                 id="phone-number"
                 className={inputStyling}
-                placeholder="+1 (555) 987-6543"
+                placeholder="+1 555-987-6543"
             />
             </AbstractInput>
         </div>

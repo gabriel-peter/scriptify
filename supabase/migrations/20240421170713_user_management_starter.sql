@@ -104,3 +104,10 @@ create policy "Anyone can upload an avatar." on storage.objects
 
 create policy "Anyone can update their own avatar." on storage.objects
   for update using ((select auth.uid()) = owner) with check (bucket_id = 'avatars');
+
+
+-- Get Started Info
+create table patient_on_boaring_complete (
+  id uuid references auth.users not null primary key,
+  steps jsonb
+) 

@@ -1,11 +1,13 @@
 "use server"
 import { Database, Tables } from "@/types_db";
 import { createClient } from "@/utils/supabase/server";
-import { SupabaseClient } from "@supabase/supabase-js";
-import { Fragment } from 'react'
+import { SupabaseClient, User } from "@supabase/supabase-js";
+import { Fragment, ReactNode } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { EllipsisVerticalIcon } from '@heroicons/react/20/solid'
 import { cn } from "@/utils/cn";
+import { toHumanReadableTime } from "@/utils/time";
+import Link from "next/link";
 
 export default async function Dashboard() {
   const supabase = createClient()
@@ -17,57 +19,77 @@ export default async function Dashboard() {
   }
   const transfers = await getUserTransfers(supabase, user.id);
   console.log("TRANSFERS", transfers);
- return <PharmaceuticalPatientDashboard prescriptionTransfers={transfers}/>
+  return <PharmaceuticalPatientDashboard user={user} prescriptionTransfers={transfers} />
 }
 
 async function getUserTransfers(supabase: SupabaseClient<Database>, userId: string) {
-  const {data, error, status} = await supabase.from("transfer_requests").select("*").eq("user_id", userId);
+  const { data, error, status } = await supabase.from("transfer_requests").select("*").eq("user_id", userId);
   return data;
 }
 
-function PharmaceuticalPatientDashboard({prescriptionTransfers}: {prescriptionTransfers: Tables<'transfer_requests'>[] | null}) {
-    return (
-      <div className="bg-gray-100 min-h-screen">
+function PharmaceuticalPatientDashboard({ user, prescriptionTransfers }: { user: User, prescriptionTransfers: Tables<'transfer_requests'>[] | null }) {
+  return (
+    <div className="min-h-screen">
 
-        {/* Main Content */}
-        <div className="container mx-auto mt-8 px-4">
-          <h2 className="text-xl font-semibold mb-4">Welcome, John Doe</h2>
-  
-          {/* Patient Information */}
-          <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-            <h3 className="text-lg font-semibold mb-2">Patient Information</h3>
-            <p className="text-gray-600">Age: 35</p>
-            <p className="text-gray-600">Gender: Male</p>
-            <p className="text-gray-600">Address: 123 Main St, City</p>
-            <p className="text-gray-600">Phone: +1234567890</p>
-          </div>
+      {/* Main Content */}
+      <div className="container mx-auto mt-8 px-4">
+        <h2 className="text-xl font-semibold mb-4">Welcome, {user.email}</h2>
 
-          <NextAppointment appointment={{
-            doctor: "Dr. Michael Peter",
-            date: "March 5, 2024",
-            time: "9:30 am"
-          }}
-          />
-  
-          {/* Medications */}
-          <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-            <h3 className="text-lg font-semibold mb-4">Transfers in Progress</h3>
-            {prescriptionTransfers && <TranfserRequestView prescriptionTransfers={prescriptionTransfers}/>}
-          </div>
-  
-          {/* Appointments */}
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <h3 className="text-lg font-semibold mb-4">Appointments</h3>
-            <ul>
-              <li className="text-gray-800 mb-2">Appointment 1</li>
-              <li className="text-gray-800 mb-2">Appointment 2</li>
-              <li className="text-gray-800 mb-2">Appointment 3</li>
-            </ul>
-          </div>
+        {/* Patient Information */}
+        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+          <h3 className="text-lg font-semibold mb-2">Patient Information</h3>
+          <p className="text-gray-600">Age: 35</p>
+          <p className="text-gray-600">Gender: Male</p>
+          <p className="text-gray-600">Address: 123 Main St, City</p>
+          <p className="text-gray-600">Phone: +1234567890</p>
+        </div>
+
+        <NextAppointment appointment={{
+          doctor: "Dr. Michael Peter",
+          date: "March 5, 2024",
+          time: "9:30 am"
+        }}
+        />
+
+        {/* Medications */}
+        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+          <TransferRequestHeading />
+          {prescriptionTransfers && <TranfserRequestView prescriptionTransfers={prescriptionTransfers} />}
+        </div>
+
+        {/* Appointments */}
+        <div className="bg-white rounded-lg shadow-md p-6">
+          <h3 className="text-lg font-semibold mb-4">Appointments</h3>
+          <ul>
+            <li className="text-gray-800 mb-2">Appointment 1</li>
+            <li className="text-gray-800 mb-2">Appointment 2</li>
+            <li className="text-gray-800 mb-2">Appointment 3</li>
+          </ul>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
+}
+
+function TransferRequestHeading() {
+  return (
+    <div className="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
+      <div className="-ml-4 -mt-2 flex flex-wrap items-center justify-between sm:flex-nowrap">
+        {/* <div className="ml-4 mt-2"> */}
+          <h3 className="text-lg font-semibold mb-4">Transfers in Progress</h3>
+        {/* </div> */}
+        <div className="flex-shrink-0">
+          <Link
+            // type="button"
+            href="/transfer/new"
+            className="relative inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+            Make new request
+          </Link>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 
 
@@ -78,7 +100,7 @@ const statuses = {
 }
 
 
-function TranfserRequestView({prescriptionTransfers}: {prescriptionTransfers: Tables<'transfer_requests'>[]}) {
+function TranfserRequestView({ prescriptionTransfers }: { prescriptionTransfers: Tables<'transfer_requests'>[] }) {
   return (
     <ul role="list" className="divide-y divide-gray-100">
       {prescriptionTransfers?.map((request, indx) => (
@@ -97,9 +119,9 @@ function TranfserRequestView({prescriptionTransfers}: {prescriptionTransfers: Ta
             </div>
             <div className="mt-1 flex items-center gap-x-2 text-xs leading-5 text-gray-500">
               <p className="whitespace-nowrap">
-                Due on <time 
-                // dateTime={request.created_at}
-                >{request.created_at}</time>
+                Submitted on <time
+                  dateTime={request.created_at!}
+                >{toHumanReadableTime(request.created_at!, true)}</time>
               </p>
               <svg viewBox="0 0 2 2" className="h-0.5 w-0.5 fill-current">
                 <circle cx={1} cy={1} r={1} />
@@ -179,26 +201,26 @@ function TranfserRequestView({prescriptionTransfers}: {prescriptionTransfers: Ta
 }
 
 
-  function NextAppointment({ appointment }: {appointment: any}) {
-    // Assuming appointment is an object with properties like date, time, doctor, etc.
-    // If appointment is null, it means no upcoming appointment.
-  
-    return (
-        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-        <h2 className="text-lg font-semibold mb-4">Next Appointment</h2>
-        {appointment ? (
-          <div>
-            <p className="text-gray-600 font-medium">Date:</p>
-            <p className="text-gray-800">{appointment.date}</p>
-            <p className="text-gray-600 font-medium">Time:</p>
-            <p className="text-gray-800">{appointment.time}</p>
-            <p className="text-gray-600 font-medium">Doctor:</p>
-            <p className="text-gray-800">{appointment.doctor}</p>
-            {/* Add more appointment details as needed */}
-          </div>
-        ) : (
-          <p className="text-gray-600">You have no upcoming appointments.</p>
-        )}
-      </div>
-    );
-  }
+function NextAppointment({ appointment }: { appointment: any }) {
+  // Assuming appointment is an object with properties like date, time, doctor, etc.
+  // If appointment is null, it means no upcoming appointment.
+
+  return (
+    <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+      <h2 className="text-lg font-semibold mb-4">Next Appointment</h2>
+      {appointment ? (
+        <div>
+          <p className="text-gray-600 font-medium">Date:</p>
+          <p className="text-gray-800">{appointment.date}</p>
+          <p className="text-gray-600 font-medium">Time:</p>
+          <p className="text-gray-800">{appointment.time}</p>
+          <p className="text-gray-600 font-medium">Doctor:</p>
+          <p className="text-gray-800">{appointment.doctor}</p>
+          {/* Add more appointment details as needed */}
+        </div>
+      ) : (
+        <p className="text-gray-600">You have no upcoming appointments.</p>
+      )}
+    </div>
+  );
+}

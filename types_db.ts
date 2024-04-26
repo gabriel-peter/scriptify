@@ -45,6 +45,29 @@ export type Database = {
         }
         Relationships: []
       }
+      patient_on_boaring_complete: {
+        Row: {
+          id: string
+          steps: Json | null
+        }
+        Insert: {
+          id: string
+          steps?: Json | null
+        }
+        Update: {
+          id?: string
+          steps?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "patient_on_boaring_complete_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       payments_details: {
         Row: {
           card_number: string
@@ -84,6 +107,7 @@ export type Database = {
           pharmacist_license_number: string
           refill_date: string | null
           rx_name: string
+          transfer_request_id: string
         }
         Insert: {
           created_at?: string | null
@@ -93,6 +117,7 @@ export type Database = {
           pharmacist_license_number: string
           refill_date?: string | null
           rx_name: string
+          transfer_request_id: string
         }
         Update: {
           created_at?: string | null
@@ -102,8 +127,17 @@ export type Database = {
           pharmacist_license_number?: string
           refill_date?: string | null
           rx_name?: string
+          transfer_request_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "prescription_transfers_transfer_request_id_fkey"
+            columns: ["transfer_request_id"]
+            isOneToOne: false
+            referencedRelation: "transfer_requests"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       profiles: {
         Row: {

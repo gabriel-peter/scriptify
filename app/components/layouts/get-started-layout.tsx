@@ -3,18 +3,36 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import ProgressionBar from '../forms/form-progression-bar';
 import { useEffect, useState } from 'react';
+import { Json } from '@/types_db';
+
+type OnBoardingStepType = {id: string, name: string, href: string, status?: string};
+
+function getStatusValue(step: OnBoardingStepType, userStep: Json, pathname: string) {
+  if (userStep[step.id]) {
+    return "complete";
+  } else if (step.href === pathname) {
+    return "current";
+  }
+  return "upcoming";
+}
 
 export default function GetStartedLayout({
     children, // will be a page or nested layout
-    steps
+    steps,
+    userStatus
   }: {
     children: React.ReactNode,
-    steps: any
+    steps: OnBoardingStepType[],
+    userStatus: Json
   })  {
     const pathname = usePathname();
     const [stepState, setSetState] = useState(steps)
     useEffect(() => {
-        setSetState(stepState.map((e: { href: string; }) => { return ({ ...e, status: e.href === pathname ? "current" : "upcoming" }) }))
+        setSetState(stepState.map((e: OnBoardingStepType) => { return (
+          { ...e, 
+            status: getStatusValue(e, userStatus, pathname)
+          }
+        ) }))
         console.log(steps)
     }, [pathname, steps])
     
