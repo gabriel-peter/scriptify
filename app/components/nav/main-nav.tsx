@@ -7,18 +7,18 @@ import { type User } from '@supabase/supabase-js'
 import Image from 'next/image'
 import { cn } from '@/utils/cn';
 
-export default function DashboardNavigationBar() {
-    const supabase = createClient()
-    const [loggedInUser, setLoggedInUser] = useState<User | null>(null);
-    const getUser = useCallback(async () => {
-        const {
-            data: { user },
-        } = await supabase.auth.getUser()
-        setLoggedInUser(user)
-    }, [supabase]);
-    useEffect(() => {
-        getUser()
-    }, [getUser])
+export default function DashboardNavigationBar({loggedInUser}: {loggedInUser?: User}) {
+    // const supabase = createClient()
+    // const [loggedInUser, setLoggedInUser] = useState<User | null | undefined>(null);
+    // const getUser = useCallback(async () => {
+        // const {
+        //     data: { session },
+        // } = await supabase.auth.getSession()
+    //     setLoggedInUser(session?.user)
+    // }, [supabase]);
+    // useEffect(() => {
+    //     getUser()
+    // }, [getUser])
 
 
     var navigation = [
@@ -98,7 +98,7 @@ export default function DashboardNavigationBar() {
                                                     <Menu.Button className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                                                         <span className="absolute -inset-1.5" />
                                                         <span className="sr-only">Open user menu</span>
-                                                        {loggedInUser === undefined || loggedInUser?.picture === null ? (
+                                                        {loggedInUser === undefined || loggedInUser?.avatar_url === null ? (
                                                             <span className="inline-block h-10 w-10 overflow-hidden rounded-full bg-gray-100">
                                                                 <svg className="h-full w-full text-gray-300" fill="currentColor" viewBox="0 0 24 24">
                                                                     <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
@@ -106,7 +106,7 @@ export default function DashboardNavigationBar() {
                                                             </span>
                                                         ) :
                                                             (
-                                                                <div>Hi</div>
+                                                                <div>{loggedInUser?.email}</div>
                                                                 // <Image height={10} width={10} className="h-10 w-10 rounded-full" src={loggedInUser?.picture} alt="" />
                                                             )
                                                         }

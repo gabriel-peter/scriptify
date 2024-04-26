@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import DashboardNavigationBar from "./components/nav/main-nav";
+import { createClient } from "@/utils/supabase/server";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -10,18 +11,23 @@ export const metadata: Metadata = {
   description: "TODO",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const supabase = createClient();
+  const {
+    data: { session },
+  } = await supabase.auth.getSession()
   return (
-    <html lang="en">      
+    <html lang="en">
       <body className={inter.className}>
-      {/* <DashboardLayout /> */}
+        <DashboardNavigationBar loggedInUser={session?.user} />
         <main>
+          <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
             {children}
-          {/* </div> */}
+          </div>
         </main>
       </body>
     </html>
