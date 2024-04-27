@@ -2,14 +2,12 @@
 import { addPersonalInformation } from '@/app/get-started/patient/personal/personal-patient-form-handler'
 import AbstractForm from '@/app/components/forms/abstract-form'
 import AddressSubForm from '@/app/components/forms/address-sub-form'
-import EmailInput from '@/app/components/forms/email-input'
 import NameInput from '@/app/components/forms/name-input'
 import PhoneNumberInput from '@/app/components/forms/phone-number-input'
 import UploadFileInput from '@/app/components/forms/upload-file-input'
 import { useFormState } from 'react-dom'
-import { createClient } from '@/utils/supabase/client'
-import { useCallback, useEffect, useState } from 'react'
-import { User } from '@supabase/supabase-js'
+import GenericInput from '@/app/components/forms/generic-input'
+
 
 const initialState = {
   message: '',
@@ -24,6 +22,13 @@ export default function PatientPersonalInformationForm({userId}:{userId: string}
       <div>
         <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
           <NameInput errorState={state?.error} />
+          <GenericInput
+                type="date"
+                label={"Date of Birth"}
+                id='date-of-birth'
+                errorState={state?.error?.dateOfBirth}
+                errorMessage={"Invalid Date."}
+            />
           {/* <EmailInput errorState={state?.error?.email} label={'Add your Email'} /> */}
           <PhoneNumberInput errorState={state?.error?.phoneNumber} label={'Add your Phone Number'} />
           <AddressSubForm errorState={state?.error} />

@@ -20,7 +20,6 @@ SET row_security = on;
 -- Data for Name: users; Type: TABLE DATA; Schema: auth; Owner: supabase_auth_admin
 --
 
-INSERT INTO auth.users (instance_id, id, aud, role, email, encrypted_password, email_confirmed_at, invited_at, confirmation_token, confirmation_sent_at, recovery_token, recovery_sent_at, email_change_token_new, email_change, email_change_sent_at, last_sign_in_at, raw_app_meta_data, raw_user_meta_data, is_super_admin, created_at, updated_at, phone, phone_confirmed_at, phone_change, phone_change_token, phone_change_sent_at, email_change_token_current, email_change_confirm_status, banned_until, reauthentication_token, reauthentication_sent_at, is_sso_user, deleted_at, is_anonymous) VALUES ('00000000-0000-0000-0000-000000000000', '1b05af15-5b2e-41e1-839c-e40a13d42348', 'authenticated', 'authenticated', 'gabepeter0817@gmail.com', '$2a$10$2GMZsa7xgzycHufGp7msqurtZZ4GrFg5/Js6Jk37GmSNNmmBK0XMu', '2024-04-25 20:06:22.47379+00', NULL, '', NULL, '', NULL, '', '', NULL, '2024-04-25 20:29:33.913998+00', '{"provider": "email", "providers": ["email"]}', '{"sub": "1b05af15-5b2e-41e1-839c-e40a13d42348", "email": "gabepeter0817@gmail.com", "email_verified": false, "phone_verified": false}', NULL, '2024-04-25 20:06:22.46939+00', '2024-04-26 17:46:36.155127+00', NULL, NULL, '', '', NULL, '', 0, NULL, '', NULL, false, NULL, false);
 
 
 --
@@ -52,15 +51,20 @@ SET row_security = on;
 
 
 --
+-- Data for Name: patient_on_boaring_complete; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
 -- Data for Name: payments_details; Type: TABLE DATA; Schema: public; Owner: postgres
 --
+
+
 
 --
 -- Data for Name: transfer_requests; Type: TABLE DATA; Schema: public; Owner: postgres
 --
-
-INSERT INTO public.transfer_requests (id, pharmacy_name, pharmacy_email, pharmacy_phone_number, mailing_address, updated_at, created_at, user_id, magic_url_key, request_status) VALUES ('b636f0c9-0531-4ae5-b9ca-5281f2410432', 'Boston Pharmacy #1', 'Boston Pharmacy #1', '3234624320', '{"city": "Chicago", "state": "IL", "postal_code": "60661", "street_address": "134 N Desplaines Street"}', '2024-04-25 20:07:53.139+00', '2024-04-25 20:07:53.139+00', '1b05af15-5b2e-41e1-839c-e40a13d42348', NULL, 'pending');
-
 
 
 
@@ -68,16 +72,11 @@ INSERT INTO public.transfer_requests (id, pharmacy_name, pharmacy_email, pharmac
 -- Data for Name: prescription_transfers; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.prescription_transfers (drug_name, rx_name, refill_date, pharmacist_first_name, pharmacist_last_name, pharmacist_license_number, created_at, transfer_request_id) VALUES ('Lisinopril', 'RX1234', '2024-05-24 00:00:00+00', 'John', 'Smith', 'PHAR123', '2024-04-25 20:58:46.011+00', 'b636f0c9-0531-4ae5-b9ca-5281f2410432');
-INSERT INTO public.prescription_transfers (drug_name, rx_name, refill_date, pharmacist_first_name, pharmacist_last_name, pharmacist_license_number, created_at, transfer_request_id) VALUES ('Atorvastatin', 'RX9012', '2024-04-27 00:00:00+00', 'John', 'Smith', 'PHAR123', '2024-04-25 20:58:46.01+00', 'b636f0c9-0531-4ae5-b9ca-5281f2410432');
-INSERT INTO public.prescription_transfers (drug_name, rx_name, refill_date, pharmacist_first_name, pharmacist_last_name, pharmacist_license_number, created_at, transfer_request_id) VALUES ('Metformin', 'RX5678', '2024-04-29 00:00:00+00', 'John', 'Smith', 'PHAR123', '2024-04-25 20:58:46.011+00', 'b636f0c9-0531-4ae5-b9ca-5281f2410432');
 
 
 --
 -- Data for Name: profiles; Type: TABLE DATA; Schema: public; Owner: postgres
 --
-
-INSERT INTO public.profiles (id, updated_at, first_name, last_name, mailing_address, driver_license_url, avatar_url, preferences) VALUES ('1b05af15-5b2e-41e1-839c-e40a13d42348', NULL, 'Gabriel', 'Peter', '{"city": "New York", "region": "NY", "postal_code": "10065", "street_address": "340 E 61st Street"}', NULL, NULL, NULL);
 
 
 

@@ -7,7 +7,8 @@ create table profiles (
   mailing_address jsonb,
   driver_license_url text,
   avatar_url text,
-  preferences jsonb
+  preferences jsonb,
+  date_of_birth timestamp
   -- constraint username_length check (char_length(username) >= 3)
 );
 -- Create a table for public profiles
@@ -45,7 +46,9 @@ create table insurance_details (
     bin text,
     pcn text,
     insurance_num text,
-    ssn text
+    ssn text,
+    created_at timestamp with time zone,
+    updated_at timestamp with time zone
 );
 
 create table payments_details (
@@ -56,7 +59,6 @@ create table payments_details (
     holder_last_name text not null,
     created_at timestamp with time zone,
     updated_at timestamp with time zone
-
     -- TODO: https://supabase.com/docs/guides/database/extensions/pgsodium hash payment information
 
 );

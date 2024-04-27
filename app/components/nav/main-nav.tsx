@@ -7,7 +7,7 @@ import { type User } from '@supabase/supabase-js'
 import Image from 'next/image'
 import { cn } from '@/utils/cn';
 
-export default function DashboardNavigationBar({loggedInUser}: {loggedInUser?: User}) {
+export default function DashboardNavigationBar({loggedInUser}: {loggedInUser: User | null}) {
     // const supabase = createClient()
     // const [loggedInUser, setLoggedInUser] = useState<User | null | undefined>(null);
     // const getUser = useCallback(async () => {

@@ -4,7 +4,10 @@ import { redirect } from 'next/navigation'
 import { revalidateTag } from 'next/cache'
 import { createClient } from '@/utils/supabase/server';
 import { z } from 'zod';
+import { earliestDob } from '@/app/api/utils/schema-validators';
 
+const currentDate = new Date()
+currentDate.setFullYear(currentDate.getFullYear() - 18)
 const formDataSchema = z.object({
     firstName: z.string().min(1),
     lastName: z.string().min(1),
@@ -13,7 +16,8 @@ const formDataSchema = z.object({
     streetAddress: z.string().min(1),
     city: z.string().min(1),
     region: z.string().min(1),
-    postalCode: z.string().min(1)
+    postalCode: z.string().min(1),
+    dateOfBirth: earliestDob
     // .regex(/^\d{5}(?:[-\s]\d{4})?$/),
 });
 const supabase = createClient();
@@ -27,7 +31,8 @@ export async function addPersonalInformation(userId: string, prevState: any, for
         streetAddress: formData.get('street-address'),
         city: formData.get('city'),
         region: formData.get('region'),
-        postalCode: formData.get('postal-code')
+        postalCode: formData.get('postal-code'),
+        dateOfBirth: formData.get('date-of-birth')
     }
 
     const validatedFields = formDataSchema.safeParse(rawFormData)
@@ -81,8 +86,10 @@ async function savePersonalInformation(validatedFields: z.SafeParseSuccess<typeo
                         city: validatedFields.data.city,
                         region: validatedFields.data.region,
                         postal_code: validatedFields.data.postalCode
-                    }
+                    },
+                    date_of_birth: validatedFields.data.dateOfBirth
                 }
             ).eq('id', userId)  
+            console.log(error)
     return error
 }

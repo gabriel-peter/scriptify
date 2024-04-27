@@ -18,12 +18,12 @@ export default async function RootLayout({
 }>) {
   const supabase = createClient();
   const {
-    data: { session },
-  } = await supabase.auth.getSession()
+    data: { user },
+  } = await supabase.auth.getUser()
   return (
     <html lang="en">
       <body className={inter.className}>
-        <DashboardNavigationBar loggedInUser={session?.user} />
+        <DashboardNavigationBar loggedInUser={user} />
         <main>
           <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
             {children}
