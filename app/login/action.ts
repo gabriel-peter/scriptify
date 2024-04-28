@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation'
 
 import { createClient } from '@/utils/supabase/server'
 import { NextResponse } from 'next/server'
-import { SupabaseClient, User } from '@supabase/supabase-js'
+import { AuthError, SupabaseClient, User } from '@supabase/supabase-js'
 import { Database } from '@/types_db'
 
 export async function login(formData: FormData) {
@@ -20,17 +20,26 @@ export async function login(formData: FormData) {
 
   const { error } = await supabase.auth.signInWithPassword(data)
 
-  console.log(error)
-  // Errors to handle:
-  // - AuthApiError: Email not confirmed
-  // - AuthApiError: Email rate limit exceeded
-  // - AuthApiError: Invalid login credentials
   if (error) {
-    redirect('/error')
+    console.log(error.name, error.message, error.cause)
+    redirect(`/login?error=${handleErrorMessage(error)}`) // TODO: redirect with message in url params
   }
 
   revalidatePath('/', 'layout')
   redirect('/account')
+}
+
+function handleErrorMessage(error: AuthError) {
+  // Errors to handle:
+  // - AuthApiError: Email not confirmed
+  // - AuthApiError: Email rate limit exceeded
+  // - AuthApiError: Invalid login credentials
+  switch (error.message) {
+    case "Invalid login credentials": return "invalid_credentials"
+    case "Email not confirmed": return "email_not_confirmed"
+    case "Email rate limit exceeded": return "server_error"
+    default: return "unknown"
+  }
 }
 
 export async function signup(formData: FormData) {
@@ -43,7 +52,7 @@ export async function signup(formData: FormData) {
     password: formData.get('password') as string,
   }
 
-  const { error, data: {user} } = await supabase.auth.signUp(data)
+  const { error, data: { user } } = await supabase.auth.signUp(data)
   if (user) {
     createUserProfile(supabase, user);
   }

@@ -1,5 +1,4 @@
 // Sub-types
-
 interface Drug {
     id: number;
     name: string | null;
@@ -141,3 +140,21 @@ interface TransferDetailResponse {
     TransferDay: TransferDay;
     Partner: Partner;
 }
+
+interface Transfer {
+    id: number;
+    notes: string;
+    transferStatusId: string;
+    partnerId: string;
+    sigId: string | null;
+    customerId: string;
+    pharmacyId: string;
+    transferDrugId: number;
+    updatedAt: string;
+    createdAt: string;
+    name: string | null;
+    transferDayId: string | null;
+    providerName: string | null;
+    providerPhone: string | null;
+}
+

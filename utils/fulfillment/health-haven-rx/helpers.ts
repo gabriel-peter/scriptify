@@ -1,15 +1,16 @@
 import { BASE_URL, HealthHavenInnerReponse } from "./types/base";
 
-export const getRequestBuilder = (endpoint: string, rawParams: Record<string, any>): URL => {
+export const getRequestBuilder = (endpoint: string, rawParams?: Record<string, any>): URL => {
     const url = new URL(endpoint, BASE_URL)
-    Object.entries(rawParams).forEach(([key, value]) => {
-        url.searchParams.set(key, value);
-    });
-
+    if (rawParams) {
+        Object.entries(rawParams).forEach(([key, value]) => {
+            url.searchParams.set(key, value);
+        });
+    }
     return url;
 }
 
-export const fetchHandler = <T>(request: Request): Promise<HealthHavenInnerReponse<T> | {error: string}> => {
+export const fetchHandler = <T>(request: Request): Promise<HealthHavenInnerReponse<T> | { error: string }> => {
     return fetch(request)
         // HTTP ERRORs
         .then((response) => {

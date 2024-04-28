@@ -8,7 +8,7 @@ import { Json } from '@/types_db';
 type OnBoardingStepType = {id: string, name: string, href: string, status?: string};
 
 function getStatusValue(step: OnBoardingStepType, userStep: Json, pathname: string) {
-  if (userStep[step.id]) {
+  if (userStep !== undefined && userStep[step.id] !== null) {
     return "complete";
   } else if (step.href === pathname) {
     return "current";
