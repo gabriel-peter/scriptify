@@ -8,7 +8,8 @@ export default function AbstractForm<T>({
     state,
     redirectUrl,
     header,
-    description
+    description,
+    customSubmitName
 }: {
     children: any,
     formAction: (payload: FormData) => void,
@@ -16,6 +17,7 @@ export default function AbstractForm<T>({
     redirectUrl?: string,
     header: string
     description?: string
+    customSubmitName?: string
 }
 ) {
     return (
@@ -32,7 +34,7 @@ export default function AbstractForm<T>({
             </div>
             <div className="mt-6 flex items-center justify-end gap-x-6">
                 {/* TODO previous button that goes to previous page */}
-                <SubmitButton redirectUrl={state?.message && redirectUrl} />
+                <SubmitButton customTitle={customSubmitName} redirectUrl={state?.message && redirectUrl} />
             </div>
         </form>
     );
