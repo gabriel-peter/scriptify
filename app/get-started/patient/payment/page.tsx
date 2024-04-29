@@ -3,7 +3,7 @@ import { Fragment } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { CheckIcon } from '@heroicons/react/24/outline'
 import { CreditCardInput } from '@/app/components/payment/credit-card-input'
-import { CreditCardFormvalidatedFieldsType, savePatientPaymentInformation } from "@/app/api/patient-get-started/payment-form-handler";
+import { CreditCardFormValidatedFieldsType, savePatientPaymentInformation } from "@/app/get-started/patient/payment/payment-form-handler";
 import { useFormState } from "react-dom";
 import AbstractForm from '@/app/components/forms/abstract-form'
 
@@ -12,7 +12,7 @@ export default function PaymentPage({userId}: {userId: string}) {
     const [state, formAction] = useFormState(savePatientPaymentInformationWithUserId, {message: ''})
   return (
     <div className="flex flex-col">
-      <AbstractForm<CreditCardFormvalidatedFieldsType> formAction={formAction} state={state} header='Enter your Payment Information' redirectUrl='/get-started/patient/complete'>
+      <AbstractForm<CreditCardFormValidatedFieldsType> formAction={formAction} state={state} header='Enter your Payment Information' redirectUrl='/get-started/patient/complete'>
         <CreditCardInput errorState={state?.error} userId={userId} />
       </AbstractForm>
     </div>

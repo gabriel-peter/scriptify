@@ -11,6 +11,11 @@ export const getRequestBuilder = (endpoint: string, rawParams?: Record<string, a
 }
 
 export const fetchHandler = <T>(request: Request): Promise<HealthHavenInnerReponse<T> | { error: string }> => {
+    // add auth header
+    if (!process.env.HHRX_API_KEY) {
+        throw Error("HHRX API Key is undefined")
+    }
+    request.headers.set('x-api-key', process.env.HHRX_API_KEY!)
     return fetch(request)
         // HTTP ERRORs
         .then((response) => {

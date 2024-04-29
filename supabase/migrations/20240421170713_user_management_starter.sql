@@ -8,7 +8,9 @@ create table profiles (
   driver_license_url text,
   avatar_url text,
   preferences jsonb,
-  date_of_birth timestamp
+  date_of_birth timestamp,
+  is_test_user boolean DEFAULT false,
+  is_admin boolean DEFAULT false 
   -- constraint username_length check (char_length(username) >= 3)
 );
 -- Create a table for public profiles

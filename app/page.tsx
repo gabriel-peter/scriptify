@@ -1,16 +1,21 @@
 'use client';
 
+import { createClient } from "@/utils/supabase/server";
+import { TestOTP } from "./api/email";
+
 // import { useUser } from '@auth0/nextjs-auth0/client';
 
-export default function ProfileClient() {
-  // const { user, error, isLoading } = useUser();
 
-  // if (isLoading) return <div>Loading...</div>;
-  // if (error) return <div>{error.message}</div>;
+
+
+export default async function ProfileClient() {
+
 
   return (
       <div>
-        HOME
+        <button onClick={() => TestOTP()}>
+          Send Test email
+          </button>
       </div>
   );
 }

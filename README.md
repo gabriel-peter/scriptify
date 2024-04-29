@@ -40,6 +40,8 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 ### [Local Development](https://supabase.com/docs/guides/cli/local-development)
 
+Magic Links do not work for the custom purpose of sending to a third-party, they automatically log out the current user. TODO make custom solution with SES.
+ 
 ```
 yarn supabase:start
 ```
@@ -58,3 +60,12 @@ pg_dump \
 
 #### Troubleshooting
 [AuthApiError: Database error saving new user from db trigger](https://github.com/orgs/supabase/discussions/13043)
+
+## HealthHaven Rx
+- [API Documentation](https://documenter.getpostman.com/view/26207264/2s9YeG7Xho#intro)
+
+
+AWS SES SMTP Creds
+
+AKIAQQ2Q76JP5HZCNDVD
+BIdamI2O+nl6k4tUEDZIskCltnP0Fruu3Yc176mTuPuC

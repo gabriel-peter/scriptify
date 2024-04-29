@@ -1,3 +1,4 @@
+"use server"
 import { z } from 'zod';
 
 const formDataSchema = z.object({
@@ -44,14 +45,7 @@ const creditCardSchema = z.object({
     }),
 });
 
-// Example usage
-const creditCardInfo = {
-    creditCardNumber: '4111111111111111',
-    cvv: '123',
-    expiration: '12/23',
-};
-
-export type CreditCardFormvalidatedFieldsType = z.inferFlattenedErrors<typeof creditCardSchema>["fieldErrors"]
+export type CreditCardFormValidatedFieldsType = z.inferFlattenedErrors<typeof creditCardSchema>["fieldErrors"]
 export async function savePatientPaymentInformation(userId: string, prevState: any, formData: FormData) {
     const rawFormData = {
         creditCardNumber: formData.get("card-number"),
