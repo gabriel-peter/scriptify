@@ -1,4 +1,5 @@
 "use server";
+import { asyncFieldValidation, errorHandler } from '@/app/components/forms/validation-helpers';
 import { z } from 'zod';
 
 // Define the schema for the insurance form
@@ -14,7 +15,7 @@ const insuranceFormSchema = z.object({
     ssn: z.string().min(9).max(9), // Assuming the SSN is in the format XXX-XX-XXXX
 });
 
-export type InsuranceFormValidatedFieldsType = z.inferFlattenedErrors<typeof insuranceFormSchema>["fieldErrors"]
+export type FieldErrors = z.inferFlattenedErrors<typeof insuranceFormSchema>["fieldErrors"]
 export default async function saveMedicalInsuranceForm(userId: string, prevState: any, formData: FormData) {
     const insuranceFormData = {
         insuranceName: formData.get("insurance-name"),
@@ -26,26 +27,6 @@ export default async function saveMedicalInsuranceForm(userId: string, prevState
         ssn: formData.get("ssn")
     }
 
-    const validationResult = insuranceFormSchema.safeParse(insuranceFormData);
-
-    console.log(userId)
-    // Return early if the form data is invalid
-    if (!validationResult.success) {
-        console.log("Validation Failed.")
-        console.log(validationResult.error.flatten().fieldErrors)
-        return {
-            error: validationResult.error.flatten().fieldErrors,
-        }
-    } else {
-        console.log(validationResult.data);
-        // redirect('/get-started/patient/transfer') // Navigate to the new page
-        // SAVE DATA TO DB
-        // mutate data
-        // revalidate cache
-        // Advance Page,
-        return {
-            message: "SUCCESS"
-        }
-
-    }
+    return await asyncFieldValidation(insuranceFormSchema, insuranceFormData)
+        .catch(errorHandler)
 }

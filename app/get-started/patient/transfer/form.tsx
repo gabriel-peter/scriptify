@@ -44,6 +44,7 @@ export default function TransferPrescriptions({ userId }: { userId: string }) {
 }
 
 const initialState = {
+    status: "SUCCESS",
     message: '',
 }
 

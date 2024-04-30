@@ -1,8 +1,9 @@
 "use server"
 import { sendTransferRequestEmail } from '@/utils/email/email-handlers';
 import { createClient } from '@/utils/supabase/server';
-import { TypeOf, ZodType, z } from 'zod'
+import { TypeOf, z } from 'zod'
 import { updateOnBoardingStep } from '../../update-onboarding-progress';
+import { asyncFieldValidation, errorHandler } from '@/app/components/forms/validation-helpers';
 
 const formDataSchema = z.object({
     pharmacyName: z.string().min(1),
@@ -18,7 +19,7 @@ const formDataSchema = z.object({
     // .regex(/^\d{5}(?:[-\s]\d{4})?$/),
 });
 
-const supabase = createClient();
+const supabase = createClient(); // TODO research side-effects of in file-scope
 export type FieldErrors = z.inferFlattenedErrors<typeof formDataSchema>["fieldErrors"]
 export async function transferPrescription(userId: string, prevState: any, formData: FormData) {
     const rawFormData = {
@@ -44,43 +45,8 @@ export async function transferPrescription(userId: string, prevState: any, formD
             validatedFields.data.emailBody
         ))
         .then(() => updateOnBoardingStep(userId, { transfer: true }))
-        .then(() => { return { message: "Success" } })
-        .catch((error) => {
-            console.error("Error occurred:", error)
-            if (error instanceof ValidationParseError) {
-                return {
-                    error: error.getFieldErrors()
-                }
-            }
-            return {
-                error: "Unknown Error Occurred"
-            }
-        })
-}
-
-class ValidationParseError<T extends ZodType<any, any, any>> extends Error {
-    errors
-    constructor(msg: string, errors: z.inferFlattenedErrors<T>["fieldErrors"]) {
-        super(msg);
-        this.errors = errors;
-        // Set the prototype explicitly.
-        Object.setPrototypeOf(this, ValidationParseError.prototype);
-    }
-
-    getFieldErrors() {
-        return this.errors
-    }
-}
-
-async function asyncFieldValidation<U extends ZodType<any, any, any>>(formDataSchema: z.ZodObject<TypeOf<U>>, rawFormData: any): Promise<z.SafeParseSuccess<TypeOf<U>>> {
-    const validatedFields = formDataSchema.safeParse(rawFormData)
-    // Throw early if the form data is invalid
-    if (!validatedFields.success) {
-        console.debug("Validation Failed for ", typeof formDataSchema)
-        console.log(validatedFields.error.flatten().fieldErrors)
-        throw new ValidationParseError("Validation Failed.", validatedFields.error.flatten().fieldErrors)
-    }
-    return validatedFields
+        .then(() => { return { status: "SUCCESS", message: "Success" } })
+        .catch(errorHandler)
 }
 
 async function insertTransferRequest(validatedFields: z.SafeParseSuccess<TypeOf<typeof formDataSchema>>, userId: string) {
