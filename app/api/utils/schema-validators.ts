@@ -33,13 +33,13 @@ export const earliestDob = z.string().refine((value) => {
 
 
 
-// TEST
-// Example usage
-const testDate = '04-18-2024';
-const validationResult = customDateSchema.safeParse(testDate);
+// // TEST
+// // Example usage
+// const testDate = '04-18-2024';
+// const validationResult = customDateSchema.safeParse(testDate);
 
-if (validationResult.success) {
-    console.log('Valid date:', validationResult.data);
-} else {
-    console.error('Validation error:', validationResult.error.errors);
-}
+// if (validationResult.success) {
+//     console.log('Valid date:', validationResult.data);
+// } else {
+//     console.error('Validation error:', validationResult.error.errors);
+// }

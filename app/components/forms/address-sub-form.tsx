@@ -1,8 +1,8 @@
-import { validatedFieldsType } from "@/app/get-started/patient/personal/personal-patient-form-handler";
+import { FieldErrors } from "@/app/get-started/patient/personal/personal-patient-form-handler";
 import AbstractInput from "./abstract-input";
 import { inputStyling } from "./styling";
 
-export default function AddressSubForm({ errorState }: { errorState: validatedFieldsType | undefined }) {
+export default function AddressSubForm({ errorState }: { errorState: FieldErrors | undefined }) {
     return (
         <>
             <div className="col-span-full">
