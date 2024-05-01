@@ -4,7 +4,7 @@ import { Dialog, Transition } from '@headlessui/react'
 import { CheckIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 import { PaperClipIcon } from '@heroicons/react/20/solid'
-import MedicalInsuranceInfo from '@/app/components/payment/insurance-details'
+import MedicalInsuranceInfo from '@/app/components/data-views/insurance-details'
 import SavedCreditCard from '@/app/components/data-views/credit-card-details'
 
 

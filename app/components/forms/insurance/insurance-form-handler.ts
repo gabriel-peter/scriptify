@@ -39,6 +39,7 @@ export default async function saveMedicalInsuranceForm(userId: string, prevState
 
 async function saveInsuranceInfromation(validatedFields: z.SafeParseSuccess<TypeOf<typeof insuranceFormSchema>>, userId: string) {
     return await createClient().from("insurance_details").upsert({
+        user_id: userId,
         holder_first_name: validatedFields.data.firstName,
         holder_last_name: validatedFields.data.lastName,
         insurance_id: validatedFields.data.insuranceId,

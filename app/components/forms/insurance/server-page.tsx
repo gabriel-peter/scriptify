@@ -1,10 +1,12 @@
 "use server"
 
 import { createClient } from "@/utils/supabase/server"
-import InsuranceInputPage from "./form"
+import InsuranceInputForm from "./form"
+import { useRouter } from "next/navigation"
 
 export default async function Page() {
     const supabase = createClient()
+    const router = useRouter()
 
     const {
         data: { user },
@@ -12,5 +14,5 @@ export default async function Page() {
     if (!user) {
         return <div>NO USER :(</div>
     }
-    return <InsuranceInputPage userId={user.id} />
+    return <InsuranceInputForm userId={user.id} successAction={() => router.push("/get-started/patient/payment")} />
 }

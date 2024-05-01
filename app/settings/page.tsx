@@ -1,6 +1,8 @@
 "use server"
 import { createClient } from "@/utils/supabase/server";
 import SavedCreditCard from "../components/data-views/credit-card-details";
+import MedicalInsuranceInfo from "../components/data-views/insurance-details";
+import { getUserInsuranceInformation, getUserPaymentInformation } from "../api/user-actions/actions";
 
 
 export default async function SettingsPage() {
@@ -12,5 +14,15 @@ export default async function SettingsPage() {
     if (!user) {
         return <div>NO USER :(</div>
     }
-    return <SavedCreditCard userId={user.id} />
+    
+    const [ccDetails, insurance] = await Promise.all([
+        getUserPaymentInformation(user.id),
+        getUserInsuranceInformation(user.id)
+    ])
+    return (
+    <>
+    <SavedCreditCard userId={user.id} ccDetails={ccDetails} />
+    <MedicalInsuranceInfo userId={user.id} insurance={insurance} />
+    </>
+    )
 }

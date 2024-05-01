@@ -1,6 +1,6 @@
 "use server"
 
-import InsuranceInputPage from "@/app/components/forms/insurance/form"
+import InsuranceInputForm from "@/app/components/forms/insurance/form"
 import { createClient } from "@/utils/supabase/server"
 
 export default async function Page() {
@@ -12,5 +12,7 @@ export default async function Page() {
     if (!user) {
         return <div>NO USER :(</div>
     }
-    return <InsuranceInputPage userId={user.id} />
+    return <InsuranceInputForm userId={user.id} successAction={function (): void {
+        throw new Error("Function not implemented.")
+    } } />
 }
