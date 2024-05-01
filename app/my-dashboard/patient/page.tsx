@@ -8,6 +8,7 @@ import { EllipsisVerticalIcon } from '@heroicons/react/20/solid'
 import { cn } from "@/utils/cn";
 import { toHumanReadableTime } from "@/utils/time";
 import Link from "next/link";
+import { getUserDemographicInformation } from "@/app/api/user-actions/actions";
 
 export default async function Dashboard() {
   const supabase = createClient()
@@ -18,8 +19,12 @@ export default async function Dashboard() {
     return <div>NO USER :(</div>
   }
   const transfers = await getUserTransfers(supabase, user.id);
+  const { error, data: userInfo } = await getUserDemographicInformation(user.id);
+  if (error) {
+    return <>ERROR</>
+  }
   console.log("TRANSFERS", transfers);
-  return <PharmaceuticalPatientDashboard user={user} prescriptionTransfers={transfers} />
+  return <PharmaceuticalPatientDashboard user={user} userInfo={userInfo} prescriptionTransfers={transfers} />
 }
 
 async function getUserTransfers(supabase: SupabaseClient<Database>, userId: string) {
@@ -27,20 +32,34 @@ async function getUserTransfers(supabase: SupabaseClient<Database>, userId: stri
   return data;
 }
 
-function PharmaceuticalPatientDashboard({ user, prescriptionTransfers }: { user: User, prescriptionTransfers: Tables<'transfer_requests'>[] | null }) {
+function computeAge(date_of_birth: string | null): ReactNode {
+  return date_of_birth ? date_of_birth : "Unknown"
+}
+
+function stringifyAddress(userInfo: Tables<"profiles">) {
+  return userInfo.mailing_address?.toString();
+}
+
+function stringifyName(userInfo: Tables<"profiles">) {
+  return userInfo.first_name + " " + userInfo.last_name;
+}
+
+function PharmaceuticalPatientDashboard({ user, userInfo, prescriptionTransfers }: { user: User, userInfo: Tables<"profiles">, prescriptionTransfers: Tables<'transfer_requests'>[] | null }) {
+
+
   return (
     <div className="min-h-screen">
 
       {/* Main Content */}
       <div className="container mx-auto mt-8 px-4">
-        <h2 className="text-xl font-semibold mb-4">Welcome, {user.email}</h2>
+        <h2 className="text-xl font-semibold mb-4">Welcome, {stringifyName(userInfo)}</h2>
 
         {/* Patient Information */}
         <div className="bg-white rounded-lg shadow-md p-6 mb-8">
           <h3 className="text-lg font-semibold mb-2">Patient Information</h3>
-          <p className="text-gray-600">Age: 35</p>
+          <p className="text-gray-600">Age: {computeAge(userInfo.date_of_birth)}</p>
           <p className="text-gray-600">Gender: Male</p>
-          <p className="text-gray-600">Address: 123 Main St, City</p>
+          <p className="text-gray-600">Address: {stringifyAddress(userInfo)}</p>
           <p className="text-gray-600">Phone: +1234567890</p>
         </div>
 
@@ -53,13 +72,13 @@ function PharmaceuticalPatientDashboard({ user, prescriptionTransfers }: { user:
 
         {/* Medications */}
         <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-          <TransferRequestHeading />
+          <SectionHeadingWithAction title="Transfers in Progress" actionHref="/transfer/new" actionTitle="Make new request" />
           {prescriptionTransfers && <TranfserRequestView prescriptionTransfers={prescriptionTransfers} />}
         </div>
 
         {/* Appointments */}
         <div className="bg-white rounded-lg shadow-md p-6">
-          <h3 className="text-lg font-semibold mb-4">Appointments</h3>
+          <SectionHeadingWithAction title="Upcoming Appointments" actionHref="/appointment/new" actionTitle="Request an appointment" />
           <ul>
             <li className="text-gray-800 mb-2">Appointment 1</li>
             <li className="text-gray-800 mb-2">Appointment 2</li>
@@ -71,19 +90,18 @@ function PharmaceuticalPatientDashboard({ user, prescriptionTransfers }: { user:
   );
 }
 
-function TransferRequestHeading() {
+function SectionHeadingWithAction({ title, actionHref, actionTitle }: { title: string, actionHref: string, actionTitle: string }) {
   return (
     <div className="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
       <div className="-ml-4 -mt-2 flex flex-wrap items-center justify-between sm:flex-nowrap">
         {/* <div className="ml-4 mt-2"> */}
-          <h3 className="text-lg font-semibold mb-4">Transfers in Progress</h3>
+        <h3 className="text-lg font-semibold mb-4">{title}</h3>
         {/* </div> */}
         <div className="flex-shrink-0">
           <Link
-            // type="button"
-            href="/transfer/new"
+            href={actionHref}
             className="relative inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-            Make new request
+            {actionTitle}
           </Link>
         </div>
       </div>

@@ -2,25 +2,11 @@
 import { Fragment, useCallback, useEffect, useState } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import { createClient } from '@/utils/supabase/client';
 import { type User } from '@supabase/supabase-js'
 import Image from 'next/image'
 import { cn } from '@/utils/cn';
 
 export default function DashboardNavigationBar({loggedInUser}: {loggedInUser: User | null}) {
-    // const supabase = createClient()
-    // const [loggedInUser, setLoggedInUser] = useState<User | null | undefined>(null);
-    // const getUser = useCallback(async () => {
-        // const {
-        //     data: { session },
-        // } = await supabase.auth.getSession()
-    //     setLoggedInUser(session?.user)
-    // }, [supabase]);
-    // useEffect(() => {
-    //     getUser()
-    // }, [getUser])
-
-
     var navigation = [
         { name: 'About Us', href: '/about-us', current: true },
         { name: 'Learn', href: '/learn', current: false },
@@ -41,8 +27,6 @@ export default function DashboardNavigationBar({loggedInUser}: {loggedInUser: Us
         ]
     }
 
-    // if (isLoading) return <div>Loading...</div>;
-    // if (error) return <div>{error.message}</div>;
     return (
         <div>
             <div className="min-h-full">

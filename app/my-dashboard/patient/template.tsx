@@ -5,9 +5,9 @@ import checkOnBoardingProgress from '@/app/get-started/patient/check-on-boarding
 
 export default async function ForcePatientOnBoarding({children}: {children: ReactNode}) {
     const patientOnBoardingStatus = await checkOnBoardingProgress()
-    if (patientOnBoardingStatus.data !== null && patientOnBoardingStatus.data.steps['complete']) {
+    // if (patientOnBoardingStatus.data !== null && patientOnBoardingStatus.data.steps['complete']) {
         return <>{children}</>
-    } else {
-        redirect('/get-started/patient/personal') // Todo add alert to why
-    }
+    // } else {
+    //     redirect('/get-started/patient/personal') // Todo add alert to why
+    // }
 }

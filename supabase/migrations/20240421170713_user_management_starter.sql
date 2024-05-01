@@ -1,5 +1,5 @@
 create table profiles (
-  id uuid references auth.users not null primary key,
+  id uuid references auth.users not null primary key, -- TODO these fields need to be all NOT NULL
   updated_at timestamp with time zone,
   first_name text,
   last_name text,

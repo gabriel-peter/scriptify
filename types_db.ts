@@ -12,6 +12,7 @@ export type Database = {
       insurance_details: {
         Row: {
           bin: string | null
+          created_at: string | null
           holder_first_name: string | null
           holder_last_name: string | null
           insurance_id: string | null
@@ -20,9 +21,11 @@ export type Database = {
           pcn: string | null
           rx_group_num: string | null
           ssn: string | null
+          updated_at: string | null
         }
         Insert: {
           bin?: string | null
+          created_at?: string | null
           holder_first_name?: string | null
           holder_last_name?: string | null
           insurance_id?: string | null
@@ -31,9 +34,11 @@ export type Database = {
           pcn?: string | null
           rx_group_num?: string | null
           ssn?: string | null
+          updated_at?: string | null
         }
         Update: {
           bin?: string | null
+          created_at?: string | null
           holder_first_name?: string | null
           holder_last_name?: string | null
           insurance_id?: string | null
@@ -42,6 +47,7 @@ export type Database = {
           pcn?: string | null
           rx_group_num?: string | null
           ssn?: string | null
+          updated_at?: string | null
         }
         Relationships: []
       }
@@ -142,6 +148,7 @@ export type Database = {
       profiles: {
         Row: {
           avatar_url: string | null
+          date_of_birth: string | null
           driver_license_url: string | null
           first_name: string | null
           id: string
@@ -152,6 +159,7 @@ export type Database = {
         }
         Insert: {
           avatar_url?: string | null
+          date_of_birth?: string | null
           driver_license_url?: string | null
           first_name?: string | null
           id: string
@@ -162,6 +170,7 @@ export type Database = {
         }
         Update: {
           avatar_url?: string | null
+          date_of_birth?: string | null
           driver_license_url?: string | null
           first_name?: string | null
           id?: string
