@@ -19,7 +19,7 @@ export default function DashboardNavigationBar({loggedInUser}: {loggedInUser: Us
     if (loggedInUser) {
         var userMenuOptions = [
             { name: 'Your Profile', href: '#' },
-            { name: 'Settings', href: '#' },
+            { name: 'Settings', href: '/settings' },
             { name: 'Sign out', href: '/auth/signout' }
         ]
         var navigation = [

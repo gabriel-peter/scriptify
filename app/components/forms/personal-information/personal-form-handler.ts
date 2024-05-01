@@ -1,7 +1,7 @@
 'use server'
 import { createClient } from '@/utils/supabase/server';
 import { TypeOf, z } from 'zod';
-import { earliestDob } from '@/app/api/utils/schema-validators';
+import { earliestDob } from '@/app/components/forms/schema-validators';
 import { FormSubmissionReturn, Status, asyncFieldValidation, errorHandler } from '@/app/components/forms/validation-helpers';
 import { updateOnBoardingStep } from '@/app/get-started/update-onboarding-progress';
 

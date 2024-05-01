@@ -15,6 +15,7 @@ export type Database = {
           created_at: string | null
           holder_first_name: string | null
           holder_last_name: string | null
+          id: string
           insurance_id: string | null
           insurance_name: string | null
           insurance_num: string | null
@@ -22,12 +23,14 @@ export type Database = {
           rx_group_num: string | null
           ssn: string | null
           updated_at: string | null
+          user_id: string
         }
         Insert: {
           bin?: string | null
           created_at?: string | null
           holder_first_name?: string | null
           holder_last_name?: string | null
+          id?: string
           insurance_id?: string | null
           insurance_name?: string | null
           insurance_num?: string | null
@@ -35,12 +38,14 @@ export type Database = {
           rx_group_num?: string | null
           ssn?: string | null
           updated_at?: string | null
+          user_id: string
         }
         Update: {
           bin?: string | null
           created_at?: string | null
           holder_first_name?: string | null
           holder_last_name?: string | null
+          id?: string
           insurance_id?: string | null
           insurance_name?: string | null
           insurance_num?: string | null
@@ -48,8 +53,17 @@ export type Database = {
           rx_group_num?: string | null
           ssn?: string | null
           updated_at?: string | null
+          user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "insurance_details_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       patient_on_boaring_complete: {
         Row: {
@@ -77,63 +91,83 @@ export type Database = {
       payments_details: {
         Row: {
           card_number: string
-          created_at: string | null
+          created_at: string
           cvv: number
           expiration: string
           holder_first_name: string
           holder_last_name: string
-          updated_at: string | null
+          id: string
+          updated_at: string
+          user_id: string
         }
         Insert: {
           card_number: string
-          created_at?: string | null
+          created_at: string
           cvv: number
           expiration: string
           holder_first_name: string
           holder_last_name: string
-          updated_at?: string | null
+          id?: string
+          updated_at: string
+          user_id: string
         }
         Update: {
           card_number?: string
-          created_at?: string | null
+          created_at?: string
           cvv?: number
           expiration?: string
           holder_first_name?: string
           holder_last_name?: string
-          updated_at?: string | null
+          id?: string
+          updated_at?: string
+          user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "payments_details_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       prescription_transfers: {
         Row: {
           created_at: string | null
           drug_name: string
+          id: string
           pharmacist_first_name: string
           pharmacist_last_name: string
           pharmacist_license_number: string
           refill_date: string | null
           rx_name: string
           transfer_request_id: string
+          user_id: string
         }
         Insert: {
           created_at?: string | null
           drug_name: string
+          id?: string
           pharmacist_first_name: string
           pharmacist_last_name: string
           pharmacist_license_number: string
           refill_date?: string | null
           rx_name: string
           transfer_request_id: string
+          user_id: string
         }
         Update: {
           created_at?: string | null
           drug_name?: string
+          id?: string
           pharmacist_first_name?: string
           pharmacist_last_name?: string
           pharmacist_license_number?: string
           refill_date?: string | null
           rx_name?: string
           transfer_request_id?: string
+          user_id?: string
         }
         Relationships: [
           {
@@ -141,6 +175,13 @@ export type Database = {
             columns: ["transfer_request_id"]
             isOneToOne: false
             referencedRelation: "transfer_requests"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "prescription_transfers_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
             referencedColumns: ["id"]
           },
         ]
@@ -152,6 +193,8 @@ export type Database = {
           driver_license_url: string | null
           first_name: string | null
           id: string
+          is_admin: boolean | null
+          is_test_user: boolean | null
           last_name: string | null
           mailing_address: Json | null
           preferences: Json | null
@@ -163,6 +206,8 @@ export type Database = {
           driver_license_url?: string | null
           first_name?: string | null
           id: string
+          is_admin?: boolean | null
+          is_test_user?: boolean | null
           last_name?: string | null
           mailing_address?: Json | null
           preferences?: Json | null
@@ -174,6 +219,8 @@ export type Database = {
           driver_license_url?: string | null
           first_name?: string | null
           id?: string
+          is_admin?: boolean | null
+          is_test_user?: boolean | null
           last_name?: string | null
           mailing_address?: Json | null
           preferences?: Json | null

@@ -1,8 +1,10 @@
 import AbstractInput from "./abstract-input";
-import { FieldErrors } from "./personal-information/personal-form-handler";
 import { inputStyling } from "./styling";
 
-export default function AddressSubForm({ errorState }: { errorState: FieldErrors | undefined }) {
+export default function AddressSubForm({ errorState }: {
+    errorState?:
+    { streetAddress?: string[], city?: string[], region?: string[], postalCode?: string[] }
+}) {
     return (
         <>
             <div className="col-span-full">

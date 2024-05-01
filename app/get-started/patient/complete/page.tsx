@@ -5,7 +5,7 @@ import { CheckIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 import { PaperClipIcon } from '@heroicons/react/20/solid'
 import MedicalInsuranceInfo from '@/app/components/payment/insurance-details'
-import SavedCreditCard from '@/app/components/payment/credit-card-details'
+import SavedCreditCard from '@/app/components/data-views/credit-card-details'
 
 
 export default function CompleteProfilePage() {

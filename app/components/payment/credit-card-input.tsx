@@ -1,7 +1,9 @@
-import { FieldErrors } from "@/app/get-started/patient/payment/payment-form-handler";
 import AbstractInput from "../forms/abstract-input";
 
-export function CreditCardInput({ userId, errorState }: { userId: string, errorState: FieldErrors| undefined }) {
+export function CreditCardInput({ userId, errorState }: {
+  userId: string, errorState?:
+    { creditCardNumber?: string[], expiration?: string[], cvv?: string[] }
+}) {
   return (
     <div>
       <fieldset>

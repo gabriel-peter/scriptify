@@ -8,14 +8,20 @@ import { useFormState } from 'react-dom'
 import GenericInput from '@/app/components/forms/generic-input'
 import { Status } from '@/app/components/forms/validation-helpers'
 import { addPersonalInformation } from './personal-form-handler'
+import { useRouter } from 'next/navigation'
 
 
 export default function PatientPersonalInformationForm({userId}:{userId: string}) {
   const addPersonalInformationWithUserId = addPersonalInformation.bind(null, userId);
   const [state, formAction] = useFormState(addPersonalInformationWithUserId, { status: Status.NOT_SUBMITTED });
-
+  const router = useRouter()
   return (
-    <AbstractForm formAction={formAction} state={state} header='Personal Information' redirectUrl="/get-started/patient/transfer">
+    <AbstractForm 
+    formAction={formAction} 
+    state={state}
+     header='Personal Information' 
+    successAction={() => router.push("/get-started/patient/transfer")}
+    >
       <div>
         <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
           <NameInput errorState={state?.error} />

@@ -1,4 +1,4 @@
-import "server-only"
+"use server"
 import { sendTransferRequestEmail } from '@/utils/email/email-handlers';
 import { createClient } from '@/utils/supabase/server';
 import { TypeOf, z } from 'zod'

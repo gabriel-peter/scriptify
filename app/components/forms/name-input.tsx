@@ -1,8 +1,7 @@
-import { FieldErrors } from "@/app/get-started/patient/personal/personal-patient-form-handler";
 import { inputStyling } from "./styling";
 import AbstractInput from "./abstract-input";
 
-export default function NameInput({errorState}: {errorState: FieldErrors | undefined}) {
+export default function NameInput({errorState}: {errorState: {firstName?: string[], lastName?: string[]} | undefined}) {
     return (
         <>
             <div className="sm:col-span-3">

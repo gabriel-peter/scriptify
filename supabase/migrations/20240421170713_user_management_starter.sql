@@ -39,12 +39,11 @@ create table prescription_transfers (
     pharmacist_license_number text not null,
     created_at timestamp with time zone,
     transfer_request_id uuid references transfer_requests not null,
-    user_id uuid references auth.users not null,
+    user_id uuid references auth.users not null
 );
 
 create table insurance_details (
-      id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
-
+    id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
     holder_first_name text,
     holder_last_name text,
     insurance_name text,
@@ -56,20 +55,19 @@ create table insurance_details (
     ssn text,
     created_at timestamp with time zone,
     updated_at timestamp with time zone,
-    user_id uuid references auth.users not null,
+    user_id uuid references auth.users not null
 );
 
 create table payments_details (
-      id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
-
+    id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
     card_number text not null,
-    expiration date not null,
+    expiration text not null, -- MM/YY
     cvv int not null,
     holder_first_name text not null,
     holder_last_name text not null,
-    created_at timestamp with time zone,
-    updated_at timestamp with time zone,
-    user_id uuid references auth.users not null,
+    created_at timestamp with time zone not null,
+    updated_at timestamp with time zone not null,
+    user_id uuid references auth.users not null
     -- TODO: https://supabase.com/docs/guides/database/extensions/pgsodium hash payment information
 );
 -- Set up Row Level Security (RLS)

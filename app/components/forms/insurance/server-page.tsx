@@ -1,7 +1,7 @@
 "use server"
 
-import InsuranceInputPage from "@/app/components/forms/insurance/form"
 import { createClient } from "@/utils/supabase/server"
+import InsuranceInputPage from "./form"
 
 export default async function Page() {
     const supabase = createClient()

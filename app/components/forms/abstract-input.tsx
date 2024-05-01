@@ -13,7 +13,7 @@ export default function AbstractInput({ errorMessage, error, children }: { error
                                 <ExclamationCircleIcon className="h-5 w-5 text-red-500" aria-hidden="true" />
                             </div>
                         </div>
-                        <p className="mt-2 text-sm text-red-600" id="email-error">
+                        <p className="mt-2 text-sm text-red-600" id="error">
                             {errorMessage || error._errors.join(".")} {/* TODO */}
                         </p>
                     </>

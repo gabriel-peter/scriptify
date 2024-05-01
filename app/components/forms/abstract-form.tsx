@@ -6,18 +6,18 @@ export default function AbstractForm<T>({
     children,
     formAction,
     state,
-    redirectUrl,
     header,
     description,
-    customSubmitName
+    customSubmitName,
+    successAction
 }: {
     children: any,
     formAction: (payload: FormData) => void,
     state: FormSubmissionReturn<T>,
-    redirectUrl?: string,
     header: string
     description?: string
-    customSubmitName?: string
+    customSubmitName?: string,
+    successAction: () => void // TODO this can be redirect method
 }
 ) {
     return (
@@ -31,10 +31,11 @@ export default function AbstractForm<T>({
                     </p>}
                     {children}
                 </div>
+                <p className="mt-2 text-sm text-red-600">{state.status === Status.ERROR && state.message}</p>
             </div>
             <div className="mt-6 flex items-center justify-end gap-x-6">
                 {/* TODO previous button that goes to previous page */}
-                <SubmitButton customTitle={customSubmitName} isSuccess={state?.status === Status.SUCCESS} redirectUrl={redirectUrl} />
+                <SubmitButton successAction={successAction} customTitle={customSubmitName} isSuccess={state?.status === Status.SUCCESS} />
             </div>
         </form>
     );

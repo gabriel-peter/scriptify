@@ -1,3 +1,4 @@
+import { PostgrestError } from "@supabase/supabase-js";
 import { ZodType, z, TypeOf } from "zod";
 
 export enum Status {
@@ -12,12 +13,22 @@ export class ValidationParseError<T extends ZodType<any, any, any>> extends Erro
     constructor(msg: string, errors: z.inferFlattenedErrors<T>["fieldErrors"]) {
         super(msg);
         this.errors = errors;
-        // Set the prototype explicitly.
-        Object.setPrototypeOf(this, ValidationParseError.prototype);
     }
 
     getFieldErrors() {
         return this.errors
+    }
+}
+
+export class PGError extends Error {
+    error: PostgrestError
+    constructor(error: PostgrestError) {
+        super(error.message);
+        this.error = error;
+    }
+
+    getPostgresError(): PostgrestError {
+        return this.error;
     }
 }
 
@@ -39,6 +50,9 @@ export function errorHandler<T>(error: any) {
             status: Status.ERROR,
             error: error.getFieldErrors() as T 
         }
+    } else if (error instanceof PGError) {
+        console.log("Caught PSQL error")
+        // TODO handle codes?
     }
     return {
         status: Status.ERROR,

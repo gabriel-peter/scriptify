@@ -31,6 +31,23 @@ export const earliestDob = z.string().refine((value) => {
     message: 'Invalid date format or patient is less than 18 years old',
 });
 
+// Custom validation function for credit card numbers
+export function isValidCreditCard(value: string): boolean {
+    // Implement your credit card validation logic here
+    // For simplicity, let's assume a regex pattern for a Visa card
+    const visaRegex = /^4[0-9]{12}(?:[0-9]{3})?$/;
+    return visaRegex.test(value);
+}
+
+// Custom validation function for CVV (Card Verification Value)
+export function isValidCVV(value: string): boolean {
+    // Implement your CVV validation logic here
+    // For simplicity, let's assume a regex pattern for a 3 or 4-digit CVV
+    const cvvRegex = /^[0-9]{3,4}$/;
+    return cvvRegex.test(value.toString());
+}
+
+
 
 
 // // TEST
