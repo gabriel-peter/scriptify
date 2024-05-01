@@ -1,7 +1,7 @@
 "use server"
 import { redirect } from 'next/navigation'
 import { ReactNode } from "react";
-import checkOnBoardingProgress from '@/app/get-started/patient/check-on-boarding-progress';
+import checkOnBoardingProgress from '@/app/api/user-actions/check-on-boarding-progress';
 
 export default async function ForcePatientOnBoarding({children}: {children: ReactNode}) {
     const patientOnBoardingStatus = await checkOnBoardingProgress()

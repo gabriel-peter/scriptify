@@ -23,7 +23,7 @@ export default async function Dashboard() {
   if (error) {
     return <>ERROR</>
   }
-  console.log("TRANSFERS", transfers);
+  console.debug("TRANSFERS", transfers);
   return <PharmaceuticalPatientDashboard user={user} userInfo={userInfo} prescriptionTransfers={transfers} />
 }
 
@@ -44,9 +44,15 @@ function stringifyName(userInfo: Tables<"profiles">) {
   return userInfo.first_name + " " + userInfo.last_name;
 }
 
-function PharmaceuticalPatientDashboard({ user, userInfo, prescriptionTransfers }: { user: User, userInfo: Tables<"profiles">, prescriptionTransfers: Tables<'transfer_requests'>[] | null }) {
-
-
+function PharmaceuticalPatientDashboard({
+  user,
+  userInfo,
+  prescriptionTransfers
+}: {
+  user: User,
+  userInfo: Tables<"profiles">,
+  prescriptionTransfers: Tables<'transfer_requests'>[] | null
+}) {
   return (
     <div className="min-h-screen">
 

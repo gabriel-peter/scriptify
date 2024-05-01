@@ -5,15 +5,15 @@ import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
 
-export function SubmitButton({customTitle, redirectUrl}: {customTitle?: string, redirectUrl: string | undefined}) {
+export function SubmitButton({customTitle, redirectUrl, isSuccess}: {customTitle?: string, redirectUrl: string | undefined, isSuccess: boolean}) {
     const { pending } = useFormStatus()
     const router = useRouter()
 
     useEffect(() => {
-        if (redirectUrl !== undefined) {
+        if (isSuccess && redirectUrl !== undefined) {
             router.push(redirectUrl);
         }
-    }, [redirectUrl, router])
+    }, [redirectUrl, router, isSuccess])
 
     return (
         <button

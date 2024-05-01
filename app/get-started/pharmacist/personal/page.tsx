@@ -1,32 +1,6 @@
-'use client'
-import { addPersonalInformation } from '@/app/get-started/patient/personal/personal-patient-form-handler'
-import AbstractForm from '@/app/components/forms/abstract-form'
-import AddressSubForm from '@/app/components/forms/address-sub-form'
-import EmailInput from '@/app/components/forms/email-input'
-import NameInput from '@/app/components/forms/name-input'
-import PhoneNumberInput from '@/app/components/forms/phone-number-input'
-import UploadFileInput from '@/app/components/forms/upload-file-input'
-import { useFormState } from 'react-dom'
+'use server'
+import PersonalInformationFormPage from "@/app/components/forms/personal-information/server-page"
 
-const initialState = {
-  message: '',
-}
-
-export default function PatientPersonalInformationForm({ userId }: { userId: string }) {
-  const addPersonalInformationWithUserId = addPersonalInformation.bind(null, "user-id");
-  const [state, formAction] = useFormState(addPersonalInformationWithUserId, initialState)
-  return (
-    <AbstractForm formAction={formAction} state={state} header='Personal Information' redirectUrl="/get-started/patient/transfer">
-      <div>
-        <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-          <NameInput errorState={state?.error} />
-          <EmailInput errorState={state?.error?.email} label={'Add your Email'} />
-          <PhoneNumberInput errorState={state?.error?.phoneNumber} label={'Add your Phone Number'} />
-          <AddressSubForm errorState={state?.error} />
-        </div >
-      </div>
-      <UploadFileInput title='Upload Drivers License' instruction='Upload a file' supportedFileTypes={['PNG', 'JPG', 'GIF']} maxSize='10MB' />
-      <UploadFileInput title='Upload Profile Photo' instruction='Upload a file' supportedFileTypes={['PNG', 'JPG', 'GIF']} maxSize='10MB' />
-    </AbstractForm>
-  );
+export default async function PharmacistPersonalInformationPage() {
+  return <PersonalInformationFormPage />
 }

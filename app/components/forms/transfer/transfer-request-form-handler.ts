@@ -1,9 +1,9 @@
-"use server"
+import "server-only"
 import { sendTransferRequestEmail } from '@/utils/email/email-handlers';
 import { createClient } from '@/utils/supabase/server';
 import { TypeOf, z } from 'zod'
-import { updateOnBoardingStep } from '../../update-onboarding-progress';
 import { FormSubmissionReturn, Status, asyncFieldValidation, errorHandler } from '@/app/components/forms/validation-helpers';
+import { updateOnBoardingStep } from '@/app/get-started/update-onboarding-progress';
 
 const formDataSchema = z.object({
     pharmacyName: z.string().min(1),
@@ -45,7 +45,7 @@ export async function transferPrescription(userId: string, prevState: any, formD
             `${'localhost:3000'}/transfer-request/${data.id}`, // TODO
             validatedFields.data.emailBody
         ))
-        .then(() => updateOnBoardingStep(userId, { transfer: true }))
+        // .then(() => updateOnBoardingStep(userId, { transfer: true }))
         .then(() => { return { status: Status.SUCCESS } })
         .catch(errorHandler<FieldErrors>)
 }

@@ -6,10 +6,11 @@ import { CreditCardInput } from '@/app/components/payment/credit-card-input'
 import { FieldErrors, savePatientPaymentInformation } from "@/app/get-started/patient/payment/payment-form-handler";
 import { useFormState } from "react-dom";
 import AbstractForm from '@/app/components/forms/abstract-form'
+import { Status } from '@/app/components/forms/validation-helpers'
 
 export default function PaymentPage({userId}: {userId: string}) {
   const savePatientPaymentInformationWithUserId = savePatientPaymentInformation.bind(null, userId);
-    const [state, formAction] = useFormState(savePatientPaymentInformationWithUserId, {message: ''})
+    const [state, formAction] = useFormState(savePatientPaymentInformationWithUserId, {status: Status.NOT_SUBMITTED})
   return (
     <div className="flex flex-col">
       <AbstractForm<FieldErrors> formAction={formAction} state={state} header='Enter your Payment Information' redirectUrl='/get-started/patient/complete'>
@@ -19,7 +20,7 @@ export default function PaymentPage({userId}: {userId: string}) {
   )
 }
 
-export function AddCreditCardModal({ open, setOpen }) {
+export function AddCreditCardModal({ open, setOpen }: {open: boolean, setOpen: (x: boolean) => {}}) {
 
   function handleCreditCardSave(): void {
     async function asyncDelay() {

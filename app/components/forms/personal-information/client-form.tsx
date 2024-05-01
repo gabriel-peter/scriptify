@@ -1,5 +1,4 @@
 'use client'
-import { addPersonalInformation } from '@/app/get-started/patient/personal/personal-patient-form-handler'
 import AbstractForm from '@/app/components/forms/abstract-form'
 import AddressSubForm from '@/app/components/forms/address-sub-form'
 import NameInput from '@/app/components/forms/name-input'
@@ -8,6 +7,7 @@ import UploadFileInput from '@/app/components/forms/upload-file-input'
 import { useFormState } from 'react-dom'
 import GenericInput from '@/app/components/forms/generic-input'
 import { Status } from '@/app/components/forms/validation-helpers'
+import { addPersonalInformation } from './personal-form-handler'
 
 
 export default function PatientPersonalInformationForm({userId}:{userId: string}) {

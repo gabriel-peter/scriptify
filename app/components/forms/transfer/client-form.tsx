@@ -1,5 +1,4 @@
 "use client";
-import { transferPrescription } from "@/app/get-started/patient/transfer/patient-prescription-transfer-request-form";
 import AbstractForm from "@/app/components/forms/abstract-form";
 import AddressSubForm from "@/app/components/forms/address-sub-form";
 import EmailInput from "@/app/components/forms/email-input";
@@ -9,8 +8,9 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useFormState } from "react-dom";
 import { Status } from "@/app/components/forms/validation-helpers";
+import { transferPrescription } from "./transfer-request-form-handler";
 
-export default function TransferPrescriptions({ userId }: { userId: string }) {
+export default function TransferPrescriptions({ userId, successRedirectUrl }: { userId: string, successRedirectUrl: string }) {
     const router = useRouter();
     const [openForm, setOpenForm] = useState(false);
     return (
@@ -38,13 +38,13 @@ export default function TransferPrescriptions({ userId }: { userId: string }) {
                                 </button>
                             </div>
                         ) :
-                        <TransferForm userId={userId} setOpenForm={setOpenForm} />}
+                        <TransferForm userId={userId} setOpenForm={setOpenForm} successRedirectUrl={successRedirectUrl} />}
                 </div>
             </div>
         </>);
 }
 
-function TransferForm({ setOpenForm, userId }: { setOpenForm: any, userId: string }) {
+function TransferForm({ setOpenForm, userId, successRedirectUrl }: { setOpenForm: any, userId: string, successRedirectUrl: string }) {
     const transferPrescriptionWithUserId = transferPrescription.bind(null, userId)
     const [state, formAction] = useFormState(transferPrescriptionWithUserId, {status: Status.NOT_SUBMITTED })
     return (
@@ -53,7 +53,7 @@ function TransferForm({ setOpenForm, userId }: { setOpenForm: any, userId: strin
             state={state}
             customSubmitName="Send Email"
             header="Transfer Your Prescriptions"
-            redirectUrl="/get-started/patient/clinical"
+            redirectUrl={successRedirectUrl}
         >
             <GenericInput
                 label="Pharmacy Name"

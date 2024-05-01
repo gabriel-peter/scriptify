@@ -34,8 +34,8 @@ function isValidCVV(value: string): boolean {
 
 // Define the schema for credit card information
 const creditCardSchema = z.object({
-    // cardHolderFirstName: z.string().min(1),
-    // cardHolderLastName: z.string().min(1),
+    cardHolderFirstName: z.string().min(1),
+    cardHolderLastName: z.string().min(1),
     creditCardNumber: z.string().refine(isValidCreditCard, {
         message: 'Invalid credit card number',
     }),
@@ -49,16 +49,16 @@ const creditCardSchema = z.object({
 const supabase = createClient()
 export type FieldErrors = z.inferFlattenedErrors<typeof creditCardSchema>["fieldErrors"]
 export async function savePatientPaymentInformation(userId: string, prevState: any, formData: FormData):
-Promise<FormSubmissionReturn<FieldErrors>> {
+    Promise<FormSubmissionReturn<FieldErrors>> {
     const rawFormData = {
         creditCardNumber: formData.get("card-number"),
         expiration: formData.get("card-expiration-date"),
         cvv: formData.get("card-cvc")
     }
-    
+
     return await asyncFieldValidation(creditCardSchema, rawFormData)
-    .then(() => {return {status: Status.SUCCESS}})
-    .catch(errorHandler<FieldErrors>)
+        .then(() => { return { status: Status.SUCCESS } })
+        .catch(errorHandler<FieldErrors>)
 }
 
 async function saveCreditCardData(validatedFields: z.SafeParseSuccess<TypeOf<typeof creditCardSchema>>, userId: string) {
@@ -67,8 +67,8 @@ async function saveCreditCardData(validatedFields: z.SafeParseSuccess<TypeOf<typ
         card_number: validatedFields.data.creditCardNumber,
         cvv: validatedFields.data.cvv,
         expiration: validatedFields.data.expiration,
-        holder_first_name: "TODO",
-        holder_last_name: "TODO",
+        holder_first_name: validatedFields.data.cardHolderFirstName,
+        holder_last_name: validatedFields.data.cardHolderLastName,
         updated_at: new Date().toISOString()
     }).throwOnError()
 }

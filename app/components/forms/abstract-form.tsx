@@ -1,6 +1,6 @@
 import React from "react";
 import { SubmitButton } from "./submit-button";
-import { FormSubmissionReturn } from "./validation-helpers";
+import { FormSubmissionReturn, Status } from "./validation-helpers";
 
 export default function AbstractForm<T>({
     children,
@@ -34,7 +34,7 @@ export default function AbstractForm<T>({
             </div>
             <div className="mt-6 flex items-center justify-end gap-x-6">
                 {/* TODO previous button that goes to previous page */}
-                <SubmitButton customTitle={customSubmitName} redirectUrl={state?.message && redirectUrl} />
+                <SubmitButton customTitle={customSubmitName} isSuccess={state?.status === Status.SUCCESS} redirectUrl={redirectUrl} />
             </div>
         </form>
     );

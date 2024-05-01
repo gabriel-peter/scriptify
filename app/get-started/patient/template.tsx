@@ -1,6 +1,6 @@
 "use server";
 import GetStartedLayout from '@/app/components/layouts/get-started-layout';
-import checkOnBoardingProgress from './check-on-boarding-progress';
+import checkOnBoardingProgress from '../../api/user-actions/check-on-boarding-progress';
 
 var steps = [
   { id: 'personal', name: 'Personal Information', href: '/get-started/patient/personal' },

@@ -1,5 +1,5 @@
-import { FieldErrors } from "@/app/get-started/patient/personal/personal-patient-form-handler";
 import AbstractInput from "./abstract-input";
+import { FieldErrors } from "./personal-information/personal-form-handler";
 import { inputStyling } from "./styling";
 
 export default function AddressSubForm({ errorState }: { errorState: FieldErrors | undefined }) {
