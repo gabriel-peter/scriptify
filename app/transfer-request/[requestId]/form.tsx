@@ -4,12 +4,13 @@ import GenericInput from "@/app/components/forms/generic-input";
 import { useState } from "react";
 import { useFormState } from "react-dom";
 import handlePrescriptionTransferRequestForm, { PrescriptionFormatedErrorType, TransferPrescriptionFormValidatedFieldsType } from "./external-pharmacist-prescription-transfer";
+import { Status } from "@/app/components/forms/validation-helpers";
 
 export default function TransferPage({ params, metadata }: { params: { requestId: string }, metadata: any /*TODO*/ }) {
     const handlePrescriptionTransferRequestFormWithRequestId = handlePrescriptionTransferRequestForm.bind(null, params.requestId);
-    const [state, formAction] = useFormState(handlePrescriptionTransferRequestFormWithRequestId, { message: '' })
+    const [state, formAction] = useFormState(handlePrescriptionTransferRequestFormWithRequestId, { status: Status.NOT_SUBMITTED })
     return (
-        <AbstractForm<TransferPrescriptionFormValidatedFieldsType> formAction={formAction} state={state} header={`Transfer Prescription for ${metadata["first_name"]} ${metadata["last_name"]}`} redirectUrl={`/transfer-request/${params.requestId}/review`}>
+        <AbstractForm formAction={formAction} state={state} header={`Transfer Prescription for ${metadata["first_name"]} ${metadata["last_name"]}`} redirectUrl={`/transfer-request/${params.requestId}/review`}>
             <p>To be filled by {metadata['pharmacy_name']} -- {metadata['pharmacy_email']}</p>
             <div className="my-5"></div>
             <GenericInput label={"Pharmacy NCPDP"} id={"ncpdp"} errorState={state.error?.transferringPharmacy?.ncpdp} errorMessage={"Invalid NCPDP."} />
@@ -21,9 +22,9 @@ export default function TransferPage({ params, metadata }: { params: { requestId
     )
 }
 
-function PrescriptionForm({ keyId, prescriptionNumber, errorState }: { keyId: number, prescriptionNumber: number, errorState: PrescriptionFormatedErrorType | undefined }) {
+function PrescriptionForm({prescriptionNumber, errorState }: { prescriptionNumber: number, errorState: PrescriptionFormatedErrorType | undefined }) {
     return (
-        <div className="my-7" key={keyId}>
+        <div className="my-7">
             <h2>Prescription {prescriptionNumber}</h2>
             <GenericInput label={"Rx Name"} id={`rx-name-${prescriptionNumber}`} errorState={errorState?.rxName} errorMessage={"Invalid Rx Name."} />
             <GenericInput label={"Drug Name"} id={`drug-name-${prescriptionNumber}`} errorState={errorState?.drugName} errorMessage={"Invalid Drug Name."} />
@@ -45,7 +46,7 @@ function PrescriptionFormList({ errorState }: { errorState: TransferPrescription
         const prescriptionForms = [];
         for (let i = 0; i < prescriptionListCount; i++) {
             prescriptionForms.push(
-                <PrescriptionForm errorState={errorState?.prescriptions[i] || undefined} keyId={i} prescriptionNumber={i + 1} />
+                <PrescriptionForm errorState={errorState?.prescriptions[i] || undefined} key={i} prescriptionNumber={i + 1} />
             );
         }
         return prescriptionForms;

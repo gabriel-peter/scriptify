@@ -3,7 +3,7 @@ import { createClient } from '@/utils/supabase/server';
 import { TypeOf, z } from 'zod';
 import { earliestDob } from '@/app/api/utils/schema-validators';
 import { updateOnBoardingStep } from '../../update-onboarding-progress';
-import { asyncFieldValidation, errorHandler } from '@/app/components/forms/validation-helpers';
+import { FormSubmissionReturn, Status, asyncFieldValidation, errorHandler } from '@/app/components/forms/validation-helpers';
 
 const formDataSchema = z.object({
     firstName: z.string().min(1),
@@ -20,7 +20,8 @@ const formDataSchema = z.object({
 
 const supabase = createClient();
 export type FieldErrors = z.inferFlattenedErrors<typeof formDataSchema>["fieldErrors"];
-export async function addPersonalInformation(userId: string, prevState: any, formData: FormData) {
+export async function addPersonalInformation(userId: string, prevState: any, formData: FormData):
+    Promise<FormSubmissionReturn<FieldErrors>> {
     const rawFormData = {
         firstName: formData.get('first-name'),
         lastName: formData.get('last-name'),
@@ -33,10 +34,10 @@ export async function addPersonalInformation(userId: string, prevState: any, for
     }
     // TODO Will Catch work regardless of where it is in the chain?
     // If so then we can have those be standard in a class and the rest be custom per form...
-    return await asyncFieldValidation(formDataSchema, rawFormData) 
+    return await asyncFieldValidation(formDataSchema, rawFormData)
         .then((validatedFields) => savePersonalInformation(validatedFields, userId))
         .then(() => updateOnBoardingStep(userId, { personal: true }))
-        .then(() => { return { message: "Success" } })
+        .then(() => { return { status: Status.SUCCESS }})
         .catch(errorHandler<FieldErrors>)
 }
 

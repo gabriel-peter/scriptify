@@ -5,14 +5,11 @@ import AbstractForm from "@/app/components/forms/abstract-form";
 import CheckboxGroup from "@/app/components/forms/checkbox-group";
 import { useFormState } from "react-dom";
 import { Dropdown } from "@/app/components/forms/dropdown";
-
-const initialState = {
-  message: '',
-}
+import { Status } from "@/app/components/forms/validation-helpers";
 
 export default function ClinicalPreference() {
   const savePatientClinicalPreferencesWithUserId = savePatientClinicalPreferences.bind(null, "user-id");
-  const [state, formAction] = useFormState(savePatientClinicalPreferencesWithUserId, initialState)
+  const [state, formAction] = useFormState(savePatientClinicalPreferencesWithUserId, { status: Status.NOT_SUBMITTED })
   return (
     <div className="flex flex-col my-10 mx-2.5">
       <AbstractForm formAction={formAction} state={state} redirectUrl="/get-started/patient/payment" header="Clinical Preferences">

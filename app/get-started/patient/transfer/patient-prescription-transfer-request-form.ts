@@ -3,7 +3,7 @@ import { sendTransferRequestEmail } from '@/utils/email/email-handlers';
 import { createClient } from '@/utils/supabase/server';
 import { TypeOf, z } from 'zod'
 import { updateOnBoardingStep } from '../../update-onboarding-progress';
-import { asyncFieldValidation, errorHandler } from '@/app/components/forms/validation-helpers';
+import { FormSubmissionReturn, Status, asyncFieldValidation, errorHandler } from '@/app/components/forms/validation-helpers';
 
 const formDataSchema = z.object({
     pharmacyName: z.string().min(1),
@@ -21,7 +21,8 @@ const formDataSchema = z.object({
 
 const supabase = createClient(); // TODO research side-effects of in file-scope
 export type FieldErrors = z.inferFlattenedErrors<typeof formDataSchema>["fieldErrors"]
-export async function transferPrescription(userId: string, prevState: any, formData: FormData) {
+export async function transferPrescription(userId: string, prevState: any, formData: FormData):
+    Promise<FormSubmissionReturn<FieldErrors>> {
     const rawFormData = {
         pharmacyName: formData.get('pharmacy-name'),
         email: formData.get('email'),
@@ -41,12 +42,12 @@ export async function transferPrescription(userId: string, prevState: any, formD
             else { return { data: result.data, validatedFields } }
         })
         .then(({ data, validatedFields }) => sendTransferRequestEmail([validatedFields.data.email],
-            `${process.env['HOST']}/transfer-request/${data.id}`,
+            `${'localhost:3000'}/transfer-request/${data.id}`, // TODO
             validatedFields.data.emailBody
         ))
         .then(() => updateOnBoardingStep(userId, { transfer: true }))
-        .then(() => { return { status: "SUCCESS", message: "Success" } })
-        .catch(errorHandler)
+        .then(() => { return { status: Status.SUCCESS } })
+        .catch(errorHandler<FieldErrors>)
 }
 
 async function insertTransferRequest(validatedFields: z.SafeParseSuccess<TypeOf<typeof formDataSchema>>, userId: string) {

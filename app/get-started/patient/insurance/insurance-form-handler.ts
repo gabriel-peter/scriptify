@@ -1,6 +1,7 @@
 "use server";
-import { asyncFieldValidation, errorHandler } from '@/app/components/forms/validation-helpers';
-import { z } from 'zod';
+import { FormSubmissionReturn, Status, asyncFieldValidation, errorHandler } from '@/app/components/forms/validation-helpers';
+import { createClient } from '@/utils/supabase/server';
+import { TypeOf, z } from 'zod';
 
 // Define the schema for the insurance form
 const insuranceFormSchema = z.object({
@@ -16,8 +17,11 @@ const insuranceFormSchema = z.object({
 });
 
 export type FieldErrors = z.inferFlattenedErrors<typeof insuranceFormSchema>["fieldErrors"]
-export default async function saveMedicalInsuranceForm(userId: string, prevState: any, formData: FormData) {
+export default async function saveMedicalInsuranceForm(userId: string, prevState: any, formData: FormData):
+    Promise<FormSubmissionReturn<FieldErrors>> {
     const insuranceFormData = {
+        firstName: formData.get("first-name"),
+        lastName: formData.get("last-name"),
         insuranceName: formData.get("insurance-name"),
         insuranceId: formData.get("insurance-id"),
         rxGroup: formData.get("rx-group"),
@@ -28,5 +32,22 @@ export default async function saveMedicalInsuranceForm(userId: string, prevState
     }
 
     return await asyncFieldValidation(insuranceFormSchema, insuranceFormData)
-        .catch(errorHandler)
+        .then((validatedFields) => saveInsuranceInfromation(validatedFields, userId))
+        .then(() => { return { status: Status.SUCCESS } })
+        .catch(errorHandler<FieldErrors>)
+}
+
+async function saveInsuranceInfromation(validatedFields: z.SafeParseSuccess<TypeOf<typeof insuranceFormSchema>>, userId: string) {
+    return await createClient().from("insurance_details").upsert({
+        holder_first_name: validatedFields.data.firstName,
+        holder_last_name: validatedFields.data.lastName,
+        insurance_id: validatedFields.data.insuranceId,
+        insurance_num: validatedFields.data.insuranceNumber,
+        insurance_name: validatedFields.data.insuranceName,
+        rx_group_num: validatedFields.data.rxGroup,
+        bin: validatedFields.data.bin,
+        pcn: validatedFields.data.pcn,
+        ssn: validatedFields.data.ssn,
+        updated_at: new Date().toISOString()
+    }).throwOnError()
 }

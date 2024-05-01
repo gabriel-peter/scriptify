@@ -1,7 +1,7 @@
-import { CreditCardFormValidatedFieldsType } from "@/app/get-started/patient/payment/payment-form-handler";
+import { FieldErrors } from "@/app/get-started/patient/payment/payment-form-handler";
 import AbstractInput from "../forms/abstract-input";
 
-export function CreditCardInput({ userId, errorState }: { userId: string, errorState: CreditCardFormValidatedFieldsType| undefined }) {
+export function CreditCardInput({ userId, errorState }: { userId: string, errorState: FieldErrors| undefined }) {
   return (
     <div>
       <fieldset>

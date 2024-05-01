@@ -1,5 +1,12 @@
 import { ZodType, z, TypeOf } from "zod";
 
+export enum Status {
+    NOT_SUBMITTED,
+    SUCCESS,
+    ERROR
+}
+
+export type FormSubmissionReturn<T> = {status: Status; message?: string; error?: T; }
 export class ValidationParseError<T extends ZodType<any, any, any>> extends Error {
     errors
     constructor(msg: string, errors: z.inferFlattenedErrors<T>["fieldErrors"]) {
@@ -20,7 +27,7 @@ export async function asyncFieldValidation<U extends ZodType<any, any, any>>(for
     if (!validatedFields.success) {
         console.debug("Validation Failed for ", typeof formDataSchema)
         console.log(validatedFields.error.flatten().fieldErrors)
-        throw new ValidationParseError("Validation Failed.", validatedFields.error.flatten().fieldErrors)
+        throw new ValidationParseError("Validation Failed.", validatedFields.error.format())
     }
     return validatedFields
 }
@@ -29,12 +36,12 @@ export function errorHandler<T>(error: any) {
     console.error("Error occurred:", error)
     if (error instanceof ValidationParseError) {
         return {
-            status: "ERROR",
+            status: Status.ERROR,
             error: error.getFieldErrors() as T 
         }
     }
     return {
-        status: "ERROR",
+        status: Status.ERROR,
         message: "Unknown Error Occurred"
     }
 }

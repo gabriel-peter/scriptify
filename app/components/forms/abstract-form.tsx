@@ -1,7 +1,7 @@
 import React from "react";
 import { SubmitButton } from "./submit-button";
+import { FormSubmissionReturn } from "./validation-helpers";
 
-type GenericFormState<T> = { error: T; message?: undefined } | { message: string; error?: undefined };
 export default function AbstractForm<T>({
     children,
     formAction,
@@ -13,7 +13,7 @@ export default function AbstractForm<T>({
 }: {
     children: any,
     formAction: (payload: FormData) => void,
-    state: GenericFormState<T>,
+    state: FormSubmissionReturn<T>,
     redirectUrl?: string,
     header: string
     description?: string

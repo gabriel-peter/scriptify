@@ -7,15 +7,12 @@ import PhoneNumberInput from '@/app/components/forms/phone-number-input'
 import UploadFileInput from '@/app/components/forms/upload-file-input'
 import { useFormState } from 'react-dom'
 import GenericInput from '@/app/components/forms/generic-input'
+import { Status } from '@/app/components/forms/validation-helpers'
 
-
-const initialState = {
-  message: '',
-}
 
 export default function PatientPersonalInformationForm({userId}:{userId: string}) {
   const addPersonalInformationWithUserId = addPersonalInformation.bind(null, userId);
-  const [state, formAction] = useFormState(addPersonalInformationWithUserId, initialState);
+  const [state, formAction] = useFormState(addPersonalInformationWithUserId, { status: Status.NOT_SUBMITTED });
 
   return (
     <AbstractForm formAction={formAction} state={state} header='Personal Information' redirectUrl="/get-started/patient/transfer">

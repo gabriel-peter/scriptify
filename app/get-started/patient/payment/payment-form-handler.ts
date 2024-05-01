@@ -1,5 +1,7 @@
 "use server"
-import { z } from 'zod';
+import { FormSubmissionReturn, Status, asyncFieldValidation, errorHandler } from '@/app/components/forms/validation-helpers';
+import { createClient } from '@/utils/supabase/server';
+import { TypeOf, z } from 'zod';
 
 const formDataSchema = z.object({
     firstName: z.string().min(1),
@@ -44,26 +46,29 @@ const creditCardSchema = z.object({
         message: 'Invalid expiration date. Use format MM/YY',
     }),
 });
-
-export type CreditCardFormValidatedFieldsType = z.inferFlattenedErrors<typeof creditCardSchema>["fieldErrors"]
-export async function savePatientPaymentInformation(userId: string, prevState: any, formData: FormData) {
+const supabase = createClient()
+export type FieldErrors = z.inferFlattenedErrors<typeof creditCardSchema>["fieldErrors"]
+export async function savePatientPaymentInformation(userId: string, prevState: any, formData: FormData):
+Promise<FormSubmissionReturn<FieldErrors>> {
     const rawFormData = {
         creditCardNumber: formData.get("card-number"),
         expiration: formData.get("card-expiration-date"),
         cvv: formData.get("card-cvc")
     }
-    const validationResult = creditCardSchema.safeParse(rawFormData);
+    
+    return await asyncFieldValidation(creditCardSchema, rawFormData)
+    .then(() => {return {status: Status.SUCCESS}})
+    .catch(errorHandler<FieldErrors>)
+}
 
-    if (!validationResult.success) {
-        console.log('Valid credit card information');
-        console.log(validationResult.error.flatten().fieldErrors)
-        return {
-            error: validationResult.error.flatten().fieldErrors
-        }
-    } else {
-        return {
-            message: "SUCCESS"
-        }
-    }
-
+async function saveCreditCardData(validatedFields: z.SafeParseSuccess<TypeOf<typeof creditCardSchema>>, userId: string) {
+    return await supabase.from("payments_details").upsert({
+        id: userId,
+        card_number: validatedFields.data.creditCardNumber,
+        cvv: validatedFields.data.cvv,
+        expiration: validatedFields.data.expiration,
+        holder_first_name: "TODO",
+        holder_last_name: "TODO",
+        updated_at: new Date().toISOString()
+    }).throwOnError()
 }

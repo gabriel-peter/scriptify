@@ -8,6 +8,7 @@ import PhoneNumberInput from "@/app/components/forms/phone-number-input";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useFormState } from "react-dom";
+import { Status } from "@/app/components/forms/validation-helpers";
 
 export default function TransferPrescriptions({ userId }: { userId: string }) {
     const router = useRouter();
@@ -43,14 +44,9 @@ export default function TransferPrescriptions({ userId }: { userId: string }) {
         </>);
 }
 
-const initialState = {
-    status: "SUCCESS",
-    message: '',
-}
-
 function TransferForm({ setOpenForm, userId }: { setOpenForm: any, userId: string }) {
     const transferPrescriptionWithUserId = transferPrescription.bind(null, userId)
-    const [state, formAction] = useFormState(transferPrescriptionWithUserId, initialState)
+    const [state, formAction] = useFormState(transferPrescriptionWithUserId, {status: Status.NOT_SUBMITTED })
     return (
         <AbstractForm
             formAction={formAction}

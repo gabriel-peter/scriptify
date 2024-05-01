@@ -1,7 +1,7 @@
 import React from "react";
 import { ExclamationCircleIcon } from '@heroicons/react/20/solid'
 
-export default function AbstractInput({ errorMessage, error, children }: { errorMessage: string, error: string[] | undefined, children: React.ReactNode }) {
+export default function AbstractInput({ errorMessage, error, children }: { errorMessage?: string, error: string[] | undefined, children: React.ReactNode }) {
     return (
         <>
             {error !== undefined ?
@@ -14,7 +14,7 @@ export default function AbstractInput({ errorMessage, error, children }: { error
                             </div>
                         </div>
                         <p className="mt-2 text-sm text-red-600" id="email-error">
-                            {errorMessage}
+                            {errorMessage || error._errors}
                         </p>
                     </>
                 ) :

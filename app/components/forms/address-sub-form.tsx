@@ -24,7 +24,7 @@ export default function AddressSubForm({ errorState }: { errorState: FieldErrors
                 <label htmlFor="city" className="block text-sm font-medium leading-6 text-gray-900">
                     City
                 </label>
-                <AbstractInput error={errorState?.city} errorMessage="Invalid Email.">
+                <AbstractInput error={errorState?.city} errorMessage={"Invalid Email."}>
                     <input
                         type="text"
                         name="city"
