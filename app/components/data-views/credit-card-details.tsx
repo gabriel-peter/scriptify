@@ -3,7 +3,7 @@ import { Tables } from "@/types_db"
 import PaymentFormModal from "../forms/form-modals/payment-form-modal"
 
 // TODO support multiple cards.
-export default async function SavedCreditCard({ userId, ccDetails }: { userId: string, ccDetails: Tables<"payments_details"> }) {
+export default async function SavedCreditCard({ userId, ccDetails }: { userId: string, ccDetails: Tables<"payments_details"> | null}) {
   return (
     <>
       <div className="bg-white shadow sm:rounded-lg mx-3.5 my-5">

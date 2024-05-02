@@ -8,7 +8,7 @@ import { EllipsisVerticalIcon } from '@heroicons/react/20/solid'
 import { cn } from "@/utils/cn";
 import { toHumanReadableTime } from "@/utils/time";
 import Link from "next/link";
-import { getUserDemographicInformation } from "@/app/api/user-actions/actions";
+import { getUserDemographicInformation, stringifyName } from "@/app/api/user-actions/actions";
 
 export default async function Dashboard() {
   const supabase = createClient()
@@ -32,17 +32,6 @@ async function getUserTransfers(supabase: SupabaseClient<Database>, userId: stri
   return data;
 }
 
-function computeAge(date_of_birth: string | null): ReactNode {
-  return date_of_birth ? date_of_birth : "Unknown"
-}
-
-function stringifyAddress(userInfo: Tables<"profiles">) {
-  return userInfo.mailing_address?.toString();
-}
-
-function stringifyName(userInfo: Tables<"profiles">) {
-  return userInfo.first_name + " " + userInfo.last_name;
-}
 
 function PharmaceuticalPatientDashboard({
   user,
@@ -60,14 +49,13 @@ function PharmaceuticalPatientDashboard({
       <div className="container mx-auto mt-8 px-4">
         <h2 className="text-xl font-semibold mb-4">Welcome, {stringifyName(userInfo)}</h2>
 
-        {/* Patient Information */}
-        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+        {/* <div className="bg-white rounded-lg shadow-md p-6 mb-8">
           <h3 className="text-lg font-semibold mb-2">Patient Information</h3>
           <p className="text-gray-600">Age: {computeAge(userInfo.date_of_birth)}</p>
           <p className="text-gray-600">Gender: Male</p>
           <p className="text-gray-600">Address: {stringifyAddress(userInfo)}</p>
           <p className="text-gray-600">Phone: +1234567890</p>
-        </div>
+        </div> */}
 
         <NextAppointment appointment={{
           doctor: "Dr. Michael Peter",

@@ -10,10 +10,6 @@ const formDataSchema = z.object({
     email: z.string().email(),
     phoneNumber: z.string().min(1),
     // .regex(/^\+?\d{1,3}\s?\d{3}\s?\d{3}\s?\d{4}$/),
-    streetAddress: z.string().min(1),
-    city: z.string().min(1),
-    region: z.string().min(1),
-    postalCode: z.string().min(1),
     emailBody: z.string().max(250),
     emailSubject: z.string().max(50)
     // .regex(/^\d{5}(?:[-\s]\d{4})?$/),
@@ -27,10 +23,6 @@ export async function transferPrescription(userId: string, prevState: any, formD
         pharmacyName: formData.get('pharmacy-name'),
         email: formData.get('email'),
         phoneNumber: formData.get('phone-number'),
-        streetAddress: formData.get('street-address'),
-        city: formData.get('city'),
-        region: formData.get('region'),
-        postalCode: formData.get('postal-code'),
         emailBody: formData.get("email-body"),
         emailSubject: formData.get("email-heading")
     }
@@ -45,7 +37,7 @@ export async function transferPrescription(userId: string, prevState: any, formD
             `${'localhost:3000'}/transfer-request/${data.id}`, // TODO
             validatedFields.data.emailBody
         ))
-        // .then(() => updateOnBoardingStep(userId, { transfer: true }))
+        .then(() => updateOnBoardingStep(userId, { transfer: true }))
         .then(() => { return { status: Status.SUCCESS } })
         .catch(errorHandler<FieldErrors>)
 }
@@ -57,13 +49,7 @@ async function insertTransferRequest(validatedFields: z.SafeParseSuccess<TypeOf<
         pharmacy_name: validatedFields.data.pharmacyName,
         pharmacy_email: validatedFields.data.email,
         user_id: userId,
-        pharmacy_phone_number: validatedFields.data.phoneNumber,
-        mailing_address: {
-            street_address: validatedFields.data.streetAddress,
-            city: validatedFields.data.city,
-            state: validatedFields.data.region,
-            postal_code: validatedFields.data.postalCode
-        }
+        pharmacy_phone_number: validatedFields.data.phoneNumber
     }).select().single().throwOnError();
 
     return {

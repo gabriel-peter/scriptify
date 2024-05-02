@@ -1,16 +1,35 @@
+CREATE TYPE us_state AS ENUM (
+    'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California',
+    'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia',
+    'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa',
+    'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland',
+    'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri',
+    'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey',
+    'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio',
+    'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina',
+    'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont',
+    'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'
+);
+
 create table profiles (
   id uuid references auth.users not null primary key, -- TODO these fields need to be all NOT NULL
-  updated_at timestamp with time zone,
   first_name text,
   last_name text,
+  sex text,
   -- Phone number should be in auth?
-  mailing_address jsonb,
+  address1 text,
+  address2 text,
+  city text,
+  state_enum us_state,
+  zip_code text,
   driver_license_url text,
   avatar_url text,
   preferences jsonb,
   date_of_birth timestamp,
   is_test_user boolean DEFAULT false,
-  is_admin boolean DEFAULT false 
+  is_admin boolean DEFAULT false,
+  created_at timestamp with time zone,
+  updated_at timestamp with time zone
   -- constraint username_length check (char_length(username) >= 3)
 );
 -- Create a table for public profiles
@@ -21,16 +40,13 @@ create table transfer_requests (
     pharmacy_name text,
     pharmacy_email text,
     pharmacy_phone_number text,
-    mailing_address jsonb,
     updated_at timestamp with time zone,
     created_at timestamp with time zone,
-    user_id uuid references auth.users not null,
-    magic_url_key text
+    user_id uuid references auth.users not null
 );
 
 create table prescription_transfers (
-      id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
-
+    id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
     drug_name text not null,
     rx_name text not null,
     refill_date timestamp with time zone,

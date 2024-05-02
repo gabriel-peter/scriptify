@@ -14,7 +14,7 @@ export default function AbstractInput({ errorMessage, error, children }: { error
                             </div>
                         </div>
                         <p className="mt-2 text-sm text-red-600" id="error">
-                            {errorMessage || error._errors.join(".")} {/* TODO */}
+                            {errorMessage || error[0]} {/* TODO */}
                         </p>
                     </>
                 ) :

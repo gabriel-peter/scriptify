@@ -188,7 +188,11 @@ export type Database = {
       }
       profiles: {
         Row: {
+          address1: string | null
+          address2: string | null
           avatar_url: string | null
+          city: string | null
+          created_at: string | null
           date_of_birth: string | null
           driver_license_url: string | null
           first_name: string | null
@@ -196,12 +200,18 @@ export type Database = {
           is_admin: boolean | null
           is_test_user: boolean | null
           last_name: string | null
-          mailing_address: Json | null
           preferences: Json | null
+          sex: string | null
+          state_enum: Database["public"]["Enums"]["us_state"] | null
           updated_at: string | null
+          zip_code: string | null
         }
         Insert: {
+          address1?: string | null
+          address2?: string | null
           avatar_url?: string | null
+          city?: string | null
+          created_at?: string | null
           date_of_birth?: string | null
           driver_license_url?: string | null
           first_name?: string | null
@@ -209,12 +219,18 @@ export type Database = {
           is_admin?: boolean | null
           is_test_user?: boolean | null
           last_name?: string | null
-          mailing_address?: Json | null
           preferences?: Json | null
+          sex?: string | null
+          state_enum?: Database["public"]["Enums"]["us_state"] | null
           updated_at?: string | null
+          zip_code?: string | null
         }
         Update: {
+          address1?: string | null
+          address2?: string | null
           avatar_url?: string | null
+          city?: string | null
+          created_at?: string | null
           date_of_birth?: string | null
           driver_license_url?: string | null
           first_name?: string | null
@@ -222,9 +238,11 @@ export type Database = {
           is_admin?: boolean | null
           is_test_user?: boolean | null
           last_name?: string | null
-          mailing_address?: Json | null
           preferences?: Json | null
+          sex?: string | null
+          state_enum?: Database["public"]["Enums"]["us_state"] | null
           updated_at?: string | null
+          zip_code?: string | null
         }
         Relationships: [
           {
@@ -240,8 +258,6 @@ export type Database = {
         Row: {
           created_at: string | null
           id: string
-          magic_url_key: string | null
-          mailing_address: Json | null
           pharmacy_email: string | null
           pharmacy_name: string | null
           pharmacy_phone_number: string | null
@@ -254,8 +270,6 @@ export type Database = {
         Insert: {
           created_at?: string | null
           id?: string
-          magic_url_key?: string | null
-          mailing_address?: Json | null
           pharmacy_email?: string | null
           pharmacy_name?: string | null
           pharmacy_phone_number?: string | null
@@ -268,8 +282,6 @@ export type Database = {
         Update: {
           created_at?: string | null
           id?: string
-          magic_url_key?: string | null
-          mailing_address?: Json | null
           pharmacy_email?: string | null
           pharmacy_name?: string | null
           pharmacy_phone_number?: string | null
@@ -298,6 +310,57 @@ export type Database = {
     }
     Enums: {
       transfer_request_status: "pending" | "pharmacist-filled" | "complete"
+      us_state:
+        | "Alabama"
+        | "Alaska"
+        | "Arizona"
+        | "Arkansas"
+        | "California"
+        | "Colorado"
+        | "Connecticut"
+        | "Delaware"
+        | "Florida"
+        | "Georgia"
+        | "Hawaii"
+        | "Idaho"
+        | "Illinois"
+        | "Indiana"
+        | "Iowa"
+        | "Kansas"
+        | "Kentucky"
+        | "Louisiana"
+        | "Maine"
+        | "Maryland"
+        | "Massachusetts"
+        | "Michigan"
+        | "Minnesota"
+        | "Mississippi"
+        | "Missouri"
+        | "Montana"
+        | "Nebraska"
+        | "Nevada"
+        | "New Hampshire"
+        | "New Jersey"
+        | "New Mexico"
+        | "New York"
+        | "North Carolina"
+        | "North Dakota"
+        | "Ohio"
+        | "Oklahoma"
+        | "Oregon"
+        | "Pennsylvania"
+        | "Rhode Island"
+        | "South Carolina"
+        | "South Dakota"
+        | "Tennessee"
+        | "Texas"
+        | "Utah"
+        | "Vermont"
+        | "Virginia"
+        | "Washington"
+        | "West Virginia"
+        | "Wisconsin"
+        | "Wyoming"
     }
     CompositeTypes: {
       [_ in never]: never

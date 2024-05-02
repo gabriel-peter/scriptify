@@ -1,6 +1,6 @@
 "use client"
 import { useState } from "react"
-import FormModal from "../abstract-form-modal";
+import FormModal from "./abstract-form-modal";
 import InsuranceInputForm from "../insurance/form";
 
 export default function InsuranceFormModal({ userId }: { userId: string }) {

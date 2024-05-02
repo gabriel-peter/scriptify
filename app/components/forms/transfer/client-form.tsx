@@ -46,14 +46,15 @@ export default function TransferPrescriptions({ userId, successRedirectUrl }: { 
 
 function TransferForm({ setOpenForm, userId, successRedirectUrl }: { setOpenForm: any, userId: string, successRedirectUrl: string }) {
     const transferPrescriptionWithUserId = transferPrescription.bind(null, userId)
-    const [state, formAction] = useFormState(transferPrescriptionWithUserId, {status: Status.NOT_SUBMITTED })
+    const [state, formAction] = useFormState(transferPrescriptionWithUserId, { status: Status.NOT_SUBMITTED })
+    const router = useRouter()
     return (
         <AbstractForm
             formAction={formAction}
             state={state}
             customSubmitName="Send Email"
             header="Transfer Your Prescriptions"
-            redirectUrl={successRedirectUrl}
+            successAction={() => router.push(successRedirectUrl)}
         >
             <GenericInput
                 label="Pharmacy Name"
@@ -69,36 +70,35 @@ function TransferForm({ setOpenForm, userId, successRedirectUrl }: { setOpenForm
                 label="Phone Number of your Pharmacy"
                 errorState={state?.error?.phoneNumber}
             />
-            <AddressSubForm errorState={state.error} />
-            <EmailTextBox/>
+            <EmailTextBox />
         </AbstractForm>
     )
 }
 
 function EmailTextBox() {
     return (
-            <div className="my-5 overflow-hidden rounded-lg border border-gray-300 shadow-sm">
-                <label htmlFor="title" className="sr-only">
-                    Title
-                </label>
-                <input
-                    type="text"
-                    name="email-heading"
-                    id="email-heading"
-                    className="px-3 block w-full border-0 pt-2.5 text-lg font-medium placeholder:text-gray-400 focus:ring-1"
-                    defaultValue={"Prescription Transfer for ____"}
-                />
-                <label htmlFor="description" className="sr-only">
-                    Description
-                </label>
-                <textarea
-                    rows={4}
-                    name="email-body"
-                    id="email-body"
-                    className="px-3 block w-full resize-none border-0 py-0 text-gray-900 placeholder:text-gray-400 focus:ring-1 sm:text-sm sm:leading-6"
-                    placeholder="Write a description..."
-                    defaultValue={''}
-                />
-            </div>
+        <div className="my-5 overflow-hidden rounded-lg border border-gray-300 shadow-sm">
+            <label htmlFor="title" className="sr-only">
+                Title
+            </label>
+            <input
+                type="text"
+                name="email-heading"
+                id="email-heading"
+                className="px-3 block w-full border-0 pt-2.5 text-lg font-medium placeholder:text-gray-400 focus:ring-1"
+                defaultValue={"Prescription Transfer for ____"}
+            />
+            <label htmlFor="description" className="sr-only">
+                Description
+            </label>
+            <textarea
+                rows={4}
+                name="email-body"
+                id="email-body"
+                className="px-3 block w-full resize-none border-0 py-0 text-gray-900 placeholder:text-gray-400 focus:ring-1 sm:text-sm sm:leading-6"
+                placeholder="Write a description..."
+                defaultValue={''}
+            />
+        </div>
     )
 }

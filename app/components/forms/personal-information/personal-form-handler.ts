@@ -4,6 +4,7 @@ import { TypeOf, z } from 'zod';
 import { earliestDob } from '@/app/components/forms/schema-validators';
 import { FormSubmissionReturn, Status, asyncFieldValidation, errorHandler } from '@/app/components/forms/validation-helpers';
 import { updateOnBoardingStep } from '@/app/get-started/update-onboarding-progress';
+import { Tables, Database } from '@/types_db';
 
 const formDataSchema = z.object({
     firstName: z.string().min(1),
@@ -11,8 +12,9 @@ const formDataSchema = z.object({
     phoneNumber: z.string().min(1),
     // .regex(/^\+?\d{1,3}\s?\d{3}\s?\d{3}\s?\d{4}$/),
     streetAddress: z.string().min(1),
+    streetAddress2: z.optional(z.string()),
     city: z.string().min(1),
-    region: z.string().min(1),
+    state: z.string().min(2),
     postalCode: z.string().min(1),
     dateOfBirth: earliestDob
     // .regex(/^\d{5}(?:[-\s]\d{4})?$/),
@@ -27,8 +29,9 @@ export async function addPersonalInformation(userId: string, prevState: any, for
         lastName: formData.get('last-name'),
         phoneNumber: formData.get('phone-number'),
         streetAddress: formData.get('street-address'),
+        streetAddress2: formData.get('street-address-2'),
         city: formData.get('city'),
-        region: formData.get('region'),
+        state: formData.get('state'),
         postalCode: formData.get('postal-code'),
         dateOfBirth: formData.get('date-of-birth')
     }
@@ -48,16 +51,15 @@ async function savePersonalInformation(validatedFields: z.SafeParseSuccess<TypeO
                 id: userId,
                 first_name: validatedFields.data.firstName,
                 last_name: validatedFields.data.lastName,
-                mailing_address: {
-                    street_address: validatedFields.data.streetAddress,
-                    city: validatedFields.data.city,
-                    region: validatedFields.data.region,
-                    postal_code: validatedFields.data.postalCode
-                },
-                date_of_birth: validatedFields.data.dateOfBirth
+                address1: validatedFields.data.streetAddress,
+                address2: validatedFields.data.streetAddress2,
+                city: validatedFields.data.city,
+                state_enum: validatedFields.data.state as Tables<"profiles">['state_enum'],
+                zip_code: validatedFields.data.postalCode,
+                date_of_birth: validatedFields.data.dateOfBirth,
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString()
             }
-        )
-        // .eq('id', userId)
-        .throwOnError()
+        ).throwOnError()
 }
 

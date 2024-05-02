@@ -1,6 +1,6 @@
 "use client"
 import { useState } from "react";
-import FormModal from "../abstract-form-modal";
+import FormModal from "./abstract-form-modal";
 import PaymentForm from "../payment/form";
 
 export default function PaymentFormModal({userId}: {userId: string}) {

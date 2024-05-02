@@ -2,7 +2,7 @@
 import { Tables } from "@/types_db";
 import InsuranceFormModal from "../forms/form-modals/insurance-form-modal";
 
-export default async function MedicalInsuranceInfo({ userId, insurance }: {userId: string, insurance: Tables<"insurance_details">}) {
+export default async function MedicalInsuranceInfo({ userId, insurance }: {userId: string, insurance: Tables<"insurance_details"> | null}) {
     return (
       <>
       <div className="bg-white rounded-lg shadow-md p-6  mx-3.5 my-5">
