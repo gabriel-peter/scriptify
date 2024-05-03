@@ -13,8 +13,8 @@ export default function CompleteProfilePage() {
   return (
     <>
       <Review setOpen={setOpen} />
-      <MedicalInsuranceInfo />
-      <SavedCreditCard />
+      <MedicalInsuranceInfo userId={''} insurance={null} />
+      <SavedCreditCard userId={''} ccDetails={null} />
       <Example open={open} setOpen={setOpen} />
     </>
   )
@@ -105,7 +105,7 @@ export function Review({ setOpen }: { setOpen: any }) {
 }
 
 
-function Example({ open, setOpen }) {
+function Example({ open, setOpen }: {open: boolean, setOpen: (x: boolean) => void}) {
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={setOpen}>

@@ -4,7 +4,7 @@ import ProgressionBar from '../forms/form-progression-bar';
 import { useEffect, useState } from 'react';
 import { Json } from '@/types_db';
 
-type OnBoardingStepType = { id: string, name: string, href: string, status?: string };
+export type OnBoardingStepType = { id: string, name: string, href: string, status?: string };
 
 function getStatusValue(step: OnBoardingStepType, userStep: Json, pathname: string) {
   if (userStep !== undefined && userStep[step.id] !== null) {

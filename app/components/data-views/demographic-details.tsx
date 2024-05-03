@@ -5,42 +5,41 @@ import { Tables } from '@/types_db'
 import { getUserDemographicInformation } from '@/app/api/user-actions/actions'
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
+import { useState } from 'react'
+import { SubmitButton } from '../forms/submit-button'
+import { UpdateRow } from '../forms/single-input-forms/base-single-line-form'
+import updateEmail from '@/app/api/user-actions/email-update-action'
+import UpdateEmailForm from '../forms/single-input-forms/update-email-form'
 
 export default async function DemographicInfoView(
     // {profile}: {profile: Tables<"profiles"> & {email: string} | null}
 ) {
     const supabase = createClient()
-    const {data: { user }} = await supabase.auth.getUser()
-    if (!user) { redirect("/login")}
-    const { data: profile } = await getUserDemographicInformation(user.id)
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) { redirect("/login") }
+    const { data } = await getUserDemographicInformation(user.id)
+    const profile = { ...data, email: user.email }
     return (
         <div className="mx-auto max-w-2xl space-y-16 sm:space-y-20 lg:mx-0 lg:max-w-none">
             <div>
-              <h2 className="text-base font-semibold leading-7 text-gray-900">Profile</h2>
-              <p className="mt-1 text-sm leading-6 text-gray-500">
-                This information will be displayed publicly so be careful what you share.
-              </p>
+                <h2 className="text-base font-semibold leading-7 text-gray-900">Profile</h2>
+                <p className="mt-1 text-sm leading-6 text-gray-500">
+                    This information will be displayed publicly so be careful what you share.
+                </p>
 
-              <dl className="mt-6 space-y-6 divide-y divide-gray-100 border-t border-gray-200 text-sm leading-6">
-                <div className="pt-6 sm:flex">
-                  <dt className="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">Full name</dt>
-                  <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
-                    <div className="text-gray-900">{profile?.first_name} {profile?.last_name}</div>
-                    <button type="button" className="font-semibold text-indigo-600 hover:text-indigo-500">
-                      Update
-                    </button>
-                  </dd>
-                </div>
-                <div className="pt-6 sm:flex">
-                  <dt className="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">Email address</dt>
-                  <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
-                    <div className="text-gray-900">{profile?.email}</div>
-                    <button type="button" className="font-semibold text-indigo-600 hover:text-indigo-500">
-                      Update
-                    </button>
-                  </dd>
-                </div>
-                {/* <div className="pt-6 sm:flex">
+                <dl className="mt-6 space-y-6 divide-y divide-gray-100 border-t border-gray-200 text-sm leading-6">
+                    <div className="pt-6 sm:flex">
+                        <dt className="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">Full name</dt>
+                        <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
+                            <div className="text-gray-900">{profile?.first_name} {profile?.last_name}</div>
+                            <button type="button" className="font-semibold text-indigo-600 hover:text-indigo-500">
+                                Update
+                            </button>
+                        </dd>
+                    </div>
+                    <UpdateEmailForm value={profile.email!}/>
+                    {/* </div> */}
+                    {/* <div className="pt-6 sm:flex">
                   <dt className="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">Title</dt>
                   <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
                     <div className="text-gray-900">Human Resources Manager</div>
@@ -49,34 +48,34 @@ export default async function DemographicInfoView(
                     </button>
                   </dd>
                 </div> */}
-              </dl>
+                </dl>
             </div>
             <div>
-              <h2 className="text-base font-semibold leading-7 text-gray-900">Clinical Preferences</h2>
-              <p className="mt-1 text-sm leading-6 text-gray-500">
-                Choose what language and date format to use throughout your account.
-              </p>
+                <h2 className="text-base font-semibold leading-7 text-gray-900">Clinical Preferences</h2>
+                <p className="mt-1 text-sm leading-6 text-gray-500">
+                    Choose what language and date format to use throughout your account.
+                </p>
 
-              <dl className="mt-6 space-y-6 divide-y divide-gray-100 border-t border-gray-200 text-sm leading-6">
-                <div className="pt-6 sm:flex">
-                  <dt className="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">Language Preference</dt>
-                  <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
-                    <div className="text-gray-900">English</div>
-                    <button type="button" className="font-semibold text-indigo-600 hover:text-indigo-500">
-                      Update
-                    </button>
-                  </dd>
-                </div>
-                <div className="pt-6 sm:flex">
-                  <dt className="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">Date of Birth</dt>
-                  <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
-                    <div className="text-gray-900">{profile?.date_of_birth}</div>
-                    <button type="button" className="font-semibold text-indigo-600 hover:text-indigo-500">
-                      Update
-                    </button>
-                  </dd>
-                </div>
-                {/* <Switch.Group as="div" className="flex pt-6">
+                <dl className="mt-6 space-y-6 divide-y divide-gray-100 border-t border-gray-200 text-sm leading-6">
+                    <div className="pt-6 sm:flex">
+                        <dt className="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">Language Preference</dt>
+                        <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
+                            <div className="text-gray-900">English</div>
+                            <button type="button" className="font-semibold text-indigo-600 hover:text-indigo-500">
+                                Update
+                            </button>
+                        </dd>
+                    </div>
+                    <div className="pt-6 sm:flex">
+                        <dt className="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">Date of Birth</dt>
+                        <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
+                            <div className="text-gray-900">{profile?.date_of_birth}</div>
+                            <button type="button" className="font-semibold text-indigo-600 hover:text-indigo-500">
+                                Update
+                            </button>
+                        </dd>
+                    </div>
+                    {/* <Switch.Group as="div" className="flex pt-6">
                   <Switch.Label as="dt" className="flex-none pr-6 font-medium text-gray-900 sm:w-64" passive>
                     Automatic timezone
                   </Switch.Label>
@@ -99,8 +98,9 @@ export default async function DemographicInfoView(
                     </Switch>
                   </dd>
                 </Switch.Group> */}
-              </dl>
+                </dl>
             </div>
-          </div>
+        </div>
     )
 }
+

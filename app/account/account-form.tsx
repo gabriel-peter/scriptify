@@ -4,7 +4,7 @@ import { createClient } from '@/utils/supabase/client'
 import { type User } from '@supabase/supabase-js'
 import Avatar from './avatar'
 
-export default function AccountForm({ user }: { user: User | null }) {
+export default function AccountForm({ user }: { user: User }) {
   const supabase = createClient()
   const [loading, setLoading] = useState(true)
   const [fullname, setFullname] = useState<string | null>(null)
@@ -25,8 +25,6 @@ export default function AccountForm({ user }: { user: User | null }) {
       }
 
       if (data) {
-        setFullname(data.full_name)
-        setAvatarUrl(data.avatar_url)
       }
     } catch (error) {
       alert('Error loading user data!')

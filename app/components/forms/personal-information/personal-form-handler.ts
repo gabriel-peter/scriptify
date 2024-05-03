@@ -4,7 +4,7 @@ import { TypeOf, z } from 'zod';
 import { earliestDob } from '@/app/components/forms/schema-validators';
 import { FormSubmissionReturn, Status, asyncFieldValidation, errorHandler } from '@/app/components/forms/validation-helpers';
 import { updateOnBoardingStep } from '@/app/get-started/update-onboarding-progress';
-import { Tables, Database } from '@/types_db';
+import { Tables } from '@/types_db';
 
 const formDataSchema = z.object({
     firstName: z.string().min(1),

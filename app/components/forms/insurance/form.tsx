@@ -7,7 +7,7 @@ import saveMedicalInsuranceForm, { FieldErrors } from "./insurance-form-handler"
 import { useRouter } from "next/navigation";
 
 
-export default function InsuranceInputForm({ userId, successAction }: { userId: string, successAction: () => void }) {
+export default function InsuranceInputForm({ userId, redirectUrl, successAction }: { userId: string, redirectUrl?: string, successAction?: () => void }) {
     const saveMedicalInsuranceFormWithUserId = saveMedicalInsuranceForm.bind(null, userId)
     const [state, formAction] = useFormState(saveMedicalInsuranceFormWithUserId, { status: Status.NOT_SUBMITTED })
     const router = useRouter()
@@ -15,8 +15,8 @@ export default function InsuranceInputForm({ userId, successAction }: { userId: 
         <AbstractForm<FieldErrors>
             formAction={formAction}
             state={state}
-            successAction={successAction}
-            description=""
+            successAction={successAction? () => successAction(): () => router.push(redirectUrl!)}
+            description="Enter the insurance details from your insurance card"
             header={"Insurance Information"}
         >
             <MedicalInsuranceInput errorState={state.error} />

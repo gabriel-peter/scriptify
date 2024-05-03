@@ -1,8 +1,10 @@
-import { FieldErrors } from "@/app/get-started/patient/insurance/insurance-form-handler";
 import GenericInput from "../forms/generic-input";
 import NameInput from "../forms/name-input";
 
-export default function MedicalInsuranceInput({ errorState }: { errorState: FieldErrors | undefined }) {
+export default function MedicalInsuranceInput({ errorState }: { errorState: {
+    insuranceName?: string[], insuranceId?: string[], rxGroup?: string[], bin?: string[], ssn?: string[], insuranceNumber?: string[], pcn?: string[]
+    firstName?: string[], lastName?: string[]
+} | undefined }) {
     return (
         <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
             <NameInput errorState={errorState} />

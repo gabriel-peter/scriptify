@@ -96,9 +96,9 @@ enable_manual_linking = false
 enable_signup = true
 # If enabled, a user will be required to confirm any email change on both the old, and new email
 # addresses. If disabled, only the new email is required to confirm.
-double_confirm_changes = true
+double_confirm_changes = false # TODO change in prod
 # If enabled, users need to confirm their email address before signing in.
-enable_confirmations = true
+enable_confirmations = false # TODO change in prod
 # Controls the minimum amount of time that must pass before sending another signup confirmation or password reset email.
 max_frequency = "1s"
 
