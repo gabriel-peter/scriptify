@@ -27,7 +27,7 @@ export default function AccountForm({ user }: { user: User }) {
       if (data) {
       }
     } catch (error) {
-      alert('Error loading user data!')
+      // alert('Error loading user data!')
     } finally {
       setLoading(false)
     }

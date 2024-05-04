@@ -67,10 +67,16 @@ export default async function handlePrescriptionTransferRequestForm(tranferReque
     // SAVE TO DATABASE
     return await asyncFieldValidation(transferPrescriptionFormSchema, formDataObject)
         .then((validatedFields) => savePrescriptionTransfers(validatedFields, tranferRequestId))
+        .then(() => updateTransferRequestStatus(tranferRequestId))
         .then(() => { return { status: Status.SUCCESS } })
         .catch(errorHandler<TransferPrescriptionFormValidatedFieldsType>)
 }
 
+async function updateTransferRequestStatus(tranferRequestId: string) {
+    return await supabase.from("transfer_requests").update({
+        request_status: "pharmacist-filled"
+    }).eq("id", tranferRequestId).throwOnError()
+}
 
 async function savePrescriptionTransfers(validatedFields: z.SafeParseSuccess<TypeOf<typeof transferPrescriptionFormSchema>>, tranferRequestId: string) {
     validatedFields.data.prescriptions.forEach(async (prescription) => {

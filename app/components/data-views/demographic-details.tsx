@@ -10,6 +10,8 @@ import { SubmitButton } from '../forms/submit-button'
 import { UpdateRow } from '../forms/single-input-forms/base-single-line-form'
 import updateEmail from '@/app/api/user-actions/email-update-action'
 import UpdateEmailForm from '../forms/single-input-forms/update-email-form'
+import UpdateNameForm from '../forms/single-input-forms/update-name.form'
+import UpdatePasswordForm from '../forms/single-input-forms/update-password'
 
 export default async function DemographicInfoView(
     // {profile}: {profile: Tables<"profiles"> & {email: string} | null}
@@ -28,26 +30,9 @@ export default async function DemographicInfoView(
                 </p>
 
                 <dl className="mt-6 space-y-6 divide-y divide-gray-100 border-t border-gray-200 text-sm leading-6">
-                    <div className="pt-6 sm:flex">
-                        <dt className="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">Full name</dt>
-                        <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
-                            <div className="text-gray-900">{profile?.first_name} {profile?.last_name}</div>
-                            <button type="button" className="font-semibold text-indigo-600 hover:text-indigo-500">
-                                Update
-                            </button>
-                        </dd>
-                    </div>
+                    <UpdateNameForm value={`${profile?.first_name} ${profile?.last_name}`} userId={user.id} />
                     <UpdateEmailForm value={profile.email!}/>
-                    {/* </div> */}
-                    {/* <div className="pt-6 sm:flex">
-                  <dt className="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">Title</dt>
-                  <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
-                    <div className="text-gray-900">Human Resources Manager</div>
-                    <button type="button" className="font-semibold text-indigo-600 hover:text-indigo-500">
-                      Update
-                    </button>
-                  </dd>
-                </div> */}
+                    <UpdatePasswordForm/>
                 </dl>
             </div>
             <div>

@@ -5,26 +5,25 @@ import { z } from "zod";
 
 
 export default async function updateEmail(prevState: any, formData: FormData): Promise<FormSubmissionReturn<any>> {
-    return await z.string().email().safeParseAsync(formData.get('new-email'))
-    .then((value) => {
-        if (!value.success) {
-            return {
-                status: Status.ERROR,
-                error: value.error.format()
-            }
-        }
-    })
+    return await z.string().email().parseAsync(formData.get('new-email'))
+    // .then((value) => {
+    //     if (!value) {
+    //         return {
+    //             status: Status.ERROR,
+    //             message: value.error.message,
+    //             error: value.error.format()
+    //         }
+    //     }
+    // })
     .then(() => saveEmail(formData.get('new-email')!.toString()))
     .then(() => { return {status: Status.SUCCESS, message: "Email Successfully Updated."}})
-    .catch((error: Error) => {
+    .catch((error: Error) => { // TODO do custom error handling.
         console.log("Additional Error", error)
         return {
             status: Status.ERROR,
             message: error.message
         }
     })
-
-    
 }
 
 async function saveEmail(newEmail: string) {

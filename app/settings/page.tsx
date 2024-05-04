@@ -23,7 +23,7 @@ export default async function SettingsPage() {
     ])
     return (
     <>
-    <PasswordReset />
+    {/* <PasswordReset /> */}
     <DemographicInfoView />
     <SavedCreditCard userId={user.id} ccDetails={ccDetails} />
     <MedicalInsuranceInfo userId={user.id} insurance={insurance} />
