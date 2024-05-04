@@ -3,6 +3,9 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import DashboardNavigationBar from "./components/nav/main-nav";
 import { createClient } from "@/utils/supabase/server";
+import {getUserProfileOrRedirect} from "@/app/api/user-actions/actions";
+import { User } from "@supabase/supabase-js";
+import { Tables } from "@/types_db";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,14 +19,11 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const supabase = createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  const loggedInUser = await getUserProfileOrRedirect()
   return (
     <html lang="en">
       <body className={inter.className}>
-        <DashboardNavigationBar loggedInUser={user} />
+        <DashboardNavigationBar loggedInUser={loggedInUser} />
         <main>
           <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
             {children}

@@ -5,13 +5,12 @@ import { createClient } from "@/utils/supabase/server"
 import { SupabaseClient } from "@supabase/supabase-js";
 
 
-export async function handleResetPasswordRequest({ newPassword, oldPassword }: { newPassword: string, oldPassword: string }) {
+export async function handleResetPasswordRequest(prevState: any, formData: FormData) {
     const supabase = createClient()
-    // More secure option?
-    // const { data, error } = await supabase.auth
-    // .resetPasswordForEmail('gabepeter0817@gmail.com')
-    // console.log(data, error)
-    // TODO confirm old password is legit
+
+    const newPassword = formData.get("new-password") as string;
+    const oldPassword = formData.get("old-password") as string;
+
     const email = (await supabase.auth.getUser()).data.user?.email;
     if (!email || await checkCurrentPassword(supabase, email, oldPassword)) {
         return {

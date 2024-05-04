@@ -4,7 +4,6 @@ import SavedCreditCard from "../components/data-views/credit-card-details";
 import MedicalInsuranceInfo from "../components/data-views/insurance-details";
 import { getUserInsuranceInformation, getUserPaymentInformation } from "../api/user-actions/actions";
 import DemographicInfoView from "../components/data-views/demographic-details";
-import PasswordReset from "../components/auth/password-reset";
 
 
 export default async function SettingsPage() {

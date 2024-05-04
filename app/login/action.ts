@@ -22,11 +22,11 @@ export async function login(formData: FormData) {
 
   if (error) {
     console.log(error.name, error.message, error.cause)
-    redirect(`/login?error=${handleErrorMessage(error)}`) // TODO: redirect with message in url params
+    redirect(`/login?error=${handleErrorMessage(error)}`)
   }
 
   revalidatePath('/', 'layout')
-  redirect('/account')
+  redirect('/my-dashboard/patient')
 }
 
 function handleErrorMessage(error: AuthError) {

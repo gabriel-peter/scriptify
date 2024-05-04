@@ -1,17 +1,10 @@
 "use server";
-
-import { createClient } from "@/utils/supabase/server";
+import { Route } from "next";
 import TransferPrescriptions from "./client-form";
+import { getUserProfileOrRedirect } from "@/app/api/user-actions/actions";
 
-export default async function TransferPrescriptionsPage({successRedirectUrl}:{successRedirectUrl: string}) {
-    const supabase = createClient()
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-  if (!user) {
-    return <div>NO USER :(</div>
-  }
-  return <TransferPrescriptions userId={user.id} successRedirectUrl={successRedirectUrl} />
+export default async function TransferPrescriptionsPage({successRedirectUrl}:{successRedirectUrl: Route<string>}) {
+  const userWithProfile = await getUserProfileOrRedirect();
+  return <TransferPrescriptions userWithProfile={userWithProfile} successRedirectUrl={successRedirectUrl} />
 }
     

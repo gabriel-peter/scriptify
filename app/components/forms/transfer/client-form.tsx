@@ -1,6 +1,5 @@
 "use client";
 import AbstractForm from "@/app/components/forms/abstract-form";
-import AddressSubForm from "@/app/components/forms/address-sub-form";
 import EmailInput from "@/app/components/forms/email-input";
 import GenericInput from "@/app/components/forms/generic-input";
 import PhoneNumberInput from "@/app/components/forms/phone-number-input";
@@ -9,8 +8,12 @@ import { useState } from "react";
 import { useFormState } from "react-dom";
 import { Status } from "@/app/components/forms/validation-helpers";
 import { transferPrescription } from "./transfer-request-form-handler";
+import { User } from "@supabase/supabase-js";
+import { Tables } from "@/types_db";
+import { stringifyName } from "@/app/api/user-actions/actions";
+import { Route } from "next";
 
-export default function TransferPrescriptions({ userId, successRedirectUrl }: { userId: string, successRedirectUrl: string }) {
+export default function TransferPrescriptions({ userWithProfile, successRedirectUrl }: { userWithProfile: {user: User, profile: Tables<"profiles">}, successRedirectUrl: Route<string> }) {
     const router = useRouter();
     const [openForm, setOpenForm] = useState(false);
     return (
@@ -38,14 +41,14 @@ export default function TransferPrescriptions({ userId, successRedirectUrl }: { 
                                 </button>
                             </div>
                         ) :
-                        <TransferForm userId={userId} setOpenForm={setOpenForm} successRedirectUrl={successRedirectUrl} />}
+                        <TransferForm userWithProfile={userWithProfile} setOpenForm={setOpenForm} successRedirectUrl={successRedirectUrl} />}
                 </div>
             </div>
         </>);
 }
 
-function TransferForm({ setOpenForm, userId, successRedirectUrl }: { setOpenForm: any, userId: string, successRedirectUrl: string }) {
-    const transferPrescriptionWithUserId = transferPrescription.bind(null, userId)
+function TransferForm({ setOpenForm, userWithProfile, successRedirectUrl }: { setOpenForm: any, userWithProfile: {user: User, profile: Tables<"profiles">}, successRedirectUrl: Route<string> }) {
+    const transferPrescriptionWithUserId = transferPrescription.bind(null, userWithProfile.user.id)
     const [state, formAction] = useFormState(transferPrescriptionWithUserId, { status: Status.NOT_SUBMITTED })
     const router = useRouter()
     return (
@@ -70,12 +73,12 @@ function TransferForm({ setOpenForm, userId, successRedirectUrl }: { setOpenForm
                 label="Phone Number of your Pharmacy"
                 errorState={state?.error?.phoneNumber}
             />
-            <EmailTextBox />
+            <EmailTextBox profile={userWithProfile.profile}/>
         </AbstractForm>
     )
 }
 
-function EmailTextBox() {
+function EmailTextBox({profile}:{profile: Tables<"profiles">}) {
     return (
         <div className="my-5 overflow-hidden rounded-lg border border-gray-300 shadow-sm">
             <label htmlFor="title" className="sr-only">
@@ -86,7 +89,7 @@ function EmailTextBox() {
                 name="email-heading"
                 id="email-heading"
                 className="px-3 block w-full border-0 pt-2.5 text-lg font-medium placeholder:text-gray-400 focus:ring-1"
-                defaultValue={"Prescription Transfer for ____"}
+                defaultValue={`Prescription Transfer for ${profile.first_name} ${profile.last_name}`}
             />
             <label htmlFor="description" className="sr-only">
                 Description

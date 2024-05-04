@@ -1,11 +1,29 @@
 "use server"
 import { Tables } from "@/types_db";
 import { createClient } from "@/utils/supabase/server";
+import { User } from "@supabase/supabase-js";
+import { profile } from "console";
+import { redirect } from "next/navigation";
 
 // Get User Demographic Information
 export async function getUserDemographicInformation(userId: string) {
     const supabase = createClient();
     return await supabase.from("profiles").select("*").eq("id", userId).single();
+}
+
+export async function getUserProfileOrRedirect(): Promise<{user: User, profile: Tables<"profiles">}> {
+    const supabase = createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
+    if(!user) {
+        redirect('/login')
+    }
+    const { error, data} = await getUserDemographicInformation(user.id)
+    if (error) {
+        return redirect("/error")
+    }
+    return {user, profile: data}
 }
 
 export async function getUserPaymentInformation(userId: string) {

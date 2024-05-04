@@ -9,6 +9,7 @@ import { cn } from "@/utils/cn";
 import { toHumanReadableTime } from "@/utils/time";
 import Link from "next/link";
 import { getUserDemographicInformation, stringifyName } from "@/app/api/user-actions/actions";
+import { Route } from "next";
 
 export default async function Dashboard() {
   const supabase = createClient()
@@ -84,7 +85,7 @@ function PharmaceuticalPatientDashboard({
   );
 }
 
-function SectionHeadingWithAction({ title, actionHref, actionTitle }: { title: string, actionHref: string, actionTitle: string }) {
+function SectionHeadingWithAction({ title, actionHref, actionTitle }: { title: string, actionHref: Route<string>, actionTitle: string }) {
   return (
     <div className="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
       <div className="-ml-4 -mt-2 flex flex-wrap items-center justify-between sm:flex-nowrap">
