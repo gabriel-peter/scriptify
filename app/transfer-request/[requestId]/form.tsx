@@ -1,5 +1,5 @@
 "use client"
-import AbstractForm from "@/app/components/forms/abstract-form";
+import AbstractForm from "@/app/components/forms/abstract-form-full-page";
 import GenericInput from "@/app/components/forms/generic-input";
 import { useState } from "react";
 import { useFormState } from "react-dom";

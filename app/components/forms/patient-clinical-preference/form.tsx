@@ -1,6 +1,6 @@
 "use client"
 import { langaugePreferences, meetingPreference, race, sexualOrientation, chronicConditions } from "@/app/api/patient-get-started/options"
-import AbstractForm from "@/app/components/forms/abstract-form";
+import AbstractForm from "@/app/components/forms/abstract-form-full-page";
 import CheckboxGroup from "@/app/components/forms/checkbox-group";
 import { useFormState } from "react-dom";
 import { Dropdown } from "@/app/components/forms/dropdown";

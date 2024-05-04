@@ -1,5 +1,5 @@
 'use client'
-import AbstractForm from '@/app/components/forms/abstract-form'
+import AbstractForm from '@/app/components/forms/abstract-form-full-page'
 import AddressSubForm from '@/app/components/forms/address-sub-form'
 import NameInput from '@/app/components/forms/name-input'
 import PhoneNumberInput from '@/app/components/forms/phone-number-input'

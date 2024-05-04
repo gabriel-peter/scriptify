@@ -1,7 +1,7 @@
 "use client"
 import { CreditCardInput } from '@/app/components/payment/credit-card-input'
 import { useFormState } from "react-dom";
-import AbstractForm from '@/app/components/forms/abstract-form'
+import AbstractForm from '@/app/components/forms/abstract-form-full-page'
 import { Status } from '@/app/components/forms/validation-helpers'
 import { savePatientPaymentInformation, FieldErrors } from './payment-form-handler'
 import NameInput from '../name-input';

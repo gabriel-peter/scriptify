@@ -1,5 +1,5 @@
 "use client";
-import AbstractForm from "@/app/components/forms/abstract-form";
+import AbstractForm from "@/app/components/forms/abstract-form-full-page";
 import EmailInput from "@/app/components/forms/email-input";
 import GenericInput from "@/app/components/forms/generic-input";
 import PhoneNumberInput from "@/app/components/forms/phone-number-input";
