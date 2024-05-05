@@ -11,25 +11,26 @@ CREATE TYPE us_state AS ENUM (
     'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'
 );
 
+CREATE TYPE role AS ENUM (
+  'ADMIN', 'PATIENT', 'PHARMACIST'
+);
+
 create table profiles (
-  id uuid references auth.users not null primary key, -- TODO these fields need to be all NOT NULL
-  first_name text,
-  last_name text,
-  sex text,
-  -- Phone number should be in auth?
-  address1 text,
+  id uuid references auth.users NOT NULL primary key,
+  first_name text NOT NULL,
+  last_name text NOT NULL,
+  sex text NOT NULL,
+  address1 text NOT NULL,
   address2 text,
-  city text,
-  state_enum us_state,
-  zip_code text,
+  city text NOT NULL,
+  state_enum us_state NOT NULL,
+  zip_code text NOT NULL,
   driver_license_url text,
   avatar_url text,
-  preferences jsonb,
-  date_of_birth timestamp,
-  is_test_user boolean DEFAULT false,
-  is_admin boolean DEFAULT false,
-  created_at timestamp with time zone,
-  updated_at timestamp with time zone
+  date_of_birth timestamp NOT NULL,
+  is_test_user boolean DEFAULT false NOT NULL,
+  created_at timestamp with time zone NOT NULL,
+  updated_at timestamp with time zone NOT NULL
   -- constraint username_length check (char_length(username) >= 3)
 );
 -- Create a table for public profiles

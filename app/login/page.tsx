@@ -2,6 +2,7 @@
 import { login, signup } from './action'
 import FailedSubmission from '../components/alerts/failed-submit-alert'
 import { useSearchParams } from 'next/navigation'
+import Link from 'next/link'
 
 export default function LoginPage() {
   // TODO handle error message. 
@@ -49,9 +50,9 @@ export default function LoginPage() {
                     Password
                   </label>
                   <div className="text-sm">
-                    <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
+                    <Link href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
                       Forgot password?
-                    </a>
+                    </Link>
                   </div>
                 </div>
                 <div className="mt-2">
@@ -74,22 +75,13 @@ export default function LoginPage() {
                   Sign in
                 </button>
               </div>
-
-              <div>
-                <button
-                  formAction={signup}
-                  className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                >
-                  Sign Up
-                </button>
-              </div>
             </form>
   
             <p className="mt-10 text-center text-sm text-gray-500">
               Not a member?{' '}
-              <a href="#" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
-                Start a 14 day free trial
-              </a>
+              <Link href="/sign-up" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+                Sign-up here!
+              </Link>
             </p>
           </div>
         </div>

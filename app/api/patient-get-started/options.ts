@@ -1,10 +1,17 @@
-export const langaugePreferences = [
-    'English',
-    'Spanish',
-    'Chinese',
-    'French',
-    'Arabic'
-]
+export enum langaugePreferences {
+    English = 'English',
+    Spanish = 'Spanish',
+    Chinese = 'Chinese',
+    French = 'French',
+    Arabic = 'Arabic'
+}
+
+export enum sex {
+    MALE = 'Male',
+    FEMALE = 'Female',
+    NA = 'N/A'
+}
+
 export const meetingPreference = [
     'Video Call - only',
     'In-person',

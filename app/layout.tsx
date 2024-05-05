@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import DashboardNavigationBar from "./components/nav/main-nav";
 import { createClient } from "@/utils/supabase/server";
-import {getUserProfileOrRedirect} from "@/app/api/user-actions/actions";
+import {getOptionalUserProfile, getUserProfileOrRedirect} from "@/app/api/user-actions/actions";
 import { User } from "@supabase/supabase-js";
 import { Tables } from "@/types_db";
 
@@ -19,7 +19,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const loggedInUser = await getUserProfileOrRedirect()
+  const loggedInUser = await getOptionalUserProfile()
   return (
     <html lang="en">
       <body className={inter.className}>

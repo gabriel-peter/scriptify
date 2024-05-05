@@ -8,10 +8,8 @@ import { cn } from '@/utils/cn';
 import { Tables } from '@/types_db';
 import ProfilePhoto from '../data-views/profile-photo';
 import Link from 'next/link';
-import { Route } from 'next';
-import { RouteModule } from 'next/dist/server/future/route-modules/route-module';
 
-export default function DashboardNavigationBar({ loggedInUser }: { loggedInUser: { user: User, profile: Tables<"profiles"> } }) {
+export default function DashboardNavigationBar({ loggedInUser }: { loggedInUser: { user: User, profile: Tables<"profiles">  | null}|null}) {
     var navigation = [
         { name: 'About Us', href: '/about-us', current: true },
         { name: 'Learn', href: '/learn', current: false },
@@ -27,7 +25,7 @@ export default function DashboardNavigationBar({ loggedInUser }: { loggedInUser:
             { name: 'Sign out', href: '/auth/signout' }
         ]
         var navigation = [
-            { name: 'Dashboard', href: '/my-dashboard/patient', current: true },
+            { name: 'Dashboard', href:`/my-dashboard/${(loggedInUser.user.user_metadata['account_type'] as string).toLowerCase()}`, current: true },
         ]
     }
 
@@ -157,7 +155,7 @@ export default function DashboardNavigationBar({ loggedInUser }: { loggedInUser:
                                             <ProfilePhoto size={35} />
                                         </div>
                                         <div className="ml-3">
-                                            <div className="text-base font-medium text-white">{loggedInUser?.profile.first_name}</div>
+                                            <div className="text-base font-medium text-white">{loggedInUser?.profile?.first_name}</div>
                                             <div className="text-sm font-medium text-gray-400">{loggedInUser?.user.email}</div>
                                         </div>
                                         <button

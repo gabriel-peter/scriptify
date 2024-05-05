@@ -9,6 +9,8 @@ import GenericInput from '@/app/components/forms/generic-input'
 import { Status } from '@/app/components/forms/validation-helpers'
 import { addPersonalInformation } from './personal-form-handler'
 import { useRouter } from 'next/navigation'
+import { Dropdown } from '../dropdown'
+import { sex } from '@/app/api/patient-get-started/options'
 
 
 export default function PatientPersonalInformationForm({userId}:{userId: string}) {
@@ -25,6 +27,7 @@ export default function PatientPersonalInformationForm({userId}:{userId: string}
       <div>
         <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
           <NameInput errorState={state?.error} />
+          <Dropdown id={'sex'} label={'Sex'} options={Object.values(sex)}/>
           <GenericInput
                 type="date"
                 label={"Date of Birth"}

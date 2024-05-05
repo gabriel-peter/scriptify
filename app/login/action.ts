@@ -44,18 +44,23 @@ function handleErrorMessage(error: AuthError) {
 
 export async function signup(formData: FormData) {
   const supabase = createClient()
-
+ // TODO ZOD validation on signup
   // type-casting here for convenience
   // in practice, you should validate your inputs
   const data = {
     email: formData.get('email') as string,
     password: formData.get('password') as string,
+    options: {
+      data: {
+        account_type: formData.get("account-type")
+      }
+    }
   }
 
   const { error, data: { user } } = await supabase.auth.signUp(data)
-  if (user) {
-    createUserProfile(supabase, user);
-  }
+  // if (user) {
+  //   createUserProfile(supabase, user);
+  // }
 
   if (error) {
     console.log(error)
@@ -63,11 +68,17 @@ export async function signup(formData: FormData) {
   }
 
   revalidatePath('/*', 'layout')
-  redirect("/get-started")
+  if (user?.user_metadata["account_type"] === 'Pharmacist') {
+    redirect("/get-started/pharmacist/personal")
+  } else if (user?.user_metadata["account_type"] === 'Patient') {
+    redirect("/get-started/patient/personal")
+  } else {
+    throw new Error("Error")
+  }
 }
 
-async function createUserProfile(supabase: SupabaseClient<Database>, user: User) {
-  return await supabase.from('profiles').insert({
-    id: user.id
-  });
-}
+// async function createUserProfile(supabase: SupabaseClient<Database>, user: User) {
+//   return await supabase.from('profiles').insert({
+//     id: user.id
+//   });
+// }

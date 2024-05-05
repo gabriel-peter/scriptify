@@ -15,7 +15,7 @@ export default function ClinicalPreference() {
   return (
     <div className="flex flex-col my-10 mx-2.5">
       <AbstractForm formAction={formAction} state={state} successAction={() => router.push("/get-started/patient/payment")} header="Clinical Preferences">
-        <Dropdown id="language" label="Language" options={langaugePreferences} />
+        <Dropdown id="language" label="Language" options={Object.values(langaugePreferences)} />
         <Dropdown id="meeting-environment" label="Meeting Environment" options={meetingPreference} />
         <Dropdown id="race" label="Identified Race" options={race} />
         <Dropdown id="sexual-orientation" label="Sexual Orientation" options={sexualOrientation} />

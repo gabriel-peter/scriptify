@@ -5,11 +5,13 @@ import { earliestDob } from '@/app/components/forms/schema-validators';
 import { FormSubmissionReturn, Status, asyncFieldValidation, errorHandler } from '@/app/components/forms/validation-helpers';
 import { updateOnBoardingStep } from '@/app/get-started/update-onboarding-progress';
 import { Tables } from '@/types_db';
+import { sex } from '@/app/api/patient-get-started/options';
 
 const formDataSchema = z.object({
     firstName: z.string().min(1),
     lastName: z.string().min(1),
     phoneNumber: z.string().min(1),
+    sex: z.nativeEnum(sex),
     // .regex(/^\+?\d{1,3}\s?\d{3}\s?\d{3}\s?\d{4}$/),
     streetAddress: z.string().min(1),
     streetAddress2: z.optional(z.string()),
@@ -30,6 +32,7 @@ export async function addPersonalInformation(userId: string, prevState: any, for
         phoneNumber: formData.get('phone-number'),
         streetAddress: formData.get('street-address'),
         streetAddress2: formData.get('street-address-2'),
+        sex: formData.get("sex"),
         city: formData.get('city'),
         state: formData.get('state'),
         postalCode: formData.get('postal-code'),
@@ -46,11 +49,12 @@ export async function addPersonalInformation(userId: string, prevState: any, for
 
 async function savePersonalInformation(validatedFields: z.SafeParseSuccess<TypeOf<typeof formDataSchema>>, userId: string) {
     return await supabase
-        .from('profiles').upsert(
+        .from('profiles').insert(
             {
                 id: userId,
                 first_name: validatedFields.data.firstName,
                 last_name: validatedFields.data.lastName,
+                sex: validatedFields.data.sex,
                 address1: validatedFields.data.streetAddress,
                 address2: validatedFields.data.streetAddress2,
                 city: validatedFields.data.city,

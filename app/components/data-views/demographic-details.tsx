@@ -3,11 +3,12 @@ import { getUserDemographicInformation } from '@/app/api/user-actions/actions'
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import UpdateEmailForm from '../forms/single-input-forms/update-email-form'
-import UpdateNameForm from '../forms/single-input-forms/update-name.form'
+import UpdateNameForm from '../forms/single-input-forms/update-name-form'
 import UpdatePasswordForm from '../forms/single-input-forms/update-password'
 import ChangableProfilePhoto from './changeable-profile-photo'
 import UpdatDateOfBirthForm from '../forms/single-input-forms/update-date-of-birth'
 import { toHumanReadableDate } from '@/utils/time'
+import UpdateLanguageForm from '../forms/single-input-forms/update-language-form'
 
 export default async function DemographicInfoView(
     // {profile}: {profile: Tables<"profiles"> & {email: string} | null}
@@ -15,8 +16,11 @@ export default async function DemographicInfoView(
     const supabase = createClient()
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) { redirect("/login") }
-    const { data } = await getUserDemographicInformation()
-    const profile = { ...data, email: user.email }
+    const result = await getUserDemographicInformation()
+    if (!result) {
+        redirect('/login')
+    }
+    const profile = { ...result.data, email: user.email }
     return (
         <div className="mx-auto max-w-2xl space-y-16 sm:space-y-20 lg:mx-0 lg:max-w-none">
             <div>
@@ -39,15 +43,7 @@ export default async function DemographicInfoView(
                 </p>
 
                 <dl className="mt-6 space-y-6 divide-y divide-gray-100 border-t border-gray-200 text-sm leading-6">
-                    <div className="pt-6 sm:flex">
-                        <dt className="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">Language Preference</dt>
-                        <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
-                            <div className="text-gray-900">English</div>
-                            <button type="button" className="font-semibold text-indigo-600 hover:text-indigo-500">
-                                Update
-                            </button>
-                        </dd>
-                    </div>
+                <UpdateLanguageForm value={"ENGLISH"}/>
                     <UpdatDateOfBirthForm value={toHumanReadableDate(
                         {
                             year: "numeric",

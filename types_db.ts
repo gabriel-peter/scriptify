@@ -143,7 +143,6 @@ export type Database = {
           refill_date: string | null
           rx_name: string
           transfer_request_id: string
-          user_id: string
         }
         Insert: {
           created_at?: string | null
@@ -155,7 +154,6 @@ export type Database = {
           refill_date?: string | null
           rx_name: string
           transfer_request_id: string
-          user_id: string
         }
         Update: {
           created_at?: string | null
@@ -167,7 +165,6 @@ export type Database = {
           refill_date?: string | null
           rx_name?: string
           transfer_request_id?: string
-          user_id?: string
         }
         Relationships: [
           {
@@ -177,72 +174,59 @@ export type Database = {
             referencedRelation: "transfer_requests"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "prescription_transfers_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
         ]
       }
       profiles: {
         Row: {
-          address1: string | null
+          address1: string
           address2: string | null
           avatar_url: string | null
-          city: string | null
-          created_at: string | null
-          date_of_birth: string | null
+          city: string
+          created_at: string
+          date_of_birth: string
           driver_license_url: string | null
-          first_name: string | null
+          first_name: string
           id: string
-          is_admin: boolean | null
-          is_test_user: boolean | null
-          last_name: string | null
-          preferences: Json | null
-          sex: string | null
-          state_enum: Database["public"]["Enums"]["us_state"] | null
-          updated_at: string | null
-          zip_code: string | null
+          is_test_user: boolean
+          last_name: string
+          sex: string
+          state_enum: Database["public"]["Enums"]["us_state"]
+          updated_at: string
+          zip_code: string
         }
         Insert: {
-          address1?: string | null
+          address1: string
           address2?: string | null
           avatar_url?: string | null
-          city?: string | null
-          created_at?: string | null
-          date_of_birth?: string | null
+          city: string
+          created_at: string
+          date_of_birth: string
           driver_license_url?: string | null
-          first_name?: string | null
+          first_name: string
           id: string
-          is_admin?: boolean | null
-          is_test_user?: boolean | null
-          last_name?: string | null
-          preferences?: Json | null
-          sex?: string | null
-          state_enum?: Database["public"]["Enums"]["us_state"] | null
-          updated_at?: string | null
-          zip_code?: string | null
+          is_test_user?: boolean
+          last_name: string
+          sex: string
+          state_enum: Database["public"]["Enums"]["us_state"]
+          updated_at: string
+          zip_code: string
         }
         Update: {
-          address1?: string | null
+          address1?: string
           address2?: string | null
           avatar_url?: string | null
-          city?: string | null
-          created_at?: string | null
-          date_of_birth?: string | null
+          city?: string
+          created_at?: string
+          date_of_birth?: string
           driver_license_url?: string | null
-          first_name?: string | null
+          first_name?: string
           id?: string
-          is_admin?: boolean | null
-          is_test_user?: boolean | null
-          last_name?: string | null
-          preferences?: Json | null
-          sex?: string | null
-          state_enum?: Database["public"]["Enums"]["us_state"] | null
-          updated_at?: string | null
-          zip_code?: string | null
+          is_test_user?: boolean
+          last_name?: string
+          sex?: string
+          state_enum?: Database["public"]["Enums"]["us_state"]
+          updated_at?: string
+          zip_code?: string
         }
         Relationships: [
           {
@@ -309,6 +293,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
+      role: "ADMIN" | "PATIENT" | "PHARMACIST"
       transfer_request_status: "pending" | "pharmacist-filled" | "complete"
       us_state:
         | "Alabama"
