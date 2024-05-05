@@ -17,3 +17,12 @@ export function toHumanReadableTime(dateString: string, local?: boolean) {
     }
     return Intl.DateTimeFormat("en-US", options).format(date);
 }
+
+export function toHumanReadableDate(options: Intl.DateTimeFormatOptions, dateString: string, local?: boolean) {
+    const date = new Date(dateString);
+
+    if (local) {
+        return date.toLocaleString("en-US", options);
+    }
+    return Intl.DateTimeFormat("en-US", options).format(date);
+}

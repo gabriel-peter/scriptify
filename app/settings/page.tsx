@@ -4,7 +4,7 @@ import SavedCreditCard from "../components/data-views/credit-card-details";
 import MedicalInsuranceInfo from "../components/data-views/insurance-details";
 import { getUserInsuranceInformation, getUserPaymentInformation } from "../api/user-actions/actions";
 import DemographicInfoView from "../components/data-views/demographic-details";
-import ChangableProfilePhoto from "../components/data-views/profile-photo";
+import ChangableProfilePhoto from "../components/data-views/changeable-profile-photo";
 
 
 export default async function SettingsPage() {
@@ -23,7 +23,6 @@ export default async function SettingsPage() {
     ])
     return (
     <>
-    <ChangableProfilePhoto/>
     <DemographicInfoView />
     <SavedCreditCard userId={user.id} ccDetails={ccDetails} />
     <MedicalInsuranceInfo userId={user.id} insurance={insurance} />

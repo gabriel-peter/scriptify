@@ -32,6 +32,12 @@ export class PGError extends Error {
     }
 }
 
+export class StorageError extends Error {
+    constructor(msg: string) {
+        super(msg);
+    }
+}
+
 export async function asyncFieldValidation<U extends ZodType<any, any, any>>(formDataSchema: z.ZodObject<TypeOf<U>>, rawFormData: any): Promise<z.SafeParseSuccess<TypeOf<U>>> {
     const validatedFields = formDataSchema.safeParse(rawFormData)
     // Throw early if the form data is invalid
@@ -53,6 +59,11 @@ export function errorHandler<T>(error: any) {
     } else if (error instanceof PGError) {
         console.log("Caught PSQL error")
         // TODO handle codes?
+    } else if (error instanceof StorageError) {
+        return {
+            status: Status.ERROR,
+            message: error.message
+        }
     }
     return {
         status: Status.ERROR,

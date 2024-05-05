@@ -20,7 +20,7 @@ export default async function Dashboard() {
     return <div>NO USER :(</div>
   }
   const transfers = await getUserTransfers(supabase, user.id);
-  const { error, data: userInfo } = await getUserDemographicInformation(user.id);
+  const { error, data: userInfo } = await getUserDemographicInformation();
   if (error) {
     return <>ERROR</>
   }

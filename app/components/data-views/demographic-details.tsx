@@ -1,17 +1,13 @@
 "use server"
-import { Switch } from '@headlessui/react'
-import { cn } from '@/utils/cn'
-import { Tables } from '@/types_db'
 import { getUserDemographicInformation } from '@/app/api/user-actions/actions'
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
-import { useState } from 'react'
-import { SubmitButton } from '../forms/submit-button'
-import { UpdateRow } from '../forms/single-input-forms/base-single-line-form'
-import updateEmail from '@/app/api/user-actions/email-update-action'
 import UpdateEmailForm from '../forms/single-input-forms/update-email-form'
 import UpdateNameForm from '../forms/single-input-forms/update-name.form'
 import UpdatePasswordForm from '../forms/single-input-forms/update-password'
+import ChangableProfilePhoto from './changeable-profile-photo'
+import UpdatDateOfBirthForm from '../forms/single-input-forms/update-date-of-birth'
+import { toHumanReadableDate } from '@/utils/time'
 
 export default async function DemographicInfoView(
     // {profile}: {profile: Tables<"profiles"> & {email: string} | null}
@@ -19,7 +15,7 @@ export default async function DemographicInfoView(
     const supabase = createClient()
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) { redirect("/login") }
-    const { data } = await getUserDemographicInformation(user.id)
+    const { data } = await getUserDemographicInformation()
     const profile = { ...data, email: user.email }
     return (
         <div className="mx-auto max-w-2xl space-y-16 sm:space-y-20 lg:mx-0 lg:max-w-none">
@@ -31,8 +27,9 @@ export default async function DemographicInfoView(
 
                 <dl className="mt-6 space-y-6 divide-y divide-gray-100 border-t border-gray-200 text-sm leading-6">
                     <UpdateNameForm value={`${profile?.first_name} ${profile?.last_name}`} userId={user.id} />
-                    <UpdateEmailForm value={profile.email!}/>
-                    <UpdatePasswordForm/>
+                    <UpdateEmailForm value={profile.email!} />
+                    <UpdatePasswordForm />
+                    <ChangableProfilePhoto />
                 </dl>
             </div>
             <div>
@@ -51,15 +48,14 @@ export default async function DemographicInfoView(
                             </button>
                         </dd>
                     </div>
-                    <div className="pt-6 sm:flex">
-                        <dt className="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">Date of Birth</dt>
-                        <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
-                            <div className="text-gray-900">{profile?.date_of_birth}</div>
-                            <button type="button" className="font-semibold text-indigo-600 hover:text-indigo-500">
-                                Update
-                            </button>
-                        </dd>
-                    </div>
+                    <UpdatDateOfBirthForm value={toHumanReadableDate(
+                        {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                        },
+                        profile.date_of_birth
+                    )} />
                     {/* <Switch.Group as="div" className="flex pt-6">
                   <Switch.Label as="dt" className="flex-none pr-6 font-medium text-gray-900 sm:w-64" passive>
                     Automatic timezone

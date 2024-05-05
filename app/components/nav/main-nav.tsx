@@ -6,8 +6,12 @@ import { type User } from '@supabase/supabase-js'
 import Image from 'next/image'
 import { cn } from '@/utils/cn';
 import { Tables } from '@/types_db';
+import ProfilePhoto from '../data-views/profile-photo';
+import Link from 'next/link';
+import { Route } from 'next';
+import { RouteModule } from 'next/dist/server/future/route-modules/route-module';
 
-export default function DashboardNavigationBar({ loggedInUser }: { loggedInUser: {user: User, profile: Tables<"profiles">}}) {
+export default function DashboardNavigationBar({ loggedInUser }: { loggedInUser: { user: User, profile: Tables<"profiles"> } }) {
     var navigation = [
         { name: 'About Us', href: '/about-us', current: true },
         { name: 'Learn', href: '/learn', current: false },
@@ -19,7 +23,6 @@ export default function DashboardNavigationBar({ loggedInUser }: { loggedInUser:
     ]
     if (loggedInUser) {
         var userMenuOptions = [
-            { name: 'Your Profile', href: '#' },
             { name: 'Settings', href: '/settings' },
             { name: 'Sign out', href: '/auth/signout' }
         ]
@@ -49,7 +52,7 @@ export default function DashboardNavigationBar({ loggedInUser }: { loggedInUser:
                                         <div className="hidden md:block">
                                             <div className="ml-10 flex items-baseline space-x-4">
                                                 {navigation.map((item) => (
-                                                    <a
+                                                    <Link
                                                         key={item.name}
                                                         href={item.href}
                                                         className={cn(
@@ -61,7 +64,7 @@ export default function DashboardNavigationBar({ loggedInUser }: { loggedInUser:
                                                         aria-current={item.current ? 'page' : undefined}
                                                     >
                                                         {item.name}
-                                                    </a>
+                                                    </Link>
                                                 ))}
                                             </div>
                                         </div>
@@ -83,18 +86,7 @@ export default function DashboardNavigationBar({ loggedInUser }: { loggedInUser:
                                                     <Menu.Button className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                                                         <span className="absolute -inset-1.5" />
                                                         <span className="sr-only">Open user menu</span>
-                                                        {loggedInUser === undefined || loggedInUser?.profile.avatar_url === null ? (
-                                                            <span className="inline-block h-10 w-10 overflow-hidden rounded-full bg-gray-100">
-                                                                <svg className="h-full w-full text-gray-300" fill="currentColor" viewBox="0 0 24 24">
-                                                                    <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-                                                                </svg>
-                                                            </span>
-                                                        ) :
-                                                            (
-                                                                <div>{loggedInUser?.user.email}</div>
-                                                                // <Image height={10} width={10} className="h-10 w-10 rounded-full" src={loggedInUser?.picture} alt="" />
-                                                            )
-                                                        }
+                                                        <ProfilePhoto size={35} />
                                                     </Menu.Button>
                                                 </div>
                                                 <Transition
@@ -162,17 +154,7 @@ export default function DashboardNavigationBar({ loggedInUser }: { loggedInUser:
                                 <div className="border-t border-gray-700 pb-3 pt-4">
                                     <div className="flex items-center px-5">
                                         <div className="flex-shrink-0">
-                                            {loggedInUser === undefined || loggedInUser?.profile.avatar_url === null ? (
-                                                <span className="inline-block h-10 w-10 overflow-hidden rounded-full bg-gray-100">
-                                                    <svg className="h-full w-full text-gray-300" fill="currentColor" viewBox="0 0 24 24">
-                                                        <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-                                                    </svg>
-                                                </span>
-                                            ) :
-                                                (
-                                                    <img className="h-10 w-10 rounded-full" src={loggedInUser?.profile.avatar_url} alt="" />
-                                                )
-                                            }
+                                            <ProfilePhoto size={35} />
                                         </div>
                                         <div className="ml-3">
                                             <div className="text-base font-medium text-white">{loggedInUser?.profile.first_name}</div>

@@ -1,14 +1,26 @@
 "use server"
 import { Tables } from "@/types_db";
 import { createClient } from "@/utils/supabase/server";
-import { User } from "@supabase/supabase-js";
-import { profile } from "console";
+import { PostgrestSingleResponse, User } from "@supabase/supabase-js";
 import { redirect } from "next/navigation";
 
 // Get User Demographic Information
-export async function getUserDemographicInformation(userId: string) {
+export async function getUserDemographicInformation<T extends (keyof Tables<"profiles">)>(columnSelect?: T[]):Promise<PostgrestSingleResponse<{[P in T]: any}>> {
+    const supabase = createClient()
+    const user = await getUserOrRedirect()
+    // https://github.com/supabase/supabase-js/issues/551 Type hack -- hopefully resolved soon.
+    return await supabase.from("profiles").select(columnSelect ? columnSelect.join(",") as '*': "*").eq("id", user.id).single();
+}
+
+export async function getUserOrRedirect(): Promise<User> {
     const supabase = createClient();
-    return await supabase.from("profiles").select("*").eq("id", userId).single();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
+    if(!user) {
+        redirect('/login')
+    }
+    return user
 }
 
 export async function getUserProfileOrRedirect(): Promise<{user: User, profile: Tables<"profiles">}> {
@@ -19,7 +31,7 @@ export async function getUserProfileOrRedirect(): Promise<{user: User, profile: 
     if(!user) {
         redirect('/login')
     }
-    const { error, data} = await getUserDemographicInformation(user.id)
+    const { error, data} = await getUserDemographicInformation()
     if (error) {
         return redirect("/error")
     }
