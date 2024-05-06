@@ -59,20 +59,30 @@ create table prescription_transfers (
     -- user_id uuid references auth.users not null
 );
 
+create table patient_clinical_preferences (
+  user_id references auth.users NOT NULL primary key,
+  language text not null,
+  chronic_conditions array,
+  allergies text,
+  pharmacist_gender text,
+  pharmacist_sexual_orientation text,
+  race_or_ethnicity text,
+);
+
 create table insurance_details (
     id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
-    holder_first_name text,
-    holder_last_name text,
-    insurance_name text,
-    insurance_id text,
-    rx_group_num text,
-    bin text,
-    pcn text,
-    insurance_num text,
-    ssn text,
-    created_at timestamp with time zone,
-    updated_at timestamp with time zone,
-    user_id uuid references auth.users not null
+    holder_first_name text NOT NULL,
+    holder_last_name text NOT NULL,
+    insurance_name text NOT NULL,
+    insurance_id text NOT NULL,
+    rx_group_num text NOT NULL,
+    bin text NOT NULL,
+    pcn text NOT NULL,
+    insurance_num text NOT NULL,
+    ssn text NOT NULL,
+    created_at timestamp with time zone NOT NULL,
+    updated_at timestamp with time zone NOT NULL,
+    user_id uuid references auth.users NOT NULL
 );
 
 create table payments_details (
@@ -135,6 +145,6 @@ create policy "Anyone can update their own avatar." on storage.objects
 
 -- Get Started Info
 create table patient_on_boaring_complete (
-  id uuid references auth.users not null primary key,
-  steps jsonb
+  user_id uuid references auth.users not null primary key,
+  personal_info boolean DEFAULT false,
 ) 

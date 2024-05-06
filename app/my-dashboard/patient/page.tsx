@@ -20,12 +20,12 @@ export default async function Dashboard() {
     return <div>NO USER :(</div>
   }
   const transfers = await getUserTransfers(supabase, user.id);
-  const { error, data: userInfo } = await getUserDemographicInformation();
-  if (error) {
+  const result = await getUserDemographicInformation();
+  if (!result || result.error) {
     return <>ERROR</>
   }
   console.debug("TRANSFERS", transfers);
-  return <PharmaceuticalPatientDashboard user={user} userInfo={userInfo} prescriptionTransfers={transfers} />
+  return <PharmaceuticalPatientDashboard user={user} userInfo={result.data} prescriptionTransfers={transfers} />
 }
 
 async function getUserTransfers(supabase: SupabaseClient<Database>, userId: string) {
