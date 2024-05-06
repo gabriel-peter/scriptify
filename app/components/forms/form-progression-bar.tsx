@@ -1,3 +1,4 @@
+"use client"
 import { cn } from '@/utils/cn'
 import { CheckIcon } from '@heroicons/react/24/solid'
 import { OnBoardingStepType } from '../layouts/get-started-layout'

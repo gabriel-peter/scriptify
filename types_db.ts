@@ -11,48 +11,48 @@ export type Database = {
     Tables: {
       insurance_details: {
         Row: {
-          bin: string | null
-          created_at: string | null
-          holder_first_name: string | null
-          holder_last_name: string | null
+          bin: string
+          created_at: string
+          holder_first_name: string
+          holder_last_name: string
           id: string
-          insurance_id: string | null
-          insurance_name: string | null
-          insurance_num: string | null
-          pcn: string | null
-          rx_group_num: string | null
-          ssn: string | null
-          updated_at: string | null
+          insurance_id: string
+          insurance_name: string
+          insurance_num: string
+          pcn: string
+          rx_group_num: string
+          ssn: string
+          updated_at: string
           user_id: string
         }
         Insert: {
-          bin?: string | null
-          created_at?: string | null
-          holder_first_name?: string | null
-          holder_last_name?: string | null
+          bin: string
+          created_at: string
+          holder_first_name: string
+          holder_last_name: string
           id?: string
-          insurance_id?: string | null
-          insurance_name?: string | null
-          insurance_num?: string | null
-          pcn?: string | null
-          rx_group_num?: string | null
-          ssn?: string | null
-          updated_at?: string | null
+          insurance_id: string
+          insurance_name: string
+          insurance_num: string
+          pcn: string
+          rx_group_num: string
+          ssn: string
+          updated_at: string
           user_id: string
         }
         Update: {
-          bin?: string | null
-          created_at?: string | null
-          holder_first_name?: string | null
-          holder_last_name?: string | null
+          bin?: string
+          created_at?: string
+          holder_first_name?: string
+          holder_last_name?: string
           id?: string
-          insurance_id?: string | null
-          insurance_name?: string | null
-          insurance_num?: string | null
-          pcn?: string | null
-          rx_group_num?: string | null
-          ssn?: string | null
-          updated_at?: string | null
+          insurance_id?: string
+          insurance_name?: string
+          insurance_num?: string
+          pcn?: string
+          rx_group_num?: string
+          ssn?: string
+          updated_at?: string
           user_id?: string
         }
         Relationships: [
@@ -65,23 +65,73 @@ export type Database = {
           },
         ]
       }
-      patient_on_boaring_complete: {
+      patient_clinical_preferences: {
         Row: {
-          id: string
-          steps: Json | null
+          allergies: string | null
+          chronic_conditions: string[] | null
+          language: string
+          pharmacist_gender: string | null
+          pharmacist_sexual_orientation: string | null
+          race_or_ethnicity: string | null
+          user_id: string
         }
         Insert: {
-          id: string
-          steps?: Json | null
+          allergies?: string | null
+          chronic_conditions?: string[] | null
+          language: string
+          pharmacist_gender?: string | null
+          pharmacist_sexual_orientation?: string | null
+          race_or_ethnicity?: string | null
+          user_id: string
         }
         Update: {
-          id?: string
-          steps?: Json | null
+          allergies?: string | null
+          chronic_conditions?: string[] | null
+          language?: string
+          pharmacist_gender?: string | null
+          pharmacist_sexual_orientation?: string | null
+          race_or_ethnicity?: string | null
+          user_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "patient_on_boaring_complete_id_fkey"
-            columns: ["id"]
+            foreignKeyName: "patient_clinical_preferences_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      patient_on_boaring_complete: {
+        Row: {
+          clinical_info: boolean
+          insurance_info: boolean
+          payment_info: boolean
+          personal_info: boolean
+          transfer_info: boolean
+          user_id: string
+        }
+        Insert: {
+          clinical_info?: boolean
+          insurance_info?: boolean
+          payment_info?: boolean
+          personal_info?: boolean
+          transfer_info?: boolean
+          user_id: string
+        }
+        Update: {
+          clinical_info?: boolean
+          insurance_info?: boolean
+          payment_info?: boolean
+          personal_info?: boolean
+          transfer_info?: boolean
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "patient_on_boaring_complete_user_id_fkey"
+            columns: ["user_id"]
             isOneToOne: true
             referencedRelation: "users"
             referencedColumns: ["id"]
@@ -287,7 +337,35 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      user_profiles: {
+        Row: {
+          address1: string | null
+          address2: string | null
+          avatar_url: string | null
+          city: string | null
+          created_at: string | null
+          date_of_birth: string | null
+          driver_license_url: string | null
+          email: string | null
+          first_name: string | null
+          id: string | null
+          is_test_user: boolean | null
+          last_name: string | null
+          sex: string | null
+          state_enum: Database["public"]["Enums"]["us_state"] | null
+          updated_at: string | null
+          zip_code: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "profiles_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
       [_ in never]: never

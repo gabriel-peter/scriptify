@@ -42,7 +42,7 @@ export async function addPersonalInformation(userId: string, prevState: any, for
     // If so then we can have those be standard in a class and the rest be custom per form...
     return await asyncFieldValidation(formDataSchema, rawFormData)
         .then((validatedFields) => savePersonalInformation(validatedFields, userId))
-        .then(() => updateOnBoardingStep(userId, { personal: true }))
+        .then(() => updateOnBoardingStep(userId, 'personal_info', true))
         .then(() => { return { status: Status.SUCCESS }})
         .catch(errorHandler<FieldErrors>)
 }

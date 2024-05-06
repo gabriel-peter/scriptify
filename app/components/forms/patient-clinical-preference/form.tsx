@@ -5,7 +5,7 @@ import CheckboxGroup from "@/app/components/forms/checkbox-group";
 import { useFormState } from "react-dom";
 import { Dropdown } from "@/app/components/forms/dropdown";
 import { Status } from "@/app/components/forms/validation-helpers";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import savePatientClinicalPreferences from "./clinical-preferences-form";
 
 export default function ClinicalPreference() {

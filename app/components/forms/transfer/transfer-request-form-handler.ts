@@ -37,7 +37,7 @@ export async function transferPrescription(userId: string, prevState: any, formD
             `${'localhost:3000'}/transfer-request/${data.id}`, // TODO
             validatedFields.data.emailBody
         ))
-        .then(() => updateOnBoardingStep(userId, { transfer: true }))
+        .then(() => updateOnBoardingStep(userId, "transfer_info", true ))
         .then(() => { return { status: Status.SUCCESS } })
         .catch(errorHandler<FieldErrors>)
 }

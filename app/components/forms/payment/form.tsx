@@ -8,13 +8,13 @@ import NameInput from '../name-input';
 import { useRouter } from 'next/navigation'
 
 
-export default function PaymentForm({userId, successAction}: {userId: string, successAction: () => void }) {
+export default function PaymentForm({userId}: {userId: string }) {
   const savePatientPaymentInformationWithUserId = savePatientPaymentInformation.bind(null, userId);
     const [state, formAction] = useFormState(savePatientPaymentInformationWithUserId, {status: Status.NOT_SUBMITTED})
     const router = useRouter();
   return (
     <div className="flex flex-col">
-      <AbstractForm<FieldErrors> formAction={formAction} state={state} header='Enter your Payment Information' successAction={successAction}>
+      <AbstractForm<FieldErrors> formAction={formAction} state={state} header='Enter your Payment Information' successAction={() => router.push('/my-dashboard/patient')}>
         <NameInput errorState={state?.error} />
         <CreditCardInput errorState={state?.error} userId={userId} />
       </AbstractForm>

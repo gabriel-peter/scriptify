@@ -13,7 +13,7 @@ export default async function Page() {
     if (!user) {
         return <div>NO USER :(</div>
     }
-  return <PaymentForm userId={user.id} successAction={() => redirect('/get-started/patient/complete')}/>
+  return <PaymentForm userId={user.id}/>
 }
 
 

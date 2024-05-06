@@ -7,6 +7,7 @@ import { createClient } from '@/utils/supabase/server'
 import { NextResponse } from 'next/server'
 import { AuthError, SupabaseClient, User } from '@supabase/supabase-js'
 import { Database } from '@/types_db'
+import { use } from 'react'
 
 export async function login(formData: FormData) {
   const supabase = createClient()
@@ -44,7 +45,7 @@ function handleErrorMessage(error: AuthError) {
 
 export async function signup(formData: FormData) {
   const supabase = createClient()
- // TODO ZOD validation on signup
+  // TODO ZOD validation on signup
   // type-casting here for convenience
   // in practice, you should validate your inputs
   const data = {
@@ -58,14 +59,22 @@ export async function signup(formData: FormData) {
   }
 
   const { error, data: { user } } = await supabase.auth.signUp(data)
-  // if (user) {
-  //   createUserProfile(supabase, user);
-  // }
 
-  if (error) {
-    console.log(error)
+
+
+  if (error || !user) {
+    console.error(error)
     redirect('/error')
+  } else {
+    try {
+      await supabase.from("patient_on_boaring_complete").insert({ user_id: user.id }).throwOnError()
+    } catch (e) {
+      console.error(e)
+      redirect('/error')
+    }
   }
+
+  console.log("User Created", user, user.user_metadata)
 
   revalidatePath('/*', 'layout')
   if (user?.user_metadata["account_type"] === 'Pharmacist') {

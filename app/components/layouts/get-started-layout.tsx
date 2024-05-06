@@ -2,16 +2,24 @@
 import { usePathname } from 'next/navigation';
 import ProgressionBar from '../forms/form-progression-bar';
 import { useEffect, useState } from 'react';
-import { Json } from '@/types_db';
+import { Tables } from '@/types_db';
 
-export type OnBoardingStepType = { id: string, name: string, href: string, status?: string };
+export type OnBoardingStepType = { id: "personal" | "clinical" | "payment" | "insurance" | "transfer", name: string, href: string, status?: string };
 
-function getStatusValue(step: OnBoardingStepType, userStep: Json, pathname: string) {
-  if (userStep !== undefined && userStep[step.id] !== null) {
+function getStatusValue(step: OnBoardingStepType, userStep: Tables<"patient_on_boaring_complete">, pathname: string) {
+  const onBoardingMap = {
+    personal: userStep.personal_info,
+    clinical: userStep.clinical_info,
+    payment: userStep.payment_info,
+    insurance: userStep.insurance_info,
+    transfer: userStep.transfer_info
+  };
+  if (onBoardingMap[step.id]) {
     return "complete";
   } else if (step.href === pathname) {
     return "current";
   }
+  console.log("ON BOARD", onBoardingMap)
   return "upcoming";
 }
 
@@ -22,7 +30,7 @@ export default function GetStartedLayout({
 }: {
   children: React.ReactNode,
   steps: OnBoardingStepType[],
-  userStatus: Json
+  userStatus: Tables<"patient_on_boaring_complete">
 }) {
   const pathname = usePathname();
   const [stepState, setSetState] = useState(steps)
@@ -35,8 +43,8 @@ export default function GetStartedLayout({
         }
       )
     }))
-    console.log(steps)
-  }, [pathname, steps])
+    console.log("STEPS UPDATED")
+  }, [pathname, steps, userStatus])
 
   const currentPageIndex = stepState.findIndex((e: { href: string; }) => e.href === pathname)
   const nextPageIndex = Math.min(currentPageIndex + 1, stepState.length - 1)

@@ -2,11 +2,11 @@
 
 import { createClient } from "@/utils/supabase/server"
 
-export async function updateOnBoardingStep(userId: string, step_update: Record<string, boolean>) {
+export async function updateOnBoardingStep(userId: string, key: string, value: boolean) {
     const supabase = createClient()
     const { error } = await supabase.from("patient_on_boaring_complete").upsert({
-        id: userId,
-        steps: { ...step_update }
+        user_id: userId,
+        [key]: value
     })
     return error
 }

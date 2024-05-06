@@ -36,6 +36,13 @@ create table profiles (
 -- Create a table for public profiles
 -- TODO create CRUD reusable fields
 
+create view user_profiles as
+  select
+   profiles.*,
+   auth.users.email
+   from profiles join auth.users on auth.users.id = profiles.id;
+
+
 create table transfer_requests (
     id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
     pharmacy_name text,
@@ -60,13 +67,13 @@ create table prescription_transfers (
 );
 
 create table patient_clinical_preferences (
-  user_id references auth.users NOT NULL primary key,
+  user_id uuid references auth.users NOT NULL primary key,
   language text not null,
-  chronic_conditions array,
+  chronic_conditions text[],
   allergies text,
   pharmacist_gender text,
   pharmacist_sexual_orientation text,
-  race_or_ethnicity text,
+  race_or_ethnicity text
 );
 
 create table insurance_details (
@@ -146,5 +153,9 @@ create policy "Anyone can update their own avatar." on storage.objects
 -- Get Started Info
 create table patient_on_boaring_complete (
   user_id uuid references auth.users not null primary key,
-  personal_info boolean DEFAULT false,
+  personal_info boolean NOT NULL DEFAULT false,
+  transfer_info boolean NOT NULL DEFAULT false,
+  clinical_info boolean NOT NULL DEFAULT false,
+  payment_info boolean NOT NULL DEFAULT false,
+  insurance_info boolean NOT NULL DEFAULT false
 ) 
