@@ -1,12 +1,12 @@
 "use client";
-import AbstractForm from "@/app/components/forms/abstract-form-full-page";
-import EmailInput from "@/app/components/forms/email-input";
-import GenericInput from "@/app/components/forms/generic-input";
-import PhoneNumberInput from "@/app/components/forms/phone-number-input";
+import AbstractForm from "@/components/forms/abstract-form-full-page";
+import EmailInput from "@/components/forms/email-input";
+import GenericInput from "@/components/forms/generic-input";
+import PhoneNumberInput from "@/components/forms/phone-number-input";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useFormState } from "react-dom";
-import { Status } from "@/app/components/forms/validation-helpers";
+import { Status } from "@/components/forms/validation-helpers";
 import { transferPrescription } from "./transfer-request-form-handler";
 import { User } from "@supabase/supabase-js";
 import { Tables } from "@/types_db";

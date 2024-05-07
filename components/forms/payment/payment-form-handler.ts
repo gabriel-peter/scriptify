@@ -1,5 +1,5 @@
 "use server"
-import { FormSubmissionReturn, PGError, Status, asyncFieldValidation, errorHandler } from '@/app/components/forms/validation-helpers';
+import { FormSubmissionReturn, PGError, Status, asyncFieldValidation, errorHandler } from '@/components/forms/validation-helpers';
 import { createClient } from '@/utils/supabase/server';
 import { TypeOf, z } from 'zod';
 import { isValidCreditCard, isValidCVV } from '../schema-validators';

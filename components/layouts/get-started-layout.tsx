@@ -2,19 +2,11 @@
 import { usePathname } from 'next/navigation';
 import ProgressionBar from '../forms/form-progression-bar';
 import { useEffect, useState } from 'react';
-import { Tables } from '@/types_db';
 import { Route } from 'next';
 
-export type OnBoardingStepType = { id: "personal" | "clinical" | "payment" | "insurance" | "transfer", name: string, href: Route<string>, status?: string };
+export type OnBoardingStepType<T> = { id: T, name: string, href: Route<string>, status?: string };
 
-function getStatusValue(step: OnBoardingStepType, userStep: Tables<"patient_on_boaring_complete">, pathname: string) {
-  const onBoardingMap = {
-    personal: userStep.personal_info,
-    clinical: userStep.clinical_info,
-    payment: userStep.payment_info,
-    insurance: userStep.insurance_info,
-    transfer: userStep.transfer_info
-  };
+function getStatusValue<T extends string>(step: OnBoardingStepType<T>, onBoardingMap: {[P in T]: boolean}, pathname: string) {
   if (onBoardingMap[step.id]) {
     return "complete";
   } else if (step.href === pathname) {
@@ -24,28 +16,28 @@ function getStatusValue(step: OnBoardingStepType, userStep: Tables<"patient_on_b
   return "upcoming";
 }
 
-export default function GetStartedLayout({
+export default function GetStartedLayout<T extends string>({
   children, // will be a page or nested layout
   steps,
-  userStatus
+  onBoardMap
 }: {
   children: React.ReactNode,
-  steps: OnBoardingStepType[],
-  userStatus: Tables<"patient_on_boaring_complete">
+  steps: OnBoardingStepType<T>[],
+  onBoardMap: {[P in T]: boolean}
 }) {
   const pathname = usePathname();
   const [stepState, setSetState] = useState(steps)
   useEffect(() => {
-    setSetState(stepState.map((e: OnBoardingStepType) => {
+    setSetState(stepState.map((e: OnBoardingStepType<T>) => {
       return (
         {
           ...e,
-          status: getStatusValue(e, userStatus, pathname)
+          status: getStatusValue(e, onBoardMap, pathname)
         }
       )
     }))
     console.log("STEPS UPDATED")
-  }, [pathname, steps, userStatus])
+  }, [pathname, steps, onBoardMap])
 
   const currentPageIndex = stepState.findIndex((e: { href: string; }) => e.href === pathname)
   const nextPageIndex = Math.min(currentPageIndex + 1, stepState.length - 1)

@@ -1,6 +1,6 @@
 "use server"
 
-import AccountRestrictedRoute from "@/app/components/auth/account-restricted-page";
+import AccountRestrictedRoute from "@/components/auth/account-restricted-page";
 import { ReactNode } from "react";
 
 

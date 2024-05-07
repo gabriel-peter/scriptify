@@ -1,5 +1,5 @@
 "use server"
-import { FormSubmissionReturn, Status, StorageError, errorHandler } from "@/app/components/forms/validation-helpers";
+import { FormSubmissionReturn, Status, StorageError, errorHandler } from "@/components/forms/validation-helpers";
 import { createClient } from "@/utils/supabase/server";
 import { getUserOrRedirect } from "./actions";
 import { SupabaseClient, User } from "@supabase/supabase-js";

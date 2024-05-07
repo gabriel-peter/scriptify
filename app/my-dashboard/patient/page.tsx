@@ -7,7 +7,7 @@ import { Menu, Transition } from '@headlessui/react'
 import { EllipsisVerticalIcon } from '@heroicons/react/20/solid'
 import { cn } from "@/utils/cn";
 import { toHumanReadableTime } from "@/utils/time";
-import { stringifyAddress } from "@/utils/user-attribute-modifiers";
+import { stringifyAddress, stringifyName } from "@/utils/user-attribute-modifiers";
 import Link from "next/link";
 import { getUserDemographicInformationCurrentUser } from "@/app/api/user-actions/actions";
 import { Route } from "next";

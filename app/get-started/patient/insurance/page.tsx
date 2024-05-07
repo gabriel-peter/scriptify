@@ -1,6 +1,6 @@
 "use server"
 
-import InsuranceInputForm from "@/app/components/forms/insurance/form"
+import InsuranceInputForm from "@/components/forms/insurance/form"
 import { createClient } from "@/utils/supabase/server"
 import { redirect } from "next/navigation"
 // import { useRouter } from "next/router"

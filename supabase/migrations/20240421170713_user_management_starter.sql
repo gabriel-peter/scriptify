@@ -159,4 +159,11 @@ create table patient_on_boaring_complete (
   clinical_info boolean NOT NULL DEFAULT false,
   payment_info boolean NOT NULL DEFAULT false,
   insurance_info boolean NOT NULL DEFAULT false
-) 
+);
+
+create table pharmacist_on_boarding_complete (
+  user_id uuid references auth.users not null primary key,
+  personal_info boolean NOT NULL DEFAULT false,
+  license_info boolean NOT NULL DEFAULT false,
+  clinical_info boolean NOT NULL DEFAULT false
+);

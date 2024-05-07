@@ -1,8 +1,8 @@
 'use server'
 import { createClient } from '@/utils/supabase/server';
 import { TypeOf, z } from 'zod';
-import { earliestDob } from '@/app/components/forms/schema-validators';
-import { FormSubmissionReturn, Status, asyncFieldValidation, errorHandler } from '@/app/components/forms/validation-helpers';
+import { earliestDob } from '@/components/forms/schema-validators';
+import { FormSubmissionReturn, Status, asyncFieldValidation, errorHandler } from '@/components/forms/validation-helpers';
 import { updateOnBoardingStep } from '@/app/get-started/update-onboarding-progress';
 import { Tables } from '@/types_db';
 import { sex } from '@/app/api/patient-get-started/options';

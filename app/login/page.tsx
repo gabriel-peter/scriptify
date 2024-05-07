@@ -1,6 +1,6 @@
 "use client"
 import { login, signup } from './action'
-import FailedSubmission from '../components/alerts/failed-submit-alert'
+import FailedSubmission from '@/components/alerts/failed-submit-alert'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 

@@ -1,6 +1,6 @@
 "use server"
 
-import AdminUserList from "../components/data-views/admin/user-list";
+import AdminUserList from "@/components/data-views/admin/user-list";
 import { getUsersPaginated } from "./actions";
 
 export default async function AdminHomePage() {

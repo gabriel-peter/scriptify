@@ -1,6 +1,6 @@
 "use server"
 
-import PaymentForm from "@/app/components/forms/payment/form"
+import PaymentForm from "@/components/forms/payment/form"
 import { createClient } from "@/utils/supabase/server"
 import { redirect } from "next/navigation"
 

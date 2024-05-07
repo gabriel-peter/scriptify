@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import DashboardNavigationBar from "./components/nav/main-nav";
+import DashboardNavigationBar from "../components/nav/main-nav";
 import { createClient } from "@/utils/supabase/server";
 import {getOptionalUserProfile, getUserProfileOrRedirect} from "@/app/api/user-actions/actions";
 import { User } from "@supabase/supabase-js";

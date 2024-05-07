@@ -1,10 +1,10 @@
 "use client"
-import AbstractForm from "@/app/components/forms/abstract-form-full-page";
-import GenericInput from "@/app/components/forms/generic-input";
+import AbstractForm from "@/components/forms/abstract-form-full-page";
+import GenericInput from "@/components/forms/generic-input";
 import { useState } from "react";
 import { useFormState } from "react-dom";
 import handlePrescriptionTransferRequestForm, { PrescriptionFormatedErrorType, TransferPrescriptionFormValidatedFieldsType } from "./external-pharmacist-prescription-transfer";
-import { Status } from "@/app/components/forms/validation-helpers";
+import { Status } from "@/components/forms/validation-helpers";
 import { useRouter } from "next/router";
 
 export default function TransferPage({ params, metadata }: { params: { requestId: string }, metadata: any /*TODO*/ }) {

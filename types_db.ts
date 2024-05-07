@@ -182,6 +182,35 @@ export type Database = {
           },
         ]
       }
+      pharmacist_on_boarding_complete: {
+        Row: {
+          clinical_info: boolean
+          license_info: boolean
+          personal_info: boolean
+          user_id: string
+        }
+        Insert: {
+          clinical_info?: boolean
+          license_info?: boolean
+          personal_info?: boolean
+          user_id: string
+        }
+        Update: {
+          clinical_info?: boolean
+          license_info?: boolean
+          personal_info?: boolean
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pharmacist_on_boarding_complete_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       prescription_transfers: {
         Row: {
           created_at: string | null

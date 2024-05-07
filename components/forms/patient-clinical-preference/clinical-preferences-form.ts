@@ -1,6 +1,6 @@
 "use server"
 
-import { FormSubmissionReturn, Status } from "@/app/components/forms/validation-helpers";
+import { FormSubmissionReturn, Status } from "@/components/forms/validation-helpers";
 
 export default async function savePatientClinicalPreferences(userId: string, prevState: any, formData: FormData)
 :Promise<FormSubmissionReturn<null>> {

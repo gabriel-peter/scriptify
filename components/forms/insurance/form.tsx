@@ -1,8 +1,8 @@
 "use client"
-import AbstractForm from "@/app/components/forms/abstract-form-full-page";
-import MedicalInsuranceInput from "@/app/components/payment/medical-insurance-input";
+import AbstractForm from "@/components/forms/abstract-form-full-page";
+import MedicalInsuranceInput from "@/components/payment/medical-insurance-input";
 import { useFormState } from "react-dom";
-import { Status } from "@/app/components/forms/validation-helpers";
+import { Status } from "@/components/forms/validation-helpers";
 import saveMedicalInsuranceForm, { FieldErrors } from "./insurance-form-handler";
 import { useRouter } from "next/navigation";
 import { Route } from "next";

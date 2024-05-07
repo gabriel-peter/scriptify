@@ -1,10 +1,10 @@
 "use server"
 import { createClient } from "@/utils/supabase/server";
-import SavedCreditCard from "../components/data-views/credit-card-details";
-import MedicalInsuranceInfo from "../components/data-views/insurance-details";
+import SavedCreditCard from "@/components/data-views/credit-card-details";
+import MedicalInsuranceInfo from "@/components/data-views/insurance-details";
 import { getUserInsuranceInformation, getUserPaymentInformation } from "../api/user-actions/actions";
-import DemographicInfoView from "../components/data-views/demographic-details";
-import ChangableProfilePhoto from "../components/data-views/changeable-profile-photo";
+import DemographicInfoView from "@/components/data-views/demographic-details";
+import ChangableProfilePhoto from "@/components/data-views/changeable-profile-photo";
 import { Database } from "@/types_db";
 import { SupabaseClient, User } from "@supabase/supabase-js";
 
