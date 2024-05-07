@@ -49,6 +49,7 @@ async function saveInsuranceInfromation(validatedFields: z.SafeParseSuccess<Type
         bin: validatedFields.data.bin,
         pcn: validatedFields.data.pcn,
         ssn: validatedFields.data.ssn,
+        created_at: new Date().toISOString(),
         updated_at: new Date().toISOString()
     }).throwOnError()
 }

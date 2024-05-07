@@ -3,7 +3,7 @@ import { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { EllipsisVerticalIcon } from '@heroicons/react/20/solid'
 import { cn } from "@/utils/cn";
-import { Database, Views } from '../../../../types_db';
+import { Database } from '../../../../types_db';
 import { PostgrestError } from '@supabase/supabase-js';
 import { toHumanReadableDate } from '@/utils/time';
 import ProfilePhoto from '../profile-photo';

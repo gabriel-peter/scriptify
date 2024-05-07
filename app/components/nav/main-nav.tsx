@@ -8,23 +8,24 @@ import { cn } from '@/utils/cn';
 import { Tables } from '@/types_db';
 import ProfilePhoto from '../data-views/profile-photo';
 import Link from 'next/link';
+import { Route } from 'next';
 
 export default function DashboardNavigationBar({ loggedInUser }: { loggedInUser: { user: User, profile: Tables<"profiles">  | null}|null}) {
-    var navigation = [
+    var navigation: {name: string, href: Route<string>, current: boolean}[] = [
         { name: 'About Us', href: '/about-us', current: true },
         { name: 'Learn', href: '/learn', current: false },
         { name: 'Get Started', href: '/get-started', current: false },
     ]
 
-    var userMenuOptions = [
+    var userMenuOptions: {name: string, href: Route<string>}[] = [
         { name: 'Sign-in', href: "/login" },
     ]
     if (loggedInUser) {
-        var userMenuOptions = [
+        var userMenuOptions: {name: string, href: Route<string>}[] = [
             { name: 'Settings', href: '/settings' },
             { name: 'Sign out', href: '/auth/signout' }
         ]
-        var navigation = [
+        var navigation: {name: string, href: Route<string>, current: boolean}[] = [
             { name: 'Dashboard', href:`/my-dashboard/${(loggedInUser.user.user_metadata['account_type'] as string).toLowerCase()}`, current: true },
         ]
     }
