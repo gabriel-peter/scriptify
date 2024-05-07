@@ -1,10 +1,11 @@
 import "server-only"
 
 import { createClient } from "@/utils/supabase/server"
-import PatientPersonalInformationForm from "./client-form"
+import PersonalInformationForm from "./client-form"
 import { redirect } from "next/navigation"
+import { Route } from "next"
 
-export default async function PersonalInformationFormPage() {
+export default async function PersonalInformationFormPage({successRedirectUrl}: {successRedirectUrl: Route<string>}) {
   const supabase = createClient()
 
   const {
@@ -13,5 +14,5 @@ export default async function PersonalInformationFormPage() {
   if (!user) {
     redirect("/login")
   }
-  return <PatientPersonalInformationForm userId={user?.id} />
+  return <PersonalInformationForm userId={user?.id} successRedirectUrl={successRedirectUrl} />
 }

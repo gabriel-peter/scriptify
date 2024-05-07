@@ -36,7 +36,6 @@ export default function GetStartedLayout<T extends string>({
         }
       )
     }))
-    console.log("STEPS UPDATED")
   }, [pathname, steps, onBoardMap])
 
   const currentPageIndex = stepState.findIndex((e: { href: string; }) => e.href === pathname)

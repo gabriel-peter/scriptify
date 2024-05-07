@@ -11,9 +11,10 @@ import { addPersonalInformation } from './personal-form-handler'
 import { useRouter } from 'next/navigation'
 import { Dropdown } from '../dropdown'
 import { sex } from '@/app/api/patient-get-started/options'
+import { Route } from 'next'
 
 
-export default function PatientPersonalInformationForm({userId}:{userId: string}) {
+export default function PersonalInformationForm({userId, successRedirectUrl}:{userId: string, successRedirectUrl: Route<string>}) {
   const addPersonalInformationWithUserId = addPersonalInformation.bind(null, userId);
   const [state, formAction] = useFormState(addPersonalInformationWithUserId, { status: Status.NOT_SUBMITTED });
   const router = useRouter()
@@ -22,7 +23,7 @@ export default function PatientPersonalInformationForm({userId}:{userId: string}
     formAction={formAction} 
     state={state}
      header='Personal Information' 
-    successAction={() => router.push("/get-started/patient/transfer")}
+    successAction={() => router.push(successRedirectUrl)}
     >
       <div>
         <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">

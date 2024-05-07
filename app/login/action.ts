@@ -65,21 +65,26 @@ export async function signup(formData: FormData) {
   if (error || !user) {
     console.error(error)
     redirect('/error')
-  } else {
-    try {
-      await supabase.from("patient_on_boaring_complete").insert({ user_id: user.id }).throwOnError()
-    } catch (e) {
-      console.error(e)
-      redirect('/error')
-    }
   }
 
   console.log("User Created", user, user.user_metadata)
 
   revalidatePath('/*', 'layout')
   if (user?.user_metadata["account_type"] === 'Pharmacist') {
+    try {
+      await supabase.from("pharmacist_on_boarding_complete").insert({ user_id: user.id }).throwOnError()
+    } catch (e) {
+      console.error(e)
+      redirect('/error')
+    }
     redirect("/get-started/pharmacist/personal")
   } else if (user?.user_metadata["account_type"] === 'Patient') {
+    try {
+      await supabase.from("patient_on_boaring_complete").insert({ user_id: user.id }).throwOnError()
+    } catch (e) {
+      console.error(e)
+      redirect('/error')
+    }
     redirect("/get-started/patient/personal")
   } else {
     throw new Error("Error")

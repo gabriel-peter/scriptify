@@ -4,7 +4,7 @@ import { CheckIcon } from '@heroicons/react/24/solid'
 import { OnBoardingStepType } from '../layouts/get-started-layout'
 import Link from 'next/link'
 
-export default function ProgressionBar({steps}: {steps: OnBoardingStepType[]}) {
+export default function ProgressionBar<T>({steps}: {steps: OnBoardingStepType<T>[]}) {
     return (
       // <div className="lg:border-b lg:border-t lg:border-gray-200">
         <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8" aria-label="Progress">

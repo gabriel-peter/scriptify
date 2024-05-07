@@ -26,7 +26,7 @@ export default function AdminUserList({ users }: {
             <ProfilePhoto size={35} userId={person.id} />
             <div className="min-w-0 flex-auto">
               <p className="text-sm font-semibold leading-6 text-gray-900">
-                <Link href={"/admin/patient/view"} className="hover:underline">
+                <Link href={`/admin/patient/${person.id}`} className="hover:underline">
                   {stringifyName({ first_name: person.first_name!, last_name: person.last_name! })}
                 </Link>
               </p>
@@ -72,7 +72,7 @@ export default function AdminUserList({ users }: {
                           'block px-3 py-1 text-sm leading-6 text-gray-900'
                         )}
                       >
-                        View profile<span className="sr-only">, {person.name}</span>
+                        View profile<span className="sr-only">, {person.first_name}</span>
                       </a>
                     )}
                   </Menu.Item>

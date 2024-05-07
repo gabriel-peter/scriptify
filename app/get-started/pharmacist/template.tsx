@@ -28,7 +28,7 @@ export default async function PharmacistOnBoardingTemplate({
   };
   return (
     <GetStartedLayout steps={steps} onBoardMap={onBoardingMap}>
-        {children}
-      </GetStartedLayout>
+      {children}
+    </GetStartedLayout>
   );
 };
