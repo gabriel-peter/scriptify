@@ -5,14 +5,20 @@ import { PostgrestSingleResponse, User } from "@supabase/supabase-js";
 import { redirect } from "next/navigation";
 
 // Get User Demographic Information
-export async function getUserDemographicInformation<T extends (keyof Tables<"profiles">)>(columnSelect?: T[]):Promise<PostgrestSingleResponse<{[P in T]: any}> | null> {
+export async function getUserDemographicInformationCurrentUser<T extends (keyof Tables<"profiles">)>(columnSelect?: T[]):Promise<PostgrestSingleResponse<{[P in T]: any}> | null> {
     const supabase = createClient()
     const user = await getOptionalUser()
     if (!user) {
         return null
     }
     // https://github.com/supabase/supabase-js/issues/551 Type hack -- hopefully resolved soon.
-    return await supabase.from("profiles").select(columnSelect ? columnSelect.join(",") as '*': "*").eq("id", user.id).single();
+    return await getUserDemographicInformationForUserId(user.id, columnSelect)
+}
+
+export async function getUserDemographicInformationForUserId<T extends (keyof Tables<"profiles">)>(userId: string, columnSelect?: T[]):Promise<PostgrestSingleResponse<{[P in T]: any}> | null> {
+    const supabase = createClient()
+    // https://github.com/supabase/supabase-js/issues/551 Type hack -- hopefully resolved soon.
+    return await supabase.from("profiles").select(columnSelect ? columnSelect.join(",") as '*': "*").eq("id", userId).single();
 }
 
 export async function getOptionalUser(): Promise<User | null> {
@@ -42,7 +48,7 @@ export async function getUserProfileOrRedirect(): Promise<{user: User, profile: 
     if(!user) {
         redirect('/login')
     }
-    const result = await getUserDemographicInformation()
+    const result = await getUserDemographicInformationCurrentUser()
     if (!result) { return null }
     if (result.error) {
         return redirect("/error")
@@ -58,7 +64,7 @@ export async function getOptionalUserProfile(): Promise<{user: User, profile: Ta
     if(!user) {
         return null
     }
-    const result = await getUserDemographicInformation()
+    const result = await getUserDemographicInformationCurrentUser()
     return {user, profile: result?.data || null}
 }
 
@@ -78,20 +84,4 @@ export async function getUserInsuranceInformation(userId: string) {
         return null
     }
     return data
-}
-
-export async function computeAge(date_of_birth: string | null) {
-    return date_of_birth ? date_of_birth : "Unknown"
-}
-
-export async function stringifyAddress(userInfo: Tables<"profiles">) {
-    return userInfo.address1 + " " +
-        userInfo.address2 + " " +
-        userInfo.city + ", " +
-        userInfo.state_enum?.toString() + " " +
-        userInfo.zip_code;
-}
-
-export async function stringifyName(userInfo: Tables<"profiles">) {
-    return userInfo.first_name + " " + userInfo.last_name;
 }

@@ -1,8 +1,11 @@
 "use server"
 import { createClient } from "@/utils/supabase/server"
-import { getUserDemographicInformation } from "./actions"
+import { getUserDemographicInformationCurrentUser, getUserDemographicInformationForUserId } from "./actions"
 
-export async function getProfilePhotoUrl() {
+export async function getProfilePhotoUrl(userId?: string) {
     const supabase = createClient()
-    return await getUserDemographicInformation(['avatar_url'])
+    if (userId) {
+        return await getUserDemographicInformationForUserId(userId, ['avatar_url'])
+    }
+    return await getUserDemographicInformationCurrentUser(['avatar_url'])
 }

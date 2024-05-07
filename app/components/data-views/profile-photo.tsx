@@ -5,12 +5,12 @@ import Image from 'next/image'
 import { useEffect, useMemo, useState } from "react"
 import BlankProfilePhoto from "./blank-profile-photo"
 
-export default function ProfilePhoto({ size }: { size: number }) {
+export default function ProfilePhoto({ size, userId }: { size: number, userId?: string }) {
     const supabase = createClient()
     const [url, setUrl] = useState<string>()
     const memoizedUrl = useMemo(() => url, [url]);
     useEffect(() => {
-        getProfilePhotoUrl()
+        getProfilePhotoUrl(userId)
             .then((response) => {
                 if (!response || !response.data) {
                     return null

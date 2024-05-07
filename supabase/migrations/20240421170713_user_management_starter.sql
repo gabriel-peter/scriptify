@@ -37,10 +37,11 @@ create table profiles (
 -- TODO create CRUD reusable fields
 
 create view user_profiles as
-  select
+  SELECT
    profiles.*,
    auth.users.email
-   from profiles join auth.users on auth.users.id = profiles.id;
+   FROM profiles JOIN auth.users ON auth.users.id = profiles.id 
+   WHERE auth.users.id IS NOT NULL;
 
 
 create table transfer_requests (

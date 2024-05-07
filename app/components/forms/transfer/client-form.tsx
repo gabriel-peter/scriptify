@@ -10,7 +10,6 @@ import { Status } from "@/app/components/forms/validation-helpers";
 import { transferPrescription } from "./transfer-request-form-handler";
 import { User } from "@supabase/supabase-js";
 import { Tables } from "@/types_db";
-import { stringifyName } from "@/app/api/user-actions/actions";
 import { Route } from "next";
 
 export default function TransferPrescriptions({ userWithProfile, successRedirectUrl }: { userWithProfile: {user: User, profile: Tables<"profiles">}, successRedirectUrl: Route<string> }) {

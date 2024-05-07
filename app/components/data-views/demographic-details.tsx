@@ -1,5 +1,5 @@
 "use server"
-import { getUserDemographicInformation } from '@/app/api/user-actions/actions'
+import { getUserDemographicInformationCurrentUser } from '@/app/api/user-actions/actions'
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import UpdateEmailForm from '../forms/single-input-forms/update-email-form'
@@ -14,7 +14,7 @@ export default async function DemographicInfoView() {
     const supabase = createClient()
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) { redirect("/login") }
-    const result = await getUserDemographicInformation()
+    const result = await getUserDemographicInformationCurrentUser()
     if (!result || result.error) {
         redirect(`/get-started/${(user.user_metadata['account_type'] as string).toLowerCase()}/personal`) // TODO add query params of redirect explanation
     }

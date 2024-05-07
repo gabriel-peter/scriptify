@@ -7,8 +7,9 @@ import { Menu, Transition } from '@headlessui/react'
 import { EllipsisVerticalIcon } from '@heroicons/react/20/solid'
 import { cn } from "@/utils/cn";
 import { toHumanReadableTime } from "@/utils/time";
+import { stringifyAddress } from "@/utils/user-attribute-modifiers";
 import Link from "next/link";
-import { getUserDemographicInformation, stringifyName } from "@/app/api/user-actions/actions";
+import { getUserDemographicInformationCurrentUser } from "@/app/api/user-actions/actions";
 import { Route } from "next";
 
 export default async function Dashboard() {
@@ -20,7 +21,7 @@ export default async function Dashboard() {
     return <div>NO USER :(</div>
   }
   const transfers = await getUserTransfers(supabase, user.id);
-  const result = await getUserDemographicInformation();
+  const result = await getUserDemographicInformationCurrentUser();
   if (!result || result.error) {
     return <>ERROR</>
   }

@@ -3,8 +3,9 @@ import { usePathname } from 'next/navigation';
 import ProgressionBar from '../forms/form-progression-bar';
 import { useEffect, useState } from 'react';
 import { Tables } from '@/types_db';
+import { Route } from 'next';
 
-export type OnBoardingStepType = { id: "personal" | "clinical" | "payment" | "insurance" | "transfer", name: string, href: string, status?: string };
+export type OnBoardingStepType = { id: "personal" | "clinical" | "payment" | "insurance" | "transfer", name: string, href: Route<string>, status?: string };
 
 function getStatusValue(step: OnBoardingStepType, userStep: Tables<"patient_on_boaring_complete">, pathname: string) {
   const onBoardingMap = {

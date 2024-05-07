@@ -2,6 +2,7 @@
 import { cn } from '@/utils/cn'
 import { CheckIcon } from '@heroicons/react/24/solid'
 import { OnBoardingStepType } from '../layouts/get-started-layout'
+import Link from 'next/link'
 
 export default function ProgressionBar({steps}: {steps: OnBoardingStepType[]}) {
     return (
@@ -21,7 +22,7 @@ export default function ProgressionBar({steps}: {steps: OnBoardingStepType[]}) {
                   )}
                 >
                   {step.status === 'complete' ? (
-                    <a href={step.href} className="group">
+                    <Link prefetch href={step.href} className="group">
                       <span
                         className="absolute left-0 top-0 h-full w-1 bg-transparent group-hover:bg-gray-200 lg:bottom-0 lg:top-auto lg:h-1 lg:w-full"
                         aria-hidden="true"
@@ -42,9 +43,9 @@ export default function ProgressionBar({steps}: {steps: OnBoardingStepType[]}) {
                           {/* <span className="text-sm font-medium text-gray-500">{step.description}</span> */}
                         </span>
                       </span>
-                    </a>
+                    </Link>
                   ) : step.status === 'current' ? (
-                    <a href={step.href} aria-current="step">
+                    <Link prefetch href={step.href} aria-current="step">
                       <span
                         className="absolute left-0 top-0 h-full w-1 bg-indigo-600 lg:bottom-0 lg:top-auto lg:h-1 lg:w-full"
                         aria-hidden="true"
@@ -65,9 +66,9 @@ export default function ProgressionBar({steps}: {steps: OnBoardingStepType[]}) {
                           {/* <span className="text-sm font-medium text-gray-500">{step.description}</span> */}
                         </span>
                       </span>
-                    </a>
+                    </Link>
                   ) : (
-                    <a href={step.href} className="group">
+                    <Link prefetch href={step.href} className="group">
                       <span
                         className="absolute left-0 top-0 h-full w-1 bg-transparent group-hover:bg-gray-200 lg:bottom-0 lg:top-auto lg:h-1 lg:w-full"
                         aria-hidden="true"
@@ -88,7 +89,7 @@ export default function ProgressionBar({steps}: {steps: OnBoardingStepType[]}) {
                           {/* <span className="text-sm font-medium text-gray-500">{step.description}</span> */}
                         </span>
                       </span>
-                    </a>
+                    </Link>
                   )}
   
                   {stepIdx !== 0 ? (
