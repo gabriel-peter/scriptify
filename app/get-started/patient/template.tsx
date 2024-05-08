@@ -21,6 +21,7 @@ export default async function PatientOnBoardingTemplate({
   const patientOnBoardingStatus = await checkPatientOnBoardingProgress();
   console.log(patientOnBoardingStatus.data)
   if (patientOnBoardingStatus.data === null) {
+    console.log("patientOnBoardingStatus.data === null")
     redirect("/error")
   }
   const onBoardingMap = {

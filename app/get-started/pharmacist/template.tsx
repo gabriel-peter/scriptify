@@ -19,6 +19,7 @@ export default async function PharmacistOnBoardingTemplate({
   const pharmacistOnBoardingStatus = await checkPharmacistOnBoardingProgress();
   console.log(pharmacistOnBoardingStatus.data)
   if (pharmacistOnBoardingStatus.data === null) {
+    console.log("pharmacistOnBoardingStatus.data === null")
     redirect("/error")
   }
   const onBoardingMap = {

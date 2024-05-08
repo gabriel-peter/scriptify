@@ -3,17 +3,14 @@ import { login, signup } from './action'
 import FailedSubmission from '@/components/alerts/failed-submit-alert'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
+import { LoginError, showErrorBanner } from './error-handler'
 
 export default function LoginPage() {
-  // TODO handle error message. 
   const searchParams = useSearchParams()
-  // const [error, setError] = useState(null)
-  const errorParam = searchParams.get("error")
-  const prettyParam = convertErrorParam(errorParam);
-  console.log(errorParam) 
+  const errorParam = searchParams.get("error") as LoginError | null
   return (
       <>
-        {errorParam && <FailedSubmission title="Error occurred while logging in" errorList={[prettyParam]} />}
+        {showErrorBanner(errorParam)}
         <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
           <div className="sm:mx-auto sm:w-full sm:max-w-sm">
             <img
@@ -89,13 +86,3 @@ export default function LoginPage() {
     )
   }
 
-function convertErrorParam(errorParam: string | null) {
-    switch(errorParam) {
-      case "invalid_credentials": return "Invalid login credentials"
-      case "email_not_confirmed": return "Email not confirmed you need to confirm your email, check your inbox"
-      case "server_error": return "Unknown Error occured in our system." 
-      default: return "Unknown Error has occurred"
-    }
-
-}
-  

@@ -51,6 +51,7 @@ export async function getUserProfileOrRedirect(): Promise<{user: User, profile: 
     const result = await getUserDemographicInformationCurrentUser()
     if (!result) { return null }
     if (result.error) {
+        console.log(result.error)
         return redirect("/error")
     }
     return {user, profile: result.data}
