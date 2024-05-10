@@ -6,11 +6,11 @@ import { redirect } from 'next/navigation';
 type PatientOnBoardingSteps = "personal" | "clinical" | "payment" | "insurance" | "transfer"
 
 var steps: OnBoardingStepType<PatientOnBoardingSteps>[] = [
-  { id: 'personal', name: 'Personal Information', href: '/get-started/patient/personal' },
-  { id: 'transfer', name: 'Tranfser Prescriptions', href: '/get-started/patient/transfer' },
-  { id: 'clinical', name: 'Clinical Preferences', href: '/get-started/patient/clinical' },
-  { id: 'insurance', name: 'Insurances Details', href: '/get-started/patient/insurance' },
-  { id: 'payment', name: 'Payment Details', href: '/get-started/patient/payment' },
+  { id: 'personal', name: 'Personal Information', href: '/patient/get-started/personal' },
+  { id: 'transfer', name: 'Tranfser Prescriptions', href: '/patient/get-started/transfer' },
+  { id: 'clinical', name: 'Clinical Preferences', href: '/patient/get-started/clinical' },
+  { id: 'insurance', name: 'Insurances Details', href: '/patient/get-started/insurance' },
+  { id: 'payment', name: 'Payment Details', href: '/patient/get-started/payment' },
 ]
 
 export default async function PatientOnBoardingTemplate({

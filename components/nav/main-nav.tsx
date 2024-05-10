@@ -13,8 +13,8 @@ import { Route } from 'next';
 export default function DashboardNavigationBar({ loggedInUser }: { loggedInUser: { user: User, profile: Tables<"profiles"> | null } | null }) {
     var navigation: { name: string, href: Route<string>, current: boolean }[] = [
         { name: 'About Us', href: '/about-us', current: true },
-        { name: 'Learn', href: '/learn', current: false },
-        { name: 'Get Started', href: '/get-started', current: false },
+        // { name: 'Learn', href: '/learn', current: false },
+        // { name: 'Get Started', href: '/get-started', current: false },
     ]
 
     var userMenuOptions: { name: string, href: Route<string> }[] = [
@@ -28,7 +28,7 @@ export default function DashboardNavigationBar({ loggedInUser }: { loggedInUser:
         var navigation: { name: string, href: Route<string>, current: boolean }[] = [
             {
                 name: 'Dashboard',
-                href: `/my-dashboard/${(loggedInUser.user.user_metadata['account_type'] as string).toLowerCase() as "pharmacist" | "patient"}`,
+                href: `/${(loggedInUser.user.user_metadata['account_type'] as string).toLowerCase() as "pharmacist" | "patient"}/my-dashboard`,
                 current: true
             },
         ]

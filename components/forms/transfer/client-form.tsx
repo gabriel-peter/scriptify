@@ -28,7 +28,7 @@ export default function TransferPrescriptions({ userWithProfile, successRedirect
                                 <div></div>
                                 <button
                                     type="button"
-                                    onClick={() => router.push("/get-started/patient/clinical")}
+                                    onClick={() => router.push("/patient/get-started/clinical")}
                                     className="w-64 h-64 bg-red-50 rounded-lg text-lg font-semibold text-red-600 shadow-lg hover:bg-red-100 flex justify-center items-center mx-4">
                                     No
                                 </button>

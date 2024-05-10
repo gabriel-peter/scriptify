@@ -68,7 +68,7 @@ function PharmaceuticalPatientDashboard({
 
         {/* Medications */}
         <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-          <SectionHeadingWithAction title="Transfers in Progress" actionHref="/transfer/new" actionTitle="Make new request" />
+          <SectionHeadingWithAction title="Transfers in Progress" actionHref="/patient/transfer/new" actionTitle="Make new request" />
           {prescriptionTransfers && <TranfserRequestView prescriptionTransfers={prescriptionTransfers} />}
         </div>
 

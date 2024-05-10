@@ -5,9 +5,9 @@ import { ReactNode } from "react";
 
 export default async function ForcePatientOnBoarding({children}: {children: ReactNode}) {
     const patientOnBoardingStatus = await checkPatientOnBoardingProgress()
-    // if (patientOnBoardingStatus.data !== null && patientOnBoardingStatus.data.steps['complete']) {
+    if (patientOnBoardingStatus.data !== null && patientOnBoardingStatus.data.personal_info) {
         return <>{children}</>
-    // } else {
-    //     redirect('/get-started/patient/personal') // Todo add alert to why
-    // }
+    } else {
+        redirect('/patient/get-started/personal?error=mandatory_complete')
+    }
 }

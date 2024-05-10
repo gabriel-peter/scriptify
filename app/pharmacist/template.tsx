@@ -6,9 +6,9 @@ import { redirect } from 'next/navigation';
 type PharmacistOnBoardingSteps = "personal" | "license" | "clinical"
 
 const steps: OnBoardingStepType<PharmacistOnBoardingSteps>[] = [
-  { id: 'personal', name: 'Personal Information', href: '/get-started/pharmacist/personal' },
-  { id: 'license', name: 'Your License', href: '/get-started/pharmacist/license' },
-  { id: 'clinical', name: 'Clinical Preferences', href: '/get-started/pharmacist/clinical' },
+  { id: 'personal', name: 'Personal Information', href: '/pharmacist/get-started/personal' },
+  { id: 'license', name: 'Your License', href: '/pharmacist/get-started/license' },
+  { id: 'clinical', name: 'Clinical Preferences', href: '/pharmacist/get-started/clinical' },
 ]
 
 export default async function PharmacistOnBoardingTemplate({

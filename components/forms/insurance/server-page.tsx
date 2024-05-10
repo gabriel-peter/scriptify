@@ -14,5 +14,5 @@ export default async function Page() {
     if (!user) {
         return <div>NO USER :(</div>
     }
-    return <InsuranceInputForm userId={user.id} successAction={() => router.push("/get-started/patient/payment")} />
+    return <InsuranceInputForm userId={user.id} successAction={() => router.push("/patient/get-started/payment")} />
 }

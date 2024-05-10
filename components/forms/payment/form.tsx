@@ -14,7 +14,7 @@ export default function PaymentForm({userId}: {userId: string }) {
     const router = useRouter();
   return (
     <div className="flex flex-col">
-      <AbstractForm<FieldErrors> formAction={formAction} state={state} header='Enter your Payment Information' successAction={() => router.push('/my-dashboard/patient')}>
+      <AbstractForm<FieldErrors> formAction={formAction} state={state} header='Enter your Payment Information' successAction={() => router.push('/patient/my-dashboard')}>
         <NameInput errorState={state?.error} />
         <CreditCardInput errorState={state?.error} userId={userId} />
       </AbstractForm>

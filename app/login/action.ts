@@ -84,7 +84,7 @@ export async function signup(formData: FormData) {
       console.error(e)
       redirect(`/sign-up?error=unknown`)
     }
-    redirect("/get-started/patient/personal")
+    redirect("/patient/get-started/personal")
   } else {
     throw new Error("Error")
   }

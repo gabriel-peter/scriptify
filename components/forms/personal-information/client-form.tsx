@@ -8,17 +8,22 @@ import { useFormState } from 'react-dom'
 import GenericInput from '@/components/forms/generic-input'
 import { Status } from '@/components/forms/validation-helpers'
 import { addPersonalInformation } from './personal-form-handler'
-import { useRouter } from 'next/navigation'
-import { Dropdown } from '../dropdown'
+import { useParams, useRouter, useSearchParams } from 'next/navigation'
+import CustomDropdown, { NativeDropdown } from '../dropdown'
 import { sex } from '@/app/api/patient-get-started/options'
 import { Route } from 'next'
+import FailedSubmission from '@/components/alerts/failed-submit-alert'
 
 
 export default function PersonalInformationForm({userId, successRedirectUrl}:{userId: string, successRedirectUrl: Route<string>}) {
+  const errorParam = useSearchParams().get("error")
   const addPersonalInformationWithUserId = addPersonalInformation.bind(null, userId);
   const [state, formAction] = useFormState(addPersonalInformationWithUserId, { status: Status.NOT_SUBMITTED });
   const router = useRouter()
   return (
+    <>
+    {errorParam === 'mandatory_complete' && <FailedSubmission title="Error occurred while visting page." 
+    errorList={["You must complete the 'Personal Information' page to complete your on-boarding process."]} />}
     <AbstractForm 
     formAction={formAction} 
     state={state}
@@ -28,7 +33,9 @@ export default function PersonalInformationForm({userId, successRedirectUrl}:{us
       <div>
         <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
           <NameInput errorState={state?.error} />
-          <Dropdown id={'sex'} label={'Sex'} options={Object.values(sex)}/>
+          <div className="sm:col-span-3">
+          <CustomDropdown errorState={state.error?.sex} id={'sex'} label={'Sex'} options={Object.values(sex)}/>
+          </div>
           <GenericInput
                 type="date"
                 label={"Date of Birth"}
@@ -44,5 +51,6 @@ export default function PersonalInformationForm({userId, successRedirectUrl}:{us
       <UploadFileInput title='Upload Drivers License' instruction='Upload a file' supportedFileTypes={['PNG', 'JPG', 'GIF']} maxSize='10MB' />
       <UploadFileInput title='Upload Profile Photo' instruction='Upload a file' supportedFileTypes={['PNG', 'JPG', 'GIF']} maxSize='10MB' />
     </AbstractForm>
+    </>
   );
 }

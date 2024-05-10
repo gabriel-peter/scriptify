@@ -7,7 +7,7 @@ export default function AbstractInput({ errorMessage, error, children }: { error
             {error !== undefined ?
                 (
                     <>
-                        <div className="relative mt-2 rounded-md shadow-sm">
+                        <div className="relative rounded-md shadow-sm">
                             {children}
                             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
                                 <ExclamationCircleIcon className="h-5 w-5 text-red-500" aria-hidden="true" />
@@ -19,7 +19,7 @@ export default function AbstractInput({ errorMessage, error, children }: { error
                     </>
                 ) :
                 <>
-                    <div className="relative mt-2 rounded-md shadow-sm">
+                    <div className="relative rounded-md shadow-sm">
                         {children}
                     </div>
                 </>
