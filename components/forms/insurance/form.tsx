@@ -19,6 +19,7 @@ export default function InsuranceInputForm({ userId, redirectUrl, successAction 
             successAction={successAction? () => successAction(): () => router.push(redirectUrl!)}
             description="Enter the insurance details from your insurance card"
             header={"Insurance Information"}
+            secondaryButton={() => <button onClick={successAction? () => successAction(): () => router.push(redirectUrl!)}>Skip</button>}
         >
             <MedicalInsuranceInput errorState={state.error} />
         </AbstractForm>

@@ -1,4 +1,5 @@
 "use server";
+import { updateOnBoardingStep } from '@/app/api/get-started/update-onboarding-progress';
 import { FormSubmissionReturn, Status, asyncFieldValidation, errorHandler } from '@/components/forms/validation-helpers';
 import { createClient } from '@/utils/supabase/server';
 import { TypeOf, z } from 'zod';
@@ -33,6 +34,7 @@ export default async function saveMedicalInsuranceForm(userId: string, prevState
 
     return await asyncFieldValidation(insuranceFormSchema, insuranceFormData)
         .then((validatedFields) => saveInsuranceInfromation(validatedFields, userId))
+        .then(() => updateOnBoardingStep(userId, 'insurance_info', true))
         .then(() => { return { status: Status.SUCCESS } })
         .catch(errorHandler<FieldErrors>)
 }

@@ -22,7 +22,7 @@ export default function ProgressionBar<T>({steps}: {steps: OnBoardingStepType<T>
                   )}
                 >
                   {step.status === 'complete' ? (
-                    <Link prefetch href={step.href} className="group">
+                    <div className="group">
                       <span
                         className="absolute left-0 top-0 h-full w-1 bg-transparent group-hover:bg-gray-200 lg:bottom-0 lg:top-auto lg:h-1 lg:w-full"
                         aria-hidden="true"
@@ -43,7 +43,7 @@ export default function ProgressionBar<T>({steps}: {steps: OnBoardingStepType<T>
                           {/* <span className="text-sm font-medium text-gray-500">{step.description}</span> */}
                         </span>
                       </span>
-                    </Link>
+                    </div>
                   ) : step.status === 'current' ? (
                     <Link prefetch href={step.href} aria-current="step">
                       <span

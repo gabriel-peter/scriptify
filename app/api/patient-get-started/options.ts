@@ -12,22 +12,24 @@ export enum sex {
     NA = 'N/A'
 }
 
-export const meetingPreference = [
-    'Video Call - only',
-    'In-person',
-    'Hybrid - No preference'
-]
-export const race = [
-    "--",
-    "American Indian or Alaska Native",
-    "Asian",
-    "Black or African American",
-    "Native Hawaiian or Other Pacific Islander",
-    "White",
-    "Hispanic or Latino",
-    "Mixed Race",
-    "Other"
-]
+export enum meetingPreference {
+    VIDEO_ONLY = 'Video Call - only',
+    IN_PERSON = 'In-person',
+    HYBRID = 'Hybrid - No preference'
+}
+
+export enum race {
+    N_A = "--",
+    AMERICAN_INDIAN_OR_ALASKA_NATIVE = "American Indian or Alaska Native",
+    ASIAN = "Asian",
+    BLACK_OR_AFRICAN_AMERICAN = "Black or African American",
+    NATIVE_HAWAIIAN_OR_OTHER_PACIFIC_ISLANDER = "Native Hawaiian or Other Pacific Islander",
+    WHITE = "White",
+    HISPANIC_OR_LATINO = "Hispanic or Latino",
+    MIXED_RACE = "Mixed Race",
+    OTHER = "Other"
+}
+
 export const sexualOrientation = [
     "--",
     "Heterosexual",
@@ -39,19 +41,23 @@ export const sexualOrientation = [
     "Questioning",
     "Other"
 ]
-export const chronicConditions = [
-    'Diabetes/Obesity',
-    'Arthritis/Chronic Pain',
-    'COPD',
-    'Chronic Kidney Disease',
-    'Cancer',
-    'Asthma',
-    'Depression',
-    'Thyroid',
-    'Anxiety',
-    'High Blood Pressure',
-    'High Cholesterol Menopause/Hormone Disorders Seizure Disorder / Epilepsy'
-]
+
+export enum chronicConditions {
+    DIABETES_OBESITY = 'Diabetes/Obesity',
+    ARTHRITIS_CHRONIC_PAIN = 'Arthritis/Chronic Pain',
+    COPD = 'COPD',
+    CHRONIC_KIDNEY_DISEASE = 'Chronic Kidney Disease',
+    CANCER = 'Cancer',
+    ASTHMA = 'Asthma',
+    DEPRESSION = 'Depression',
+    THYROID = 'Thyroid',
+    ANXIETY = 'Anxiety',
+    HIGH_BLOOD_PRESSURE = 'High Blood Pressure',
+    HIGH_CHOLESTEROL = 'High Cholesterol',
+    MENOPAUSE_HORMONE_DISORDERS = 'Menopause/Hormone Disorders',
+    SEIZURE_DISORDER_EPILEPSY = 'Seizure Disorder / Epilepsy'
+}
+
 
 export const states = [
     'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California',

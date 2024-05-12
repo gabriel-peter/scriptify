@@ -8,18 +8,22 @@ import { Status } from "@/components/forms/validation-helpers";
 import { useRouter } from "next/navigation";
 import savePatientClinicalPreferences from "./clinical-preferences-form";
 
-export default function ClinicalPreference() {
-  const savePatientClinicalPreferencesWithUserId = savePatientClinicalPreferences.bind(null, "user-id");
+export default function ClinicalPreference({userId}: {userId: string}) {
+  const savePatientClinicalPreferencesWithUserId = savePatientClinicalPreferences.bind(null, userId);
   const [state, formAction] = useFormState(savePatientClinicalPreferencesWithUserId, { status: Status.NOT_SUBMITTED })
   const router = useRouter();
   return (
     <div className="flex flex-col my-10 mx-2.5">
-      <AbstractForm formAction={formAction} state={state} successAction={() => router.push("/patient/get-started/payment")} header="Clinical Preferences">
+      <AbstractForm formAction={formAction} state={state} successAction={() => router.push("/patient/get-started/insurance")} header="Clinical Preferences">
         <NativeDropdown id="language" label="Language" options={Object.values(langaugePreferences)} />
-        <NativeDropdown id="meeting-environment" label="Meeting Environment" options={meetingPreference} />
-        <NativeDropdown id="race" label="Identified Race" options={race} />
+        <NativeDropdown id="meeting-environment" label="Meeting Environment" options={Object.values(meetingPreference).map(e => e.toString())} />
+        <NativeDropdown id="race" label="Identified Race" options={Object.values(race).map(e => e.toString())} />
         <NativeDropdown id="sexual-orientation" label="Sexual Orientation" options={sexualOrientation} />
-        <CheckboxGroup label="Select if you have any of the chronic Condiitions" options={chronicConditions} />
+        <CheckboxGroup label="Select if you have any of the chronic Condiitions" options={
+          Object.keys(chronicConditions).map(key => ({
+            key,
+            value: chronicConditions[key as keyof typeof chronicConditions]
+        }))} />
       </AbstractForm>
     </div>
   );

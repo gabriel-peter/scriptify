@@ -49,7 +49,7 @@ export async function addPersonalInformation(userId: string, prevState: any, for
 
 async function savePersonalInformation(validatedFields: z.SafeParseSuccess<TypeOf<typeof formDataSchema>>, userId: string) {
     return await supabase
-        .from('profiles').insert(
+        .from('profiles').upsert(
             {
                 id: userId,
                 first_name: validatedFields.data.firstName,

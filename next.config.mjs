@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  reactStrictMode: true, // TODO verify this is not on in production
   experimental: {
     typedRoutes: true,
   },

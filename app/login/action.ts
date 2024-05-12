@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation'
 import { createClient } from '@/utils/supabase/server'
 import { AuthError } from '@supabase/supabase-js'
 import { LoginError } from './error-handler'
+import { ACCOUNT_TYPE } from '@/utils/enums'
 
 export async function login(formData: FormData) {
   const supabase = createClient()
@@ -15,7 +16,7 @@ export async function login(formData: FormData) {
     password: formData.get('password') as string,
   }
 
-  const { error } = await supabase.auth.signInWithPassword(data)
+  const { error, data: { user } } = await supabase.auth.signInWithPassword(data)
 
   if (error) {
     console.log(error.name, error.message, error.cause)
@@ -23,7 +24,11 @@ export async function login(formData: FormData) {
   }
 
   revalidatePath('/', 'layout')
-  redirect('/my-dashboard/patient')
+  if (user?.user_metadata['account_type'] as ACCOUNT_TYPE === ACCOUNT_TYPE.PATIENT) {
+    redirect('/patient/my-dashboard')
+  } else {
+    redirect('/pharmacist/my-dashboard')
+  }
 }
 
 function handleErrorMessage(error: AuthError): LoginError {
@@ -51,7 +56,7 @@ export async function signup(formData: FormData) {
     password: formData.get('password') as string,
     options: {
       data: {
-        account_type: formData.get("account-type")
+        account_type: formData.get("account-type") as ACCOUNT_TYPE
       }
     }
   }
@@ -69,15 +74,15 @@ export async function signup(formData: FormData) {
   console.log("User Created", user, user.user_metadata)
 
   revalidatePath('/*', 'layout')
-  if (user?.user_metadata["account_type"] === 'Pharmacist') {
+  if (user?.user_metadata["account_type"] as ACCOUNT_TYPE === ACCOUNT_TYPE.PHARMACIST) {
     try {
       await supabase.from("pharmacist_on_boarding_complete").insert({ user_id: user.id }).throwOnError()
     } catch (e) {
       console.error(e)
       redirect(`/sign-up?error=unknown`)
     }
-    redirect("/get-started/pharmacist/personal")
-  } else if (user?.user_metadata["account_type"] === 'Patient') {
+    redirect("/pharmacist/get-started/personal")
+  } else if (user?.user_metadata["account_type"] as ACCOUNT_TYPE === ACCOUNT_TYPE.PATIENT) {
     try {
       await supabase.from("patient_on_boaring_complete").insert({ user_id: user.id }).throwOnError()
     } catch (e) {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import { SubmitButton } from "./submit-button";
 import { FormSubmissionReturn, Status } from "./validation-helpers";
 
@@ -9,7 +9,8 @@ export default function AbstractForm<T>({
     header,
     description,
     customSubmitName,
-    successAction
+    successAction,
+    secondaryButton
 }: {
     children: any,
     formAction: (payload: FormData) => void,
@@ -17,7 +18,8 @@ export default function AbstractForm<T>({
     header: string
     description?: string
     customSubmitName?: string,
-    successAction: () => void // TODO this can be redirect method
+    successAction: () => void, // TODO this can be redirect method
+    secondaryButton?: () => ReactElement
 }
 ) {
     return (
@@ -34,7 +36,7 @@ export default function AbstractForm<T>({
                 <p className="mt-2 text-sm text-red-600">{state.status === Status.ERROR && state.message}</p>
             </div>
             <div className="mt-6 flex items-center justify-end gap-x-6">
-                {/* TODO previous button that goes to previous page */}
+                {secondaryButton && secondaryButton()}
                 <SubmitButton successAction={successAction} customTitle={customSubmitName} isSuccess={state?.status === Status.SUCCESS} />
             </div>
         </form>

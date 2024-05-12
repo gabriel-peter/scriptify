@@ -14,5 +14,5 @@ export default async function Page() {
     if (!user) {
         return <div>NO USER :(</div>
     }
-    return <InsuranceInputForm userId={user.id} redirectUrl={"/patient/get-started/complete"} successAction={undefined} />
+    return <InsuranceInputForm userId={user.id} redirectUrl={"/patient/get-started/payment"} successAction={undefined} />
 }
