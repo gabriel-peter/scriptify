@@ -39,7 +39,7 @@ export default function AdminUserList({ users }: {
           </div>
           <div className="flex shrink-0 items-center gap-x-6">
             <div className="hidden sm:flex sm:flex-col sm:items-end">
-              <p className="text-sm leading-6 text-gray-900">{'Patient'}</p>
+              <p className="text-sm leading-6 text-gray-900">{'TODO'}</p>
               <p className="mt-1 text-xs leading-5 text-gray-500">
                 Member since <time dateTime={person.created_at}>{toHumanReadableDate({
                   year: "numeric",

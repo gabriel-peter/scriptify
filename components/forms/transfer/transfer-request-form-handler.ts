@@ -4,6 +4,8 @@ import { createClient } from '@/utils/supabase/server';
 import { TypeOf, z } from 'zod'
 import { FormSubmissionReturn, Status, asyncFieldValidation, errorHandler } from '@/components/forms/validation-helpers';
 import { updateOnBoardingStep } from '@/app/api/get-started/update-onboarding-progress';
+import { SupabaseClient } from '@supabase/supabase-js';
+import { Database } from '@/types_db';
 
 const formDataSchema = z.object({
     pharmacyName: z.string().min(1),
@@ -15,10 +17,10 @@ const formDataSchema = z.object({
     // .regex(/^\d{5}(?:[-\s]\d{4})?$/),
 });
 
-const supabase = createClient(); // TODO research side-effects of in file-scope
 export type FieldErrors = z.inferFlattenedErrors<typeof formDataSchema>["fieldErrors"]
-export async function transferPrescription(userId: string, prevState: any, formData: FormData):
+export async function transferPrescription(userId: string, prevState: any, formData: FormData, supabase?: SupabaseClient<Database>):
     Promise<FormSubmissionReturn<FieldErrors>> {
+    if (!supabase) { supabase = createClient(); }
     const rawFormData = {
         pharmacyName: formData.get('pharmacy-name'),
         email: formData.get('email'),
@@ -28,7 +30,7 @@ export async function transferPrescription(userId: string, prevState: any, formD
     }
 
     return await asyncFieldValidation(formDataSchema, rawFormData)
-        .then((validatedFields) => insertTransferRequest(validatedFields, userId))
+        .then((validatedFields) => insertTransferRequest(validatedFields, userId, supabase))
         .then(({ result, validatedFields }) => {
             if (result.data === null) { throw Error("Result Returned Null") }
             else { return { data: result.data, validatedFields } }
@@ -42,7 +44,7 @@ export async function transferPrescription(userId: string, prevState: any, formD
         .catch(errorHandler<FieldErrors>)
 }
 
-async function insertTransferRequest(validatedFields: z.SafeParseSuccess<TypeOf<typeof formDataSchema>>, userId: string) {
+async function insertTransferRequest(validatedFields: z.SafeParseSuccess<TypeOf<typeof formDataSchema>>, userId: string, supabase: SupabaseClient<Database>) {
     const result = await supabase.from("transfer_requests").insert({
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),

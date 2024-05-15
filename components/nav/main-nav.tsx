@@ -9,30 +9,55 @@ import { Tables } from '@/types_db';
 import ProfilePhoto from '../data-views/profile-photo';
 import Link from 'next/link';
 import { Route } from 'next';
+import { ACCOUNT_TYPE } from '@/utils/enums';
+import { usePathname } from 'next/navigation';
+
+type NavLink = { name: string, href: Route<string> };
+const PUBLIC_NAV_LINKS: NavLink[] = [{ name: 'About Us', href: '/about-us' }]
+const ADMIN_NAV_LINKS: NavLink[] = [{
+    name: 'Users',
+    href: `/admin`,
+}];
+const PATIENT_NAV_LINKS: NavLink[] = [{
+    name: 'Dashboard',
+    href: `/patient/my-dashboard`,
+}]
+const PHARMACIST_NAV_LINKS: NavLink[] = [{
+    name: 'Dashboard',
+    href: `/pharmacist/my-dashboard`,
+}]
+
+function getNavBarLinks(user: User | undefined): NavLink[]  {
+    if (!user) { return PUBLIC_NAV_LINKS } ;
+    switch(user.user_metadata['account_type'] as ACCOUNT_TYPE) {
+        case ACCOUNT_TYPE.ADMIN: return ADMIN_NAV_LINKS;
+        case ACCOUNT_TYPE.PATIENT: return PATIENT_NAV_LINKS; 
+        case ACCOUNT_TYPE.PHARMACIST: return PHARMACIST_NAV_LINKS;
+    }
+}
+
+function getProfileButtonLinks(user: User | undefined): NavLink[] {
+    if (user) {
+        return [
+            {
+                name: "Settings",
+                href: "/settings"
+            },
+            {
+                name: "Sign-out",
+                href: "/auth/signout"
+            }
+        ]
+    } else {
+        return [{ name: 'Sign-in', href: "/login" }]
+    }
+}
 
 export default function DashboardNavigationBar({ loggedInUser }: { loggedInUser: { user: User, profile: Tables<"profiles"> | null } | null }) {
-    var navigation: { name: string, href: Route<string>, current: boolean }[] = [
-        { name: 'About Us', href: '/about-us', current: true },
-        // { name: 'Learn', href: '/learn', current: false },
-        // { name: 'Get Started', href: '/get-started', current: false },
-    ]
-
-    var userMenuOptions: { name: string, href: Route<string> }[] = [
-        { name: 'Sign-in', href: "/login" },
-    ]
-    if (loggedInUser) {
-        var userMenuOptions: { name: string, href: Route<string> }[] = [
-            { name: 'Settings', href: '/settings' },
-            { name: 'Sign out', href: '/auth/signout' }
-        ]
-        var navigation: { name: string, href: Route<string>, current: boolean }[] = [
-            {
-                name: 'Dashboard',
-                href: `/${(loggedInUser.user.user_metadata['account_type'] as string).toLowerCase() as "pharmacist" | "patient"}/my-dashboard`,
-                current: true
-            },
-        ]
-    }
+    const pathname = usePathname()
+    const navigation: (NavLink & {current: boolean})[]  = getNavBarLinks(loggedInUser?.user)
+    .map(e => ({name: e.name, href: e.href, current: pathname === e.href} as const));
+    const userMenuOptions: NavLink[] = getProfileButtonLinks(loggedInUser?.user)
 
     return (
         <div>

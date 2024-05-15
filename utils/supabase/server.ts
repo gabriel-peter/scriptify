@@ -1,4 +1,4 @@
-import "server-only"
+// import "server-only" TODO
 import { Database } from '@/types_db'
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { cookies } from 'next/headers'

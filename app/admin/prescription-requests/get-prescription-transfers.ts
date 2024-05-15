@@ -15,6 +15,7 @@ export async function getTransferedPrescriptions(limit?: number): Promise<Postgr
     request_status,
     profiles(
         first_name
-    )`).limit(limit || 20))
+    )
+    `).limit(limit || 20))
 
 }
