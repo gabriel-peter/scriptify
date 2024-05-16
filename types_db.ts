@@ -63,6 +63,13 @@ export type Database = {
             referencedRelation: "users"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "insurance_details_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
         ]
       }
       patient_clinical_preferences: {
@@ -101,6 +108,13 @@ export type Database = {
             referencedRelation: "users"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "patient_clinical_preferences_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
         ]
       }
       patient_on_boaring_complete: {
@@ -129,6 +143,13 @@ export type Database = {
           user_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "patient_on_boaring_complete_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "patient_on_boaring_complete_user_id_fkey"
             columns: ["user_id"]
@@ -180,6 +201,13 @@ export type Database = {
             referencedRelation: "users"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "payments_details_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
         ]
       }
       pharmacist_on_boarding_complete: {
@@ -202,6 +230,13 @@ export type Database = {
           user_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "pharmacist_on_boarding_complete_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "pharmacist_on_boarding_complete_user_id_fkey"
             columns: ["user_id"]
@@ -315,6 +350,13 @@ export type Database = {
             referencedRelation: "users"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "profiles_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
         ]
       }
       transfer_requests: {
@@ -400,14 +442,63 @@ export type Database = {
             referencedRelation: "users"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "profiles_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
         ]
+      }
+      users: {
+        Row: {
+          created_at: string | null
+          deleted_at: string | null
+          email: string | null
+          email_confirmed_at: string | null
+          id: string | null
+          is_sso_user: boolean | null
+          last_sign_in_at: string | null
+          phone: string | null
+          raw_user_meta_data: Json | null
+          role: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          deleted_at?: string | null
+          email?: string | null
+          email_confirmed_at?: string | null
+          id?: string | null
+          is_sso_user?: boolean | null
+          last_sign_in_at?: string | null
+          phone?: string | null
+          raw_user_meta_data?: Json | null
+          role?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          deleted_at?: string | null
+          email?: string | null
+          email_confirmed_at?: string | null
+          id?: string | null
+          is_sso_user?: boolean | null
+          last_sign_in_at?: string | null
+          phone?: string | null
+          raw_user_meta_data?: Json | null
+          role?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
       }
     }
     Functions: {
       [_ in never]: never
     }
     Enums: {
-      role: "ADMIN" | "PATIENT" | "PHARMACIST"
+      account_type_enum: "ADMIN" | "PATIENT" | "PHARMACIST"
       transfer_request_status: "pending" | "pharmacist-filled" | "complete"
       us_state:
         | "Alabama"

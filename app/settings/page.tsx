@@ -7,6 +7,8 @@ import DemographicInfoView from "@/components/data-views/demographic-details";
 import ChangableProfilePhoto from "@/components/data-views/changeable-profile-photo";
 import { Database } from "@/types_db";
 import { SupabaseClient, User } from "@supabase/supabase-js";
+import { ACCOUNT_TYPE } from "@/utils/enums";
+import { ReactNode } from "react";
 
 
 export default async function SettingsPage() {
@@ -19,19 +21,22 @@ export default async function SettingsPage() {
         return <div>NO USER :(</div>
     }
 
-
+    function getAccountTypePanels(user: User): ReactNode {
+        switch(user.user_metadata['account_type'] as ACCOUNT_TYPE) {
+            case ACCOUNT_TYPE.PATIENT: return patientInfo(supabase, user)
+            case ACCOUNT_TYPE.PHARMACIST: return pharmacistInfo(supabase, user)
+        }
+    }
 
     return (
         <>
-            <DemographicInfoView />
-
-
-            {/* Patient Specific */}
-            {user.user_metadata['account_type'] === 'Patient' && patientInfo(supabase, user)}
-            {user.user_metadata['account_type'] === 'Pharmacist' && pharmacistInfo(supabase, user)}
+            <DemographicInfoView /> {/* Applicable to all acouunt types */}
+            {getAccountTypePanels(user)}
         </>
     )
 }
+
+
 
 async function patientInfo(supabase: SupabaseClient<Database>, user: User) {
     const [ccDetails, insurance] = await Promise.all([

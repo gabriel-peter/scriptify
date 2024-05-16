@@ -11,7 +11,7 @@ CREATE TYPE us_state AS ENUM (
     'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'
 );
 
-CREATE TYPE role AS ENUM (
+CREATE TYPE account_type_enum AS ENUM (
   'ADMIN', 'PATIENT', 'PHARMACIST'
 );
 
@@ -31,10 +31,13 @@ create table profiles (
   is_test_user boolean DEFAULT false NOT NULL,
   created_at timestamp with time zone NOT NULL,
   updated_at timestamp with time zone NOT NULL
-  -- constraint username_length check (char_length(username) >= 3)
 );
 -- Create a table for public profiles
 -- TODO create CRUD reusable fields
+
+create view public.users as select id, email, role, email_confirmed_at, raw_user_meta_data, last_sign_in_at, created_at, updated_at, phone, is_sso_user, deleted_at from auth.users;
+-- https://github.com/supabase/auth-js/issues/359#issuecomment-1543297712
+revoke all on public.users from anon;
 
 create view user_profiles as
   SELECT

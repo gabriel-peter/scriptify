@@ -38,6 +38,10 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 ## Supabase
 
+Closing this issue as we're not going to be exposing auth.users to the public at all -- there's some very sensitive data there like the password hash and other things.
+https://github.com/supabase/auth-js/issues/359#issuecomment-1368012693
+
+
 ### [Local Development](https://supabase.com/docs/guides/cli/local-development)
 
 Magic Links do not work for the custom purpose of sending to a third-party, they automatically log out the current user. TODO make custom solution with SES.

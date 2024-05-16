@@ -98,7 +98,7 @@ async function createTransferRequests(userId: string, pharmacists: User[]) {
         rawFormData.append("email-heading", "TEST")
 
     const result = await transferPrescription(userId, new FormData(), rawFormData, supabase)
-    console.log(result.error?.email)
+    console.log(result)
 }
 
 async function seed(profileCount: number, transferCount: number) {

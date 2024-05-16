@@ -24,9 +24,7 @@ export default async function RootLayout({
         <DashboardNavigationBar loggedInUser={loggedInUser} />
         <main>
           <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
-            {/* <Suspense fallback={<p>LOADING</p>}> TODO causes react-hydration-error #nextjs */}
             {children}
-            {/* </Suspense> */}
           </div>
         </main>
       </body>

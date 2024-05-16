@@ -14,10 +14,15 @@ import { usePathname } from 'next/navigation';
 
 type NavLink = { name: string, href: Route<string> };
 const PUBLIC_NAV_LINKS: NavLink[] = [{ name: 'About Us', href: '/about-us' }]
-const ADMIN_NAV_LINKS: NavLink[] = [{
-    name: 'Users',
-    href: `/admin`,
-}];
+const ADMIN_NAV_LINKS: NavLink[] = [
+    {
+        name: 'Users',
+        href: '/admin',
+    }, {
+        name: "Prescription Transfers",
+        href: "/admin/prescription-requests"
+    }
+];
 const PATIENT_NAV_LINKS: NavLink[] = [{
     name: 'Dashboard',
     href: `/patient/my-dashboard`,
@@ -27,11 +32,11 @@ const PHARMACIST_NAV_LINKS: NavLink[] = [{
     href: `/pharmacist/my-dashboard`,
 }]
 
-function getNavBarLinks(user: User | undefined): NavLink[]  {
-    if (!user) { return PUBLIC_NAV_LINKS } ;
-    switch(user.user_metadata['account_type'] as ACCOUNT_TYPE) {
+function getNavBarLinks(user: User | undefined): NavLink[] {
+    if (!user) { return PUBLIC_NAV_LINKS };
+    switch (user.user_metadata['account_type'] as ACCOUNT_TYPE) {
         case ACCOUNT_TYPE.ADMIN: return ADMIN_NAV_LINKS;
-        case ACCOUNT_TYPE.PATIENT: return PATIENT_NAV_LINKS; 
+        case ACCOUNT_TYPE.PATIENT: return PATIENT_NAV_LINKS;
         case ACCOUNT_TYPE.PHARMACIST: return PHARMACIST_NAV_LINKS;
     }
 }
@@ -53,22 +58,34 @@ function getProfileButtonLinks(user: User | undefined): NavLink[] {
     }
 }
 
+function backgroundColorByAccountType(user: User | undefined): string {
+    switch (user?.user_metadata['account_type'] as ACCOUNT_TYPE) {
+        case ACCOUNT_TYPE.ADMIN: return "bg-red-600"
+        case ACCOUNT_TYPE.PHARMACIST: return "bg-blue-900"
+        case ACCOUNT_TYPE.PATIENT:
+        default:
+            return "bg-gray-800"
+    }
+}
+
+
 export default function DashboardNavigationBar({ loggedInUser }: { loggedInUser: { user: User, profile: Tables<"profiles"> | null } | null }) {
     const pathname = usePathname()
-    const navigation: (NavLink & {current: boolean})[]  = getNavBarLinks(loggedInUser?.user)
-    .map(e => ({name: e.name, href: e.href, current: pathname === e.href} as const));
+    const navigation: (NavLink & { current: boolean })[] = getNavBarLinks(loggedInUser?.user)
+        .map(e => ({ name: e.name, href: e.href, current: pathname === e.href } as const));
     const userMenuOptions: NavLink[] = getProfileButtonLinks(loggedInUser?.user)
 
+   
     return (
         <div>
             <div className="min-h-full">
-                <Disclosure as="nav" className="bg-gray-800">
+                <Disclosure as="nav" className={backgroundColorByAccountType(loggedInUser?.user)}>
                     {({ open }) => (
                         <>
                             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                                 <div className="flex h-16 items-center justify-between">
                                     <div className="flex items-center">
-                                        <div className="flex-shrink-0">
+                                        <Link className="flex-shrink-0" href='/'>
                                             <Image
                                                 className="h-8 w-8"
                                                 width={8}
@@ -76,7 +93,7 @@ export default function DashboardNavigationBar({ loggedInUser }: { loggedInUser:
                                                 src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
                                                 alt="Your Company"
                                             />
-                                        </div>
+                                        </Link>
                                         <div className="hidden md:block">
                                             <div className="ml-10 flex items-baseline space-x-4">
                                                 {navigation.map((item) => (

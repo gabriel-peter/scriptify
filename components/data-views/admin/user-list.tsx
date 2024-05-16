@@ -3,16 +3,15 @@ import { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { EllipsisVerticalIcon } from '@heroicons/react/20/solid'
 import { cn } from "@/utils/cn";
-import { Database } from '../../../types_db';
-import { PostgrestError } from '@supabase/supabase-js';
 import { toHumanReadableDate } from '@/utils/time';
 import ProfilePhoto from '../profile-photo';
 import { stringifyName } from '@/utils/user-attribute-modifiers';
 import Link from 'next/link';
+import { UserProfileResponse } from '@/app/admin/actions';
 
 export default function AdminUserList({ users }: {
-  users:
-  { error: PostgrestError | null, data: Database['public']['Views']['user_profiles']['Row'][] | null }
+  users: UserProfileResponse
+  // { error: PostgrestError | null, data: { id: string, email: string, created_at: string, account_type: ACCOUNT_TYPE, profiles: Tables<'profiles'> | null }[] }
 }) {
   if (!users.data) {
     return (<div>NO DATA :(</div>)
@@ -27,7 +26,7 @@ export default function AdminUserList({ users }: {
             <div className="min-w-0 flex-auto">
               <p className="text-sm font-semibold leading-6 text-gray-900">
                 <Link href={`/admin/patient/${person.id}`} className="hover:underline">
-                  {stringifyName({ first_name: person.first_name!, last_name: person.last_name! })}
+                  {stringifyName({ first_name: person.profiles?.first_name!, last_name: person.profiles?.last_name! })}
                 </Link>
               </p>
               <p className="mt-1 flex text-xs leading-5 text-gray-500">
@@ -39,7 +38,7 @@ export default function AdminUserList({ users }: {
           </div>
           <div className="flex shrink-0 items-center gap-x-6">
             <div className="hidden sm:flex sm:flex-col sm:items-end">
-              <p className="text-sm leading-6 text-gray-900">{'TODO'}</p>
+              <p className="text-sm leading-6 text-gray-900">{person.account_type?.toString()}</p>
               <p className="mt-1 text-xs leading-5 text-gray-500">
                 Member since <time dateTime={person.created_at}>{toHumanReadableDate({
                   year: "numeric",
@@ -72,7 +71,7 @@ export default function AdminUserList({ users }: {
                           'block px-3 py-1 text-sm leading-6 text-gray-900'
                         )}
                       >
-                        View profile<span className="sr-only">, {person.first_name}</span>
+                        View profile<span className="sr-only">, {person.profiles?.first_name}</span>
                       </a>
                     )}
                   </Menu.Item>
@@ -85,7 +84,7 @@ export default function AdminUserList({ users }: {
                           'block px-3 py-1 text-sm leading-6 text-gray-900'
                         )}
                       >
-                        Message<span className="sr-only">, {person.first_name}</span>
+                        Message<span className="sr-only">, {person.profiles?.first_name}</span>
                       </a>
                     )}
                   </Menu.Item>
