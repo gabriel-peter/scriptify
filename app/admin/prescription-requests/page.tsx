@@ -7,6 +7,7 @@ import { cn } from "@/utils/cn";
 import { Database } from "@/types_db";
 import { stringifyName } from "@/utils/user-attribute-modifiers";
 import Paginator from "@/components/tables/pagination-footer";
+import SearchBar from "@/components/search/simple-searchbar";
 
 function getRequestStatusStyling(requestStatus: Database['public']['Enums']['transfer_request_status']) {
     const colorMap = () => {
@@ -60,6 +61,9 @@ export default function PrescriptionRequestPage() {
                         Last Updated
                     </th>
                 ]}
+                searchBar={
+                    <SearchBar text={queryFilters.patientNameSearch} setText={(value) => setQueryFilters({...queryFilters, patientNameSearch: value})}/>
+                }
                 // actionButton={
                 // <button
                 //     type="button"
@@ -81,7 +85,7 @@ export default function PrescriptionRequestPage() {
                         <td className="whitespace-nowrap p-4 text-sm text-gray-500">{transfer.pharmacy_email}</td>
                         <td className="whitespace-nowrap p-4 text-sm text-gray-500">
                             <span className={cn(
-                                getRequestStatusStyling(transfer.request_status),
+                                getRequestStatusStyling(transfer.request_status!),
                                 "inline-flex items-center rounded-md px-2 py-1 text-xs font-medium  ring-1 ring-inset"
                             )}>
 

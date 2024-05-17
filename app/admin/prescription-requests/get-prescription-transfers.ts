@@ -18,13 +18,14 @@ const getAllTransferRequests = async (supabase: SupabaseClient<Database>, queryF
     updated_at,
     created_at,
     request_status,
-    profiles(
+    profiles!inner(
         first_name,
         last_name
     )
 `, { count: 'exact' }).range(queryFilters.toIndex, queryFilters.fromIndex)
 
     if (queryFilters.statusFilter) { query = query.eq("request_status", queryFilters.statusFilter) }
+    if (queryFilters.patientNameSearch) {query = query.ilike("profiles.first_name", `%${queryFilters.patientNameSearch}%`)}
     return query
 };
 
@@ -32,6 +33,7 @@ const getAllTransferRequests = async (supabase: SupabaseClient<Database>, queryF
 export type AllTransferRequestsResponse = AsyncReturnType<typeof getAllTransferRequests>
 export type GetTransferedRequestsFilters = {
     statusFilter?: Database['public']['Enums']['transfer_request_status'],
+    patientNameSearch?: string
 } & PaginationFilters;
 
 export async function getTransferedPrescriptions(queryFilters: GetTransferedRequestsFilters): Promise<AllTransferRequestsResponse> {
