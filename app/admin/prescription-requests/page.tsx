@@ -1,6 +1,6 @@
 "use client"
 import Table from "@/components/tables/standard-table";
-import { AllTransferRequestsResponse, QueryFilters, getTransferedPrescriptions } from "./get-prescription-transfers"
+import { AllTransferRequestsResponse, GetTransferedRequestsFilters, getTransferedPrescriptions } from "./get-prescription-transfers"
 import { Suspense, useEffect, useState } from "react";
 import { toHumanReadableDate } from "@/utils/time";
 import { cn } from "@/utils/cn";
@@ -24,19 +24,20 @@ function getRequestStatusStyling(requestStatus: Database['public']['Enums']['tra
 export default function PrescriptionRequestPage() {
     const PAGE_SIZE = 10
     const [transfers, setTransfers] = useState<AllTransferRequestsResponse['data'] | null>(null)
-    const [queryFilters, setQueryFilters] = useState<QueryFilters>({
+    const [totalCount, setTotalCount] = useState<number | null>(0);
+    const [queryFilters, setQueryFilters] = useState<GetTransferedRequestsFilters>({
         statusFilter: "pending",
         toIndex: 0,
         fromIndex: PAGE_SIZE
     });
     useEffect(() => {
-        getTransferedPrescriptions(queryFilters).then(({ error, data }) => {
-            if (error) { console.log(data) }
-            else { setTransfers(data) }
+        getTransferedPrescriptions(queryFilters).then(({ error, data, count }) => {
+            if (error) { console.log(error) }
+            else { setTransfers(data); setTotalCount(count); }
         })
-    }, [queryFilters, setQueryFilters])
+    }, [queryFilters, setQueryFilters, totalCount, setTotalCount])
     if (!transfers) {
-        return "No Data"
+        return "Loading"
     }
     return (
         <>
@@ -103,22 +104,11 @@ export default function PrescriptionRequestPage() {
                 ))}
             </Table>
             <Paginator
-                resultCount={0}
-                itemRange={{
-                    itemNumberLeft: queryFilters.toIndex,
-                    itemNumberRight: queryFilters.fromIndex
-                }}
-                nextHandler={() => setQueryFilters({
-                    ...queryFilters,
-                    toIndex: queryFilters.toIndex + PAGE_SIZE,
-                    fromIndex: queryFilters.fromIndex + PAGE_SIZE,
-                })}
-                previousHandler={() =>
-                    setQueryFilters({
-                        ...queryFilters,
-                        toIndex: Math.max(queryFilters.toIndex - PAGE_SIZE, 0),
-                        fromIndex: Math.max(queryFilters.fromIndex - PAGE_SIZE, PAGE_SIZE),
-                    })} />
+                pageSize={PAGE_SIZE}
+                resultCount={totalCount || 0}
+                queryFilters={queryFilters}
+                setQueryFilters={setQueryFilters}
+            />
         </>
     )
 }

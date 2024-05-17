@@ -3,10 +3,14 @@
 import { Database } from "@/types_db"
 import { ACCOUNT_TYPE } from "@/utils/enums";
 import { createClient } from "@/utils/supabase/server"
-import { AsyncReturnType } from "@/utils/supabase/types";
+import { AsyncReturnType, PaginationFilters } from "@/utils/supabase/types";
 import { PostgrestError, QueryData, SupabaseClient } from "@supabase/supabase-js"
 
-const userProfileQuery = async (client: SupabaseClient<Database>, limit?: number, accountTypeFilter?: ACCOUNT_TYPE) => { 
+export type GetUsersPaginatedFilter = {
+    accountTypeFilter?: ACCOUNT_TYPE
+} & PaginationFilters;
+
+const userProfileQuery = async (client: SupabaseClient<Database>, filters: GetUsersPaginatedFilter) => { 
     let query = client.from("users").select(`
         id,
         email,
@@ -18,17 +22,17 @@ const userProfileQuery = async (client: SupabaseClient<Database>, limit?: number
             first_name,
             last_name
         )
-    `)
-    .limit(limit || 20)
+    `, {count: "exact"})
+    .range(filters.toIndex, filters.fromIndex)
 
-    if (accountTypeFilter) { query = query.eq("raw_user_meta_data->account_type", accountTypeFilter.toString())}
+    if (filters.accountTypeFilter) { query = query.eq("raw_user_meta_data->account_type", filters.accountTypeFilter.toString())}
 
     return query
 };
 export type UserProfileResponse = AsyncReturnType<typeof userProfileQuery>
 
-export async function getUsersPaginated(filter?: any, limit?: number, accountTypeFilter?: ACCOUNT_TYPE): Promise<UserProfileResponse> {
+export async function getUsersPaginated(filters: GetUsersPaginatedFilter): Promise<UserProfileResponse> {
     const supabase = createClient()
-    return await userProfileQuery(supabase, limit, accountTypeFilter);
+    return await userProfileQuery(supabase, filters);
 }
 

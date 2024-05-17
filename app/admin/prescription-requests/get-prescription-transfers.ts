@@ -1,13 +1,14 @@
 "use server"
 import { Database } from "@/types_db"
 import { createClient } from "@/utils/supabase/server"
-import { AsyncReturnType } from "@/utils/supabase/types";
+import { AsyncReturnType, PaginationFilters } from "@/utils/supabase/types";
+import { da } from "@faker-js/faker";
 import { SupabaseClient } from "@supabase/supabase-js"
 
 
 
 
-const getAllTransferRequests = async (supabase: SupabaseClient<Database>, queryFilters: QueryFilters) => {
+const getAllTransferRequests = async (supabase: SupabaseClient<Database>, queryFilters: GetTransferedRequestsFilters) => {
 
     let query = supabase.from("transfer_requests")
         .select(`
@@ -21,7 +22,7 @@ const getAllTransferRequests = async (supabase: SupabaseClient<Database>, queryF
         first_name,
         last_name
     )
-`).range(queryFilters.toIndex, queryFilters.fromIndex)
+`, { count: 'exact' }).range(queryFilters.toIndex, queryFilters.fromIndex)
 
     if (queryFilters.statusFilter) { query = query.eq("request_status", queryFilters.statusFilter) }
     return query
@@ -29,14 +30,13 @@ const getAllTransferRequests = async (supabase: SupabaseClient<Database>, queryF
 
 
 export type AllTransferRequestsResponse = AsyncReturnType<typeof getAllTransferRequests>
-export type QueryFilters = {
-    // limit?: number, 
+export type GetTransferedRequestsFilters = {
     statusFilter?: Database['public']['Enums']['transfer_request_status'],
-    toIndex: number,
-    fromIndex: number,
-}
+} & PaginationFilters;
 
-export async function getTransferedPrescriptions(queryFilters: QueryFilters): Promise<AllTransferRequestsResponse> {
+export async function getTransferedPrescriptions(queryFilters: GetTransferedRequestsFilters): Promise<AllTransferRequestsResponse> {
     const supabase = createClient()
-    return await getAllTransferRequests(supabase, queryFilters)
+    const result =  await getAllTransferRequests(supabase, queryFilters);
+    console.log(result)
+    return result;
 }

@@ -10,3 +10,8 @@ export type ReturnType<T extends (...args: any) => any> = T extends (
 ) => infer R
   ? R
   : any;
+
+  export type PaginationFilters = {
+    toIndex: number,
+    fromIndex: number,
+}

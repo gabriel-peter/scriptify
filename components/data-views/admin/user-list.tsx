@@ -9,8 +9,8 @@ import { stringifyName } from '@/utils/user-attribute-modifiers';
 import Link from 'next/link';
 import { UserProfileResponse } from '@/app/admin/actions';
 
-export default function AdminUserList({ users }: { users: UserProfileResponse }) {
-  if (!users.data) {
+export default function AdminUserList({ users }: { users?: UserProfileResponse }) {
+  if (!users || !users.data) {
     return (<div>NO DATA :(</div>)
   }
 

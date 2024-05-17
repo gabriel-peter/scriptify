@@ -1,12 +1,12 @@
 "use client"
 
 export default function Paginator(
-  { resultCount, itemRange, nextHandler, previousHandler }:
+  { resultCount, setQueryFilters, queryFilters, pageSize }:
     {
       resultCount: number,
-      itemRange: { itemNumberLeft: number, itemNumberRight: number },
-      nextHandler: () => void,
-      previousHandler: () => void
+      queryFilters: {toIndex: number, fromIndex: number},
+      setQueryFilters: (x: {toIndex: number, fromIndex: number}) => void,
+      pageSize: number
     }
 
 ) {
@@ -17,19 +17,29 @@ export default function Paginator(
     >
       <div className="hidden sm:block">
         <p className="text-sm text-gray-700">
-          Showing <span className="font-medium">{itemRange.itemNumberLeft}</span> to <span className="font-medium">{itemRange.itemNumberRight}</span> of{' '}
-          <span className="font-medium">{resultCount}</span> results
+          Showing <span className="font-medium">{queryFilters.toIndex + 1}</span> to <span className="font-medium">{Math.min(queryFilters.fromIndex + 1, resultCount + 1)}</span> of{' '}
+          <span className="font-medium">{resultCount+ 1}</span> results
         </p>
       </div>
       <div className="flex flex-1 justify-between sm:justify-end">
         <button
-          onClick={() => previousHandler()}
+        disabled={queryFilters.toIndex === 0}
+          onClick={() => setQueryFilters({
+            ...queryFilters,
+            toIndex: Math.max(queryFilters.toIndex - pageSize, 0),
+            fromIndex: Math.max(queryFilters.fromIndex - pageSize, pageSize),
+        })}
           className="relative inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:outline-offset-0"
         >
           Previous
         </button>
         <button
-          onClick={() => nextHandler()}
+          disabled={queryFilters.fromIndex >= resultCount}
+          onClick={() => setQueryFilters({
+            ...queryFilters,
+            toIndex: queryFilters.toIndex + pageSize,
+            fromIndex: queryFilters.fromIndex + pageSize,
+        })}
           className="relative ml-3 inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:outline-offset-0"
         >
           Next
