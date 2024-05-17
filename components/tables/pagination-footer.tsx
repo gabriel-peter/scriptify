@@ -1,11 +1,13 @@
 "use client"
 
+import { cn } from "@/utils/cn"
+
 export default function Paginator(
   { resultCount, setQueryFilters, queryFilters, pageSize }:
     {
       resultCount: number,
-      queryFilters: {toIndex: number, fromIndex: number},
-      setQueryFilters: (x: {toIndex: number, fromIndex: number}) => void,
+      queryFilters: { toIndex: number, fromIndex: number },
+      setQueryFilters: (x: { toIndex: number, fromIndex: number }) => void,
       pageSize: number
     }
 
@@ -17,19 +19,22 @@ export default function Paginator(
     >
       <div className="hidden sm:block">
         <p className="text-sm text-gray-700">
-          Showing <span className="font-medium">{queryFilters.toIndex + 1}</span> to <span className="font-medium">{Math.min(queryFilters.fromIndex + 1, resultCount + 1)}</span> of{' '}
-          <span className="font-medium">{resultCount+ 1}</span> results
+          Showing <span className="font-medium">{queryFilters.toIndex + 1}</span> to <span className="font-medium">{Math.min(queryFilters.fromIndex, resultCount)}</span> of{' '}
+          <span className="font-medium">{resultCount}</span> results
         </p>
       </div>
       <div className="flex flex-1 justify-between sm:justify-end">
         <button
-        disabled={queryFilters.toIndex === 0}
+          disabled={queryFilters.toIndex === 0}
           onClick={() => setQueryFilters({
             ...queryFilters,
             toIndex: Math.max(queryFilters.toIndex - pageSize, 0),
             fromIndex: Math.max(queryFilters.fromIndex - pageSize, pageSize),
-        })}
-          className="relative inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:outline-offset-0"
+          })}
+          className={cn(
+            queryFilters.toIndex === 0 ? "bg-gray-300" : "bg-white hover:bg-gray-50",
+            "relative inline-flex items-center rounded-md px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 focus-visible:outline-offset-0"
+          )}
         >
           Previous
         </button>
@@ -39,8 +44,11 @@ export default function Paginator(
             ...queryFilters,
             toIndex: queryFilters.toIndex + pageSize,
             fromIndex: queryFilters.fromIndex + pageSize,
-        })}
-          className="relative ml-3 inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:outline-offset-0"
+          })}
+          className={cn(
+            queryFilters.fromIndex >= resultCount ? "bg-gray-300" : "bg-white hover:bg-gray-50",
+            "relative ml-3 inline-flex items-center rounded-md px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 focus-visible:outline-offset-0"
+          )}
         >
           Next
         </button>
