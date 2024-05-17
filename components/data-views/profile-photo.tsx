@@ -12,14 +12,13 @@ export default function ProfilePhoto({ size, userId }: { size: number, userId?: 
     useEffect(() => {
         getProfilePhotoUrl(userId)
             .then((response) => {
-                if (!response || !response.data) {
+                if (!response || !response.data || !response.data.avatar_url) {
                     return null
                 }
                 return supabase.storage.from("avatars").download(response.data.avatar_url as string)
             })
             .then((response) => {
                 if (!response || response.error) {
-                    console.error(response?.error)
                     return
                 }
                 setUrl(URL.createObjectURL(response.data))

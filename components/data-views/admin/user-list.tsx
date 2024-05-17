@@ -9,10 +9,7 @@ import { stringifyName } from '@/utils/user-attribute-modifiers';
 import Link from 'next/link';
 import { UserProfileResponse } from '@/app/admin/actions';
 
-export default function AdminUserList({ users }: {
-  users: UserProfileResponse
-  // { error: PostgrestError | null, data: { id: string, email: string, created_at: string, account_type: ACCOUNT_TYPE, profiles: Tables<'profiles'> | null }[] }
-}) {
+export default function AdminUserList({ users }: { users: UserProfileResponse }) {
   if (!users.data) {
     return (<div>NO DATA :(</div>)
   }
