@@ -2,11 +2,7 @@
 import { Database } from "@/types_db"
 import { createClient } from "@/utils/supabase/server"
 import { AsyncReturnType, PaginationFilters } from "@/utils/supabase/types";
-import { da } from "@faker-js/faker";
 import { SupabaseClient } from "@supabase/supabase-js"
-
-
-
 
 const getAllTransferRequests = async (supabase: SupabaseClient<Database>, queryFilters: GetTransferedRequestsFilters) => {
 
@@ -18,9 +14,12 @@ const getAllTransferRequests = async (supabase: SupabaseClient<Database>, queryF
     updated_at,
     created_at,
     request_status,
-    profiles!inner(
+    users!inner(
+        id,
+        profiles!inner(
         first_name,
         last_name
+        )
     )
 `, { count: 'exact' }).range(queryFilters.toIndex, queryFilters.fromIndex)
 

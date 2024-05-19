@@ -54,7 +54,7 @@ create table transfer_requests (
     pharmacy_phone_number text,
     updated_at timestamp with time zone,
     created_at timestamp with time zone,
-    user_id uuid references profiles not null
+    user_id uuid references auth.users not null
 );
 
 create table prescription_transfers (
@@ -169,4 +169,12 @@ create table pharmacist_on_boarding_complete (
   personal_info boolean NOT NULL DEFAULT false,
   license_info boolean NOT NULL DEFAULT false,
   clinical_info boolean NOT NULL DEFAULT false
+);
+
+create table pharmacist_to_patient_match (
+  patient_id uuid references auth.users not null,
+  pharmacist_id uuid references auth.users not null,
+  created_at timestamp with time zone not null,
+  updated_at timestamp with time zone not null,
+  primary key(patient_id, pharmacist_id)
 );

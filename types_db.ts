@@ -246,6 +246,56 @@ export type Database = {
           },
         ]
       }
+      pharmacist_to_patient_match: {
+        Row: {
+          created_at: string
+          patient_id: string
+          pharmacist_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at: string
+          patient_id: string
+          pharmacist_id: string
+          updated_at: string
+        }
+        Update: {
+          created_at?: string
+          patient_id?: string
+          pharmacist_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pharmacist_to_patient_match_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pharmacist_to_patient_match_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pharmacist_to_patient_match_pharmacist_id_fkey"
+            columns: ["pharmacist_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pharmacist_to_patient_match_pharmacist_id_fkey"
+            columns: ["pharmacist_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       prescription_transfers: {
         Row: {
           created_at: string | null
@@ -401,14 +451,14 @@ export type Database = {
             foreignKeyName: "transfer_requests_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
-            referencedRelation: "profiles"
+            referencedRelation: "users"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "transfer_requests_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
-            referencedRelation: "user_profiles"
+            referencedRelation: "users"
             referencedColumns: ["id"]
           },
         ]

@@ -8,10 +8,14 @@ import { Database } from "@/types_db";
 import { stringifyName } from "@/utils/user-attribute-modifiers";
 import Paginator from "@/components/tables/pagination-footer";
 import SearchBar from "@/components/search/simple-searchbar";
-import { Fragment } from 'react'
-import { Menu, Transition } from '@headlessui/react'
-import { EllipsisVerticalIcon } from '@heroicons/react/20/solid'
 import ColumnFilter from "@/components/tables/column-filter-dropdown";
+import { ActionDropDown } from "@/components/tables/action-dropdown";
+import { PaginationFilters } from "@/utils/supabase/types";
+import Link from "next/link";
+
+function resetPageIndices(PAGE_SIZE: number): PaginationFilters {
+    return { toIndex: 0, fromIndex: PAGE_SIZE }
+}
 
 function getRequestStatusStyling(requestStatus: Database['public']['Enums']['transfer_request_status']) {
     const colorMap = () => {
@@ -60,21 +64,23 @@ export default function PrescriptionRequestPage() {
                     </th>,
                     <th scope="col" className="px-4 py-3.5 text-left text-sm font-semibold text-gray-900">
                         <ColumnFilter columnName="Status" filterHandlers={
-                            (['pending', 'pharmacist-filled', 'complete'] as Database['public']['Enums']['transfer_request_status'][]).map((value) => {
-                                return {name: value, 
-                                setFilter: () => setQueryFilters({...queryFilters, statusFilter: value}) }
-                            }) 
-                        }/>
+                            (['pending', 'pharmacist-filled', 'complete', undefined] as Database['public']['Enums']['transfer_request_status'][]).map((value) => {
+                                return {
+                                    name: value ? value : "Clear",
+                                    setFilter: () => setQueryFilters({ ...queryFilters, ...resetPageIndices(PAGE_SIZE), statusFilter: value })
+                                }
+                            })
+                        } />
                     </th>,
                     <th scope="col" className="py-3.5 pl-4 pr-4 text-left text-sm font-semibold text-gray-900">
                         Last Updated
                     </th>,
                     <th scope="col" className="py-3.5 pl-4 pr-4 text-left text-sm font-semibold text-gray-900 sm:pr-0">
-                    Actions
+                        Actions
                     </th>
                 ]}
                 searchBar={
-                    <SearchBar text={queryFilters.patientNameSearch} setText={(value) => setQueryFilters({...queryFilters, patientNameSearch: value})}/>
+                    <SearchBar text={queryFilters.patientNameSearch} setText={(value) => setQueryFilters({ ...queryFilters, ...resetPageIndices(PAGE_SIZE), patientNameSearch: value })} />
                 }
                 // actionButton={
                 // <button
@@ -84,7 +90,7 @@ export default function PrescriptionRequestPage() {
                 //     Add user
                 // </button>
                 // }
-                description="Test"
+                description="Look-up prescription tranfers, filter by status & search by patient first name."
             >
                 {transfers.map((transfer, indx) => (
                     <tr key={indx} className="divide-x divide-gray-200">
@@ -92,7 +98,12 @@ export default function PrescriptionRequestPage() {
                             {transfer.pharmacy_name}
                         </td>
                         <td className="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-gray-900">
-                            {stringifyName(transfer.profiles)}
+                            <Link
+                                href={`/admin/patient/${transfer.users.id}`}
+                                className="hover:underline"
+                            >
+                                {stringifyName(transfer.users.profiles)}
+                            </Link>
                         </td>
                         <td className="whitespace-nowrap p-4 text-sm text-gray-500">{transfer.pharmacy_email}</td>
                         <td className="whitespace-nowrap p-4 text-sm text-gray-500">
@@ -112,12 +123,15 @@ export default function PrescriptionRequestPage() {
                                 day: "numeric",
                                 hour: "numeric",
                                 minute: "numeric",
-                                // second: "numeric",
-                                // timeZoneName: "short",
                             }, transfer.updated_at || "ERROR")
                         }</td>
                         <td className="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-gray-500 sm:pr-0">
-                            <ActionDropDown/>
+                            <ActionDropDown actions={[
+                                { name: 'See Transfers', handler: () => { } },
+                                { name: 'Resend Email', handler: () => { } },
+                                { name: 'Remove', handler: () => { } },
+                                { name: 'Flag', handler: () => { } }
+                            ]} />
                         </td>
                     </tr>
                 ))}
@@ -130,51 +144,4 @@ export default function PrescriptionRequestPage() {
             />
         </>
     )
-}
-
-const actions = [
-    {name: 'See Transfers',}, 
-    {name: 'Resend Email', },
-    {name: 'Remove', },
-    {name: 'Flag'}
-]
-
-export function ActionDropDown() {
-  return (
-    <Menu as="div" className="relative inline-block text-left">
-      <div>
-        <Menu.Button className="flex items-center rounded-full bg-gray-100 text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-100">
-          <span className="sr-only">Open options</span>
-          <EllipsisVerticalIcon className="h-5 w-5" aria-hidden="true" />
-        </Menu.Button>
-      </div>
-
-      <Transition
-        as={Fragment}
-        enter="transition ease-out duration-100"
-        enterFrom="transform opacity-0 scale-95"
-        enterTo="transform opacity-100 scale-100"
-        leave="transition ease-in duration-75"
-        leaveFrom="transform opacity-100 scale-100"
-        leaveTo="transform opacity-0 scale-95"
-      >
-        <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-          <div className="py-1">
-            {actions.map((action) =><Menu.Item>
-              {({ active }) => (
-                <button
-                  className={cn(
-                    active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                    'block px-4 py-2 text-sm'
-                  )}
-                >
-                  {action.name}
-                </button>
-              )}
-            </Menu.Item>)}
-          </div>
-        </Menu.Items>
-      </Transition>
-    </Menu>
-  )
 }
