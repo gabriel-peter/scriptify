@@ -26,13 +26,14 @@ const userProfileQuery = async (client: SupabaseClient<Database>, filters: GetUs
     `, {count: "exact"})
     .range(filters.toIndex, filters.fromIndex)
 
-    if (filters.accountTypeFilter) { query = query.eq("raw_user_meta_data->account_type", filters.accountTypeFilter.toString())}
+    if (filters.accountTypeFilter) { query = query.eq("raw_user_meta_data->>account_type", filters.accountTypeFilter.toString())}
     if (filters.nameSearch) {query = query.ilike("profiles.first_name", `%${filters.nameSearch}%`)}
     return query
 };
 export type UserProfileResponse = AsyncReturnType<typeof userProfileQuery>
 
 export async function getUsersPaginated(filters: GetUsersPaginatedFilter): Promise<UserProfileResponse> {
+    console.log("HIT")
     const supabase = createClient()
     const result = await userProfileQuery(supabase, filters);
     console.log(result)

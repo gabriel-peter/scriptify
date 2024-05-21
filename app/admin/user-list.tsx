@@ -4,7 +4,7 @@ import { Menu, Transition } from '@headlessui/react'
 import { EllipsisVerticalIcon } from '@heroicons/react/20/solid'
 import { cn } from "@/utils/cn";
 import { toHumanReadableDate } from '@/utils/time';
-import ProfilePhoto from '../profile-photo';
+import ProfilePhoto from '../../components/data-views/profile-photo';
 import { stringifyName } from '@/utils/user-attribute-modifiers';
 import Link from 'next/link';
 import { UserProfileResponse } from '@/app/admin/actions';

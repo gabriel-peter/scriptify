@@ -4,7 +4,7 @@ import { AsyncReturnType } from "@/utils/supabase/types";
 import { SupabaseClient } from "@supabase/supabase-js";
 
 
-async function getPatientById(supabase: SupabaseClient<Database>, userId: string) {
+export async function getPatientById(supabase: SupabaseClient<Database>, userId: string) {
     return await supabase.from('users').select(`
         *,
         profiles!inner(*),

@@ -80,6 +80,34 @@ create table patient_clinical_preferences (
   race_or_ethnicity text
 );
 
+create table pharmacist_clinical_specialties (
+  user_id uuid references auth.users NOT NULL primary key,
+  languages text[] not null,
+  preferred_chronic_conditions text[],
+  pharmacist_gender text,
+  pharmacist_sexual_orientation text,
+  pharmacist_race_or_ethnicity text,
+);
+
+CREATE TABLE pharmacist_licenses (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  pharmacist_id references auth.users NOT NULL primary key,
+  full_name TEXT NOT NULL,
+  license_number TEXT NOT NULL UNIQUE,
+  license_type TEXT NOT NULL,
+  issuing_state us_state NOT NULL,
+  issue_date DATE NOT NULL,
+  expiration_date DATE NOT NULL,
+  status TEXT NOT NULL,
+  -- address TEXT,
+  -- education_and_training TEXT,
+  -- disciplinary_actions TEXT,
+  -- continuing_education TEXT,
+  specializations TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
 create table insurance_details (
     id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
     holder_first_name text NOT NULL,
@@ -178,3 +206,12 @@ create table pharmacist_to_patient_match (
   updated_at timestamp with time zone not null,
   primary key(patient_id, pharmacist_id)
 );
+
+create table appointments (
+  patient_id uuid references auth.users not null,
+  pharmacist_id uuid references auth.users not null,
+  created_at timestamp with time zone not null,
+  updated_at timestamp with time zone not null,
+  meet_time timestamp with time zone not null,
+  primary key(patient_id, pharmacist_id)
+)

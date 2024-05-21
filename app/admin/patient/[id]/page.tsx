@@ -13,12 +13,18 @@ import {
     UserGroupIcon,
     XMarkIcon,
 } from '@heroicons/react/24/outline'
-import { ChevronLeftIcon, EnvelopeIcon, FunnelIcon, MagnifyingGlassIcon, PhoneIcon } from '@heroicons/react/20/solid'
+import { ChevronLeftIcon, EllipsisVerticalIcon, EnvelopeIcon, FunnelIcon, MagnifyingGlassIcon, PhoneIcon } from '@heroicons/react/20/solid'
 import ProfilePhoto from "@/components/data-views/profile-photo";
 import { cn } from "@/utils/cn";
 import { stringifyName } from "@/utils/user-attribute-modifiers";
 import PharmacistSelectorDropdown from "./pharmacist-selector";
 import { TranfserRequestView } from "@/components/data-views/transfer_requests/table-view";
+import { Tables } from "@/types_db";
+import { Menu, Transition } from "@headlessui/react";
+import { Fragment, Suspense } from "react";
+import { removePharmacistPatientAssignment } from "./assign-pharmacist";
+import { getPharmacistsByUserIds } from "./get-pharmacists";
+import PatientCurrentPharmacistMenuOptions from "./current-pharmacist-menu";
 
 const tabs = [
     { name: 'Profile', href: '#', current: true },
@@ -27,7 +33,6 @@ const tabs = [
 ]
 
 export default async function PatientViewPage({ params }: { params: { id: string } }) {
-    // const sta
     const response: GetPatientByIdResponse = await getPatientProfile(params.id);
     console.log(response.data);
     if (response.error) {
@@ -116,6 +121,9 @@ export default async function PatientViewPage({ params }: { params: { id: string
                         className="mt-1 max-w-prose space-y-5 text-sm text-gray-900"
                         dangerouslySetInnerHTML={{ __html: profile.about }}
                       /> */}
+                      <Suspense fallback="LOADING">
+                        <CurrentPharmacist userId={user.id!} assignedPharmacists={user.pharmacist_to_patient_match} />
+                      </Suspense>
                       <PharmacistSelectorDropdown patientId={user.id!} assignedPharmacists={user.pharmacist_to_patient_match} />
                     </div>
                 </dl>
@@ -128,4 +136,55 @@ export default async function PatientViewPage({ params }: { params: { id: string
             </div>
         </article>
     </>)
+}
+
+async function CurrentPharmacist({ assignedPharmacists, userId }: { assignedPharmacists: Tables<'pharmacist_to_patient_match'>[], userId: string }) {
+    const response = await getPharmacistsByUserIds(assignedPharmacists.map(e => e.pharmacist_id))
+    if (response.error) {
+        return "Error"
+    }
+    const pharmacists = response.data;
+    return (
+        <ul role="list" className="divide-y divide-gray-100">
+            {pharmacists.map((person) => (
+                <li key={person.email} className="flex justify-between gap-x-6 py-5">
+                    <div className="flex min-w-0 gap-x-4">
+                        <ProfilePhoto userId={person.id} size={30} />
+                        <div className="min-w-0 flex-auto">
+                            <p className="text-sm font-semibold leading-6 text-gray-900">
+                                <a
+                                    // href={person.href}
+                                    className="hover:underline">
+                                    {stringifyName(person.profiles)}
+                                </a>
+                            </p>
+                            <p className="mt-1 flex text-xs leading-5 text-gray-500">
+                                <a href={`mailto:${person.email}`} className="truncate hover:underline">
+                                    {person.email}
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                    <div className="flex shrink-0 items-center gap-x-6">
+                        <div className="hidden sm:flex sm:flex-col sm:items-end">
+                            <p className="text-sm leading-6 text-gray-900">{person.role}</p>
+                            {/* {person.lastSeen ? (
+                <p className="mt-1 text-xs leading-5 text-gray-500">
+                  Assigned since <time dateTime={person.pharmacist_to_patient_match}>{person.lastSeen}</time>
+                </p>
+              ) : (
+                <div className="mt-1 flex items-center gap-x-1.5">
+                  <div className="flex-none rounded-full bg-emerald-500/20 p-1">
+                    <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                  </div>
+                  <p className="text-xs leading-5 text-gray-500">Online</p>
+                </div>
+              )} */}
+                        </div>
+                        <PatientCurrentPharmacistMenuOptions pharmacist={person} userId={userId} />
+                    </div>
+                </li>
+            ))}
+        </ul>
+    )
 }

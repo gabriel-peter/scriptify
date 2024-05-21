@@ -5,23 +5,22 @@ import { MagnifyingGlassIcon } from '@heroicons/react/20/solid'
 import { UsersIcon } from '@heroicons/react/24/outline'
 import { ChevronRightIcon } from '@heroicons/react/20/solid'
 import { cn } from '@/utils/cn'
-import { GetPharmacistsSearchResponse, GetPharmacistQueryFilters, getPharmacists, GetPharmacistByUserIdResponse, getPharmacistsByUserIds } from './get-pharmacists'
+import { GetPharmacistsSearchResponse, GetPharmacistQueryFilters, getPharmacists, GetPharmacistByUserIdResponse, getPharmacistsByUserIds, SingleGetPharmacistsSearchResponse } from './get-pharmacists'
 import { stringifyName } from '@/utils/user-attribute-modifiers'
 import ProfilePhoto from '@/components/data-views/profile-photo'
 import { assignPharmacistToPatient, removePharmacistPatientAssignment } from './assign-pharmacist'
 import { Tables } from '@/types_db'
 import { EllipsisVerticalIcon } from '@heroicons/react/20/solid'
 import { ButtonDivider } from '@/components/action-divider'
-
-type SinglePharmacistType = GetPharmacistsSearchResponse['data'][0] | null;
+import Link from 'next/link'
 
 export default function PharmacistSelectorDropdown({ patientId, assignedPharmacists }: { patientId: string, assignedPharmacists: Tables<'pharmacist_to_patient_match'>[] }) {
     const [open, setOpen] = useState(false)
-    const [pharmacists, setPharmacists] = useState<GetPharmacistsSearchResponse['data']>(null);
+    const [pharmacists, setPharmacists] = useState<GetPharmacistsSearchResponse['data'] & { compatible: boolean }>(null);
     const [queryFilters, setQueryFilters] = useState<GetPharmacistQueryFilters>({
     });
     useEffect(() => {
-        getPharmacists(queryFilters).then((res) => setPharmacists(res.data))
+        getPharmacists(patientId, queryFilters).then((res) => setPharmacists(res))
     }, [queryFilters, setQueryFilters])
 
     function handleNewAssignment({ patientId, pharmacistId }: { patientId: string, pharmacistId: string }) {
@@ -45,12 +44,7 @@ export default function PharmacistSelectorDropdown({ patientId, assignedPharmaci
 
     return (
         <>
-            {assignedPharmacists?.length > 0 &&
-                <Suspense fallback={'Loading'}>
-                    <CurrentPharmacist assignedPharmacists={assignedPharmacists} userId={patientId} />
-                </Suspense>
-            }
-            <ButtonDivider text='Assign Pharmacist' action={() =>setOpen(true)} />
+            <ButtonDivider text='Assign Pharmacist' action={() => setOpen(true)} />
             <Transition.Root show={open} as={Fragment} afterLeave={() => setQueryFilters({})} appear>
                 <Dialog className="relative z-10" onClose={setOpen}>
                     <Transition.Child
@@ -76,8 +70,10 @@ export default function PharmacistSelectorDropdown({ patientId, assignedPharmaci
                             leaveTo="opacity-0 scale-95"
                         >
                             <Dialog.Panel className="mx-auto max-w-3xl transform divide-y divide-gray-100 overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-black ring-opacity-5 transition-all">
-                                <Combobox onChange={(person) => (window.location = person.profileUrl)}>
-                                    {({ activeOption }: { activeOption: GetPharmacistsSearchResponse['data'][0] }) => (
+                                <Combobox
+                                // onChange={(person) => (window.location = person.profileUrl)}
+                                >
+                                    {({ activeOption }: { activeOption: SingleGetPharmacistsSearchResponse | null }) => (
                                         <>
                                             <div className="relative">
                                                 <MagnifyingGlassIcon
@@ -138,9 +134,14 @@ export default function PharmacistSelectorDropdown({ patientId, assignedPharmaci
                                                     {activeOption && (
                                                         <>
                                                             <div className="hidden h-96 w-1/2 flex-none flex-col divide-y divide-gray-100 overflow-y-auto sm:flex">
+                                                                IS COMPATIBLE: {activeOption.compatible ? "TRUE" : "FALSE"}
                                                                 <div className="flex-none p-6 text-center">
-                                                                    <ProfilePhoto userId={activeOption.id} size={30} />
-                                                                    <h2 className="mt-3 font-semibold text-gray-900">{activeOption.name}</h2>
+                                                                    <ProfilePhoto userId={activeOption.id} size={80} />
+
+                                                                    <Link href={'#'} className="text-indigo-600 underline">
+                                                                        <h2 className="mt-3 font-semibold text-gray-900">{stringifyName(activeOption.profiles)}</h2>
+                                                                    </Link>
+
                                                                     <p className="text-sm leading-6 text-gray-500">{activeOption.role}</p>
                                                                 </div>
                                                                 <div className="flex flex-auto flex-col justify-between p-6">
@@ -149,9 +150,9 @@ export default function PharmacistSelectorDropdown({ patientId, assignedPharmaci
                                                                         <dd>{activeOption.phone}</dd>
                                                                         <dt className="col-end-1 font-semibold text-gray-900">URL</dt>
                                                                         <dd className="truncate">
-                                                                            <a href={activeOption.url} className="text-indigo-600 underline">
-                                                                                {activeOption.url}
-                                                                            </a>
+
+                                                                            {/* {activeOption.url}
+                                                                            </Link> */}
                                                                         </dd>
                                                                         <dt className="col-end-1 font-semibold text-gray-900">Email</dt>
                                                                         <dd className="truncate">
@@ -197,98 +198,3 @@ export default function PharmacistSelectorDropdown({ patientId, assignedPharmaci
         </>
     )
 }
-
-async function CurrentPharmacist({ assignedPharmacists, userId }: { assignedPharmacists: Tables<'pharmacist_to_patient_match'>[], userId: string }) {
-    const response = await getPharmacistsByUserIds(assignedPharmacists.map(e => e.pharmacist_id))
-    if (response.error) {
-        return "Error"
-    }
-    const pharmacists = response.data;
-    return (
-        <ul role="list" className="divide-y divide-gray-100">
-            {pharmacists.map((person) => (
-                <li key={person.email} className="flex justify-between gap-x-6 py-5">
-                    <div className="flex min-w-0 gap-x-4">
-                        <ProfilePhoto userId={person.id} size={30} />
-                        <div className="min-w-0 flex-auto">
-                            <p className="text-sm font-semibold leading-6 text-gray-900">
-                                <a
-                                    // href={person.href}
-                                    className="hover:underline">
-                                    {stringifyName(person.profiles)}
-                                </a>
-                            </p>
-                            <p className="mt-1 flex text-xs leading-5 text-gray-500">
-                                <a href={`mailto:${person.email}`} className="truncate hover:underline">
-                                    {person.email}
-                                </a>
-                            </p>
-                        </div>
-                    </div>
-                    <div className="flex shrink-0 items-center gap-x-6">
-                        <div className="hidden sm:flex sm:flex-col sm:items-end">
-                            <p className="text-sm leading-6 text-gray-900">{person.role}</p>
-                            {/* {person.lastSeen ? (
-                <p className="mt-1 text-xs leading-5 text-gray-500">
-                  Assigned since <time dateTime={person.pharmacist_to_patient_match}>{person.lastSeen}</time>
-                </p>
-              ) : (
-                <div className="mt-1 flex items-center gap-x-1.5">
-                  <div className="flex-none rounded-full bg-emerald-500/20 p-1">
-                    <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                  </div>
-                  <p className="text-xs leading-5 text-gray-500">Online</p>
-                </div>
-              )} */}
-                        </div>
-                        <Menu as="div" className="relative flex-none">
-                            <Menu.Button className="-m-2.5 block p-2.5 text-gray-500 hover:text-gray-900">
-                                <span className="sr-only">Open options</span>
-                                <EllipsisVerticalIcon className="h-5 w-5" aria-hidden="true" />
-                            </Menu.Button>
-                            <Transition
-                                as={Fragment}
-                                enter="transition ease-out duration-100"
-                                enterFrom="transform opacity-0 scale-95"
-                                enterTo="transform opacity-100 scale-100"
-                                leave="transition ease-in duration-75"
-                                leaveFrom="transform opacity-100 scale-100"
-                                leaveTo="transform opacity-0 scale-95"
-                            >
-                                <Menu.Items className="absolute right-0 z-10 mt-2 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
-                                    <Menu.Item>
-                                        {({ active }) => (
-                                            <button
-                                                onClick={() => removePharmacistPatientAssignment({pharmacistId: person.id, patientId: userId})}
-                                                className={cn(
-                                                    active ? 'bg-gray-50' : '',
-                                                    'block px-3 py-1 text-sm leading-6 text-gray-900'
-                                                )}
-                                            >
-                                                Remove Assignment
-                                            </button>
-                                        )}
-                                    </Menu.Item>
-                                    <Menu.Item>
-                                        {({ active }) => (
-                                            <a
-                                                href="#"
-                                                className={cn(
-                                                    active ? 'bg-gray-50' : '',
-                                                    'block px-3 py-1 text-sm leading-6 text-gray-900'
-                                                )}
-                                            >
-                                                Message<span className="sr-only">, {person.name}</span>
-                                            </a>
-                                        )}
-                                    </Menu.Item>
-                                </Menu.Items>
-                            </Transition>
-                        </Menu>
-                    </div>
-                </li>
-            ))}
-        </ul>
-    )
-}
-

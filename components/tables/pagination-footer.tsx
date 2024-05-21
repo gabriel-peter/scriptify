@@ -1,6 +1,12 @@
 "use client"
 
 import { cn } from "@/utils/cn"
+import { PaginationFilters } from "@/utils/supabase/types"
+
+
+export function resetPageIndices(PAGE_SIZE: number): PaginationFilters {
+  return { toIndex: 0, fromIndex: PAGE_SIZE }
+}
 
 export default function Paginator(
   { resultCount, setQueryFilters, queryFilters, pageSize }:

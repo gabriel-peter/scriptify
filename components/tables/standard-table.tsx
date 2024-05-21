@@ -1,3 +1,4 @@
+import { cn } from "@/utils/cn"
 import { ReactElement, ReactNode } from "react"
 
 export default function Table({
@@ -6,14 +7,16 @@ export default function Table({
     description,
     headers,
     actionButton,
-    searchBar
+    searchBar,
+    customStyle
 }: {
     children: ReactNode,
     title: string,
     description?: string,
     headers: ReactElement<'th'>[],
     actionButton?: JSX.Element,
-    searchBar?: JSX.Element
+    searchBar?: JSX.Element,
+    customStyle?: string
 }) {
     return (
         <div className="px-4 sm:px-6 lg:px-8">
@@ -33,7 +36,7 @@ export default function Table({
                 {searchBar}
                 <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                     <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-                        <table className="min-w-full divide-y divide-gray-300">
+                        <table className={cn(customStyle ? customStyle: "", "min-w-full divide-y divide-gray-300")}>
                             <thead>
                                 <tr className="divide-x divide-gray-200">
                                     {headers}

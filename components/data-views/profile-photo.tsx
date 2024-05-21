@@ -23,7 +23,7 @@ export default function ProfilePhoto({ size, userId }: { size: number, userId?: 
                 }
                 setUrl(URL.createObjectURL(response.data))
             })
-    }, [])
+    }, [userId])
 
     return (
         <>
@@ -45,3 +45,4 @@ export default function ProfilePhoto({ size, userId }: { size: number, userId?: 
         </>
     )
 }
+

@@ -1,9 +1,11 @@
 "use server"
-import { Database } from "@/types_db";
+import { Status } from "@/components/forms/validation-helpers";
+import { Database, Tables } from "@/types_db";
 import { ACCOUNT_TYPE } from "@/utils/enums";
 import { createClient } from "@/utils/supabase/server";
 import { AsyncReturnType } from "@/utils/supabase/types";
 import { SupabaseClient } from "@supabase/supabase-js";
+import { getPatientById, GetPatientByIdResponse } from "../get-patient";
 
 
 export type GetPharmacistQueryFilters = {
@@ -22,13 +24,34 @@ export async function getPharmacistsSearch(supabase: SupabaseClient<Database>,  
    return query;
 }
 
-export type GetPharmacistsSearchResponse = AsyncReturnType<typeof getPharmacistsSearch> 
+export type GetPharmacistsSearchResponse = AsyncReturnType<typeof getPharmacistsSearch>
+type GetElementType<T extends any[] | null> = T extends (infer U)[] ? U : never;
 
-export async function getPharmacists(filters: GetPharmacistQueryFilters) {
+export type SingleGetPharmacistsSearchResponse = GetElementType<GetPharmacistsSearchResponse['data']>
+
+
+
+export async function getPharmacists(patientId: string, filters: GetPharmacistQueryFilters) {
     const supabase = createClient()
-    const result = await getPharmacistsSearch(supabase, filters)
-    console.log(result)
-    return result
+    const {error, data, count} = await getPharmacistsSearch(supabase, filters)
+    if (error) {
+        return {status: Status.ERROR}
+    }
+    const patient = await getPatientById(supabase, patientId)
+    if (patient.error) {
+        return { status: Status.ERROR }
+    }
+    const ratedPharmacists = scorePharmacistCompatability(patient.data, data)
+    return ratedPharmacists
+}
+
+function isCompatible(pharmacist: Tables<'profiles'>, patient: Tables<'profiles'> & Tables<'patient_clinical_preferences'>) {
+    // if (pharmacist.)
+        return true // TODO this need to be 
+}
+
+function scorePharmacistCompatability(patient: GetPatientByIdResponse['data'], pharmacists: GetPharmacistsSearchResponse['data'])  {
+    return pharmacists?.filter(pharmacist => ({...pharmacist, compatible: isCompatible(pharmacist, patient)}))
 }
 
 export async function getPharmacistsByUserIds(pharmacist_ids: string[]) {

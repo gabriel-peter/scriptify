@@ -6,16 +6,12 @@ import { toHumanReadableDate } from "@/utils/time";
 import { cn } from "@/utils/cn";
 import { Database } from "@/types_db";
 import { stringifyName } from "@/utils/user-attribute-modifiers";
-import Paginator from "@/components/tables/pagination-footer";
+import Paginator, { resetPageIndices } from "@/components/tables/pagination-footer";
 import SearchBar from "@/components/search/simple-searchbar";
 import ColumnFilter from "@/components/tables/column-filter-dropdown";
 import { ActionDropDown } from "@/components/tables/action-dropdown";
 import { PaginationFilters } from "@/utils/supabase/types";
 import Link from "next/link";
-
-function resetPageIndices(PAGE_SIZE: number): PaginationFilters {
-    return { toIndex: 0, fromIndex: PAGE_SIZE }
-}
 
 function getRequestStatusStyling(requestStatus: Database['public']['Enums']['transfer_request_status']) {
     const colorMap = () => {
