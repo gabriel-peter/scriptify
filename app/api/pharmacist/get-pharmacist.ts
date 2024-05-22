@@ -1,5 +1,5 @@
-"use server"
-
+import 'server-only'
+// NOTES: server only because we pass userIds
 import { Status } from "@/components/forms/validation-helpers";
 import { Database } from "@/types_db";
 import { createClient } from "@/utils/supabase/server";
@@ -19,12 +19,6 @@ function getPharmacistByUserId(client: SupabaseClient<Database>) {
 }
 
 
-export async function selfGetPharmacist() {
-    const supabase = createClient();
-    const { data: { user }, error } = await supabase.auth.getUser();
-    if (!user) {
-        console.error(error);
-        return { status: Status.ERROR }
-    }
-    return await getPharmacistByUserId(createClient()).eq("id", user.id).single();
+export async function selfGetPharmacist(userId: string) {
+    return await getPharmacistByUserId(createClient()).eq("id", userId).single();
 }

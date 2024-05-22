@@ -18,7 +18,7 @@ import ProfilePhoto from "@/components/data-views/profile-photo";
 import { cn } from "@/utils/cn";
 import { stringifyName } from "@/utils/user-attribute-modifiers";
 import PharmacistSelectorDropdown from "./pharmacist-selector";
-import { TranfserRequestView } from "@/components/data-views/transfer_requests/table-view";
+import { MyTransfers } from "@/components/data-views/transfer_requests/table-view";
 import { Tables } from "@/types_db";
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment, Suspense } from "react";
@@ -132,7 +132,7 @@ export default async function PatientViewPage({ params }: { params: { id: string
             {/* Team member list */}
             <div className="mx-auto mt-8 max-w-5xl px-4 pb-12 sm:px-6 lg:px-8">
                 <h2 className="text-sm font-medium text-gray-500">Transfer Requests</h2>
-                <TranfserRequestView prescriptionTransfers={user.transfer_requests} />
+                <MyTransfers prescriptionTransfers={user.transfer_requests} />
             </div>
         </article>
     </>)

@@ -1,5 +1,6 @@
 "use server"
 import { BasicList } from "@/components/lists/basic-list";
+import { SectionHeadingWithAction } from "@/components/lists/basic-list-section-header";
 import { cn } from "@/utils/cn";
 import { createClient } from "@/utils/supabase/server";
 import { toHumanReadableTime } from "@/utils/time";
@@ -11,7 +12,7 @@ const statuses = {
   "pharmacist-filled": 'text-yellow-800 bg-yellow-50 ring-yellow-600/20',
 }
 
-export async function TranfserRequestView({ userId }: { userId: string }) {
+export async function MyTransfers({ userId }: { userId: string }) {
   const { data, error, count } = await createClient().from("transfer_requests").select("*").eq("user_id", userId);
   if (!data) {
     return <div></div>
@@ -19,28 +20,22 @@ export async function TranfserRequestView({ userId }: { userId: string }) {
   const prescriptionTransfers = data;
   return (
     <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+      {/* Header */}
+      <SectionHeadingWithAction title="Transfers in Progress" actionHref="/patient/transfer/new" actionTitle="Make new request" />
 
-      <div className="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
-        <div className="-ml-4 -mt-2 flex flex-wrap items-center justify-between sm:flex-nowrap">
-          {/* <div className="ml-4 mt-2"> */}
-          <h3 className="text-lg font-semibold mb-4">Transfers in Progress</h3>
-          {/* </div> */}
-          <div className="flex-shrink-0">
-            <Link
-              href={"/patient/transfer/new"}
-              className="relative inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-              Make new request
-            </Link>
-          </div>
-        </div>
-      </div>
+      {/* List */}
       <BasicList
         items={prescriptionTransfers}
         row={(request) => {
           return (
             <>
               <div className="flex items-start gap-x-3">
-                <p className="text-sm font-semibold leading-6 text-gray-900">{request.pharmacy_name}</p>
+                <Link
+                  className="hover:underline"
+                  href={"#"}
+                >
+                  <p className="text-sm font-semibold leading-6 text-gray-900">{request.pharmacy_name}</p>
+                </Link>
                 <p
                   className={cn(
                     statuses[request.request_status || "pending"],
@@ -61,7 +56,8 @@ export async function TranfserRequestView({ userId }: { userId: string }) {
                 </svg>
                 <p className="truncate">Pharmacy Email {request.pharmacy_email}</p>
               </div>
-            </>)
+            </>
+          )
         }}
       />
     </div>
