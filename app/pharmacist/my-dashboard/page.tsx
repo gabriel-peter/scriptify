@@ -6,6 +6,9 @@ import { AvailabilityStatus } from "./utils";
 import { BasicList } from "@/components/lists/basic-list";
 import { getUserOrRedirect } from "@/app/api/user-actions/actions";
 import { Suspense } from "react";
+import PaddedContainer from "@/components/containers/basic-container";
+import { SectionHeadingWithAction } from "@/components/lists/basic-list-section-header";
+import { Route } from "next";
 
 export default async function PharmacistDashboard() {
   const user = await getUserOrRedirect()
@@ -21,20 +24,31 @@ export default async function PharmacistDashboard() {
           <MyPatients userId={user.id} />
         </Suspense>
 
-        Upcoming Appointments 
+        <Suspense>
+          <MyAppointments userId={user.id} />
+        </Suspense>
 
       </div>
     </div>
   )
 }
 
+async function MyAppointments({ userId }: { userId: string }) {
+  return (
+    <PaddedContainer>
+      <SectionHeadingWithAction title='Upcoming Appointments' actionHref={"/pharmacist/appointments"} actionTitle={"View All Appointments"} />
+    </PaddedContainer>
+  )
+
+}
+
 async function MyAvailability({ userId }: { userId: string }) {
   const getAvailability = async (userId: string) => { return AvailabilityStatus.AVAILABLE };
   const currentAvailability = await getAvailability(userId)
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+    <PaddedContainer>
       <AvailabilityDrowndown currentStatus={currentAvailability} />
-    </div>
+    </PaddedContainer>
   )
 }
 
@@ -44,13 +58,29 @@ async function MyPatients({ userId }: { userId: string }) {
     return <div>no data</div>
   }
   const patients = data.pharmacist_to_patient_match.map(e => e.users)
+  const scheduleAppointmentUrl = (userId: string): Route<string> => {
+    const searchParams = new URLSearchParams({
+      'userId': userId
+    })
+    console.log(searchParams.toString())
+    return '/pharmacist/appointment/new?' + searchParams.toString() as Route
+  }
+
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+    <PaddedContainer>
       <h2>My Patients ({patients.length})</h2>
 
       <BasicList
         items={patients}
-        actionMenu={[{name: "TODO"}]}
+        actionBuilder={
+          (patient) => {
+            return (
+              [
+                { name: "Schedule an appointment", href: scheduleAppointmentUrl(patient?.id) }
+              ]
+            )
+          }
+        }
         row={(patient) => (
           <>
             <div className="flex min-w-0 gap-x-4">
@@ -78,7 +108,7 @@ async function MyPatients({ userId }: { userId: string }) {
           </>
         )}
       />
-    </div>
+    </PaddedContainer>
 
   )
 }

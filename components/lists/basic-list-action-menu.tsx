@@ -6,7 +6,8 @@ import { cn } from "@/utils/cn";
 import { Route } from "next";
 import Link from "next/link";
 
-export type ActionMenuProp = { name: string } & ({ href?: Route<string>, methodCall?: never } | { href?: never, methodCall?: () => void })
+export type ActionMenuProp = { name: string, href: Route<string>}
+// { name: string } & ({ href?: Route<string>, methodCall?: never } | { href?: never, methodCall?: () => void })
 
 export default function ListActionMenu({ actions }: { actions: ActionMenuProp[] }) {
     return (
@@ -30,7 +31,7 @@ export default function ListActionMenu({ actions }: { actions: ActionMenuProp[] 
                             <Menu.Item>
                                 {({ active }) => (
                                     <Link
-                                        href="#"
+                                        href={action.href}
                                         className={cn(
                                             active ? 'bg-gray-50' : '',
                                             'block px-3 py-1 text-sm leading-6 text-gray-900'

@@ -9,6 +9,7 @@ import { MyTransfers } from "@/components/data-views/transfer_requests/table-vie
 import { BasicList } from "@/components/lists/basic-list";
 import ProfilePhoto from "@/components/data-views/profile-photo";
 import { SectionHeadingWithAction } from "@/components/lists/basic-list-section-header";
+import PaddedContainer from "@/components/containers/basic-container";
 
 export default async function Dashboard() {
   const supabase = createClient()
@@ -69,14 +70,14 @@ function PharmaceuticalPatientDashboard({
 
 async function MyAppointments() {
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+    <PaddedContainer>
       <SectionHeadingWithAction title="Upcoming Appointments" actionHref="/appointment/new" actionTitle="Request an appointment" />
       <BasicList
         items={['Appointment 1', 'Appointment 2', 'Appointment 3']}
         row={(row) => (<p>{row}</p>)}
-        actionMenu={[{ name: 'Cancel', href: '#' }]}
+        actionBuilder={[{ name: 'Cancel', href: '#' }]}
       />
-    </div>
+    </PaddedContainer>
   )
 }
 
@@ -92,7 +93,7 @@ async function MyPharmacist({ userId }: { userId: string }) {
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+    <PaddedContainer>
       <h2>My Pharmacist(s)</h2>
       <BasicList items={pharmacists} row={
         (x) => {
@@ -117,9 +118,9 @@ async function MyPharmacist({ userId }: { userId: string }) {
           )
         }
       }
-        actionMenu={[{ name: "Request New Pharmacist", href: "#" }]}
+        actionBuilder={[{ name: "Request New Pharmacist", href: "#" }]}
       />
-    </div>
+    </PaddedContainer>
   )
 
 }

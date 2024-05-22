@@ -210,8 +210,8 @@ create table pharmacist_to_patient_match (
 create table appointments (
   patient_id uuid references auth.users not null,
   pharmacist_id uuid references auth.users not null,
-  created_at timestamp with time zone not null,
-  updated_at timestamp with time zone not null,
+  created_at TIMESTAMPTZ DEFAULT NOW() NOT NULL,
+  updated_at TIMESTAMPTZ DEFAULT NOW() NOT NULL,
   meet_time timestamp with time zone not null,
   primary key(patient_id, pharmacist_id)
 );
