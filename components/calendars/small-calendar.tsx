@@ -22,7 +22,8 @@ const meetings = [
 type Day = { date: string, isCurrentMonth: boolean, isSelected: boolean, isToday: boolean };
 
 export default async function SimpleCalendar() {
-    const today = new Date()
+    const today = new Date(2024, 8, 1)
+    // = new Date()
     const [monthCursor, setMonthCursor] = useState<Date>(today)
     const [days, setDays] = useState<Day[]>(getDayList(monthCursor))
 
@@ -35,7 +36,7 @@ export default async function SimpleCalendar() {
         console.log('lastDayOfPreviousMonth', lastDayOfPreviousMonth, 'daysFromPreviousMonth', daysFromPreviousMonth)
         let days: Day[] = []
         // Add the days from the previous month
-        for (let day = lastDayOfPreviousMonth - daysFromPreviousMonth + 2; day <= lastDayOfPreviousMonth; day++) {
+        for (let day = lastDayOfPreviousMonth - daysFromPreviousMonth + 1; day <= lastDayOfPreviousMonth; day++) {
             const date = new Date(currentYear, currentMonth - 1, day);
             const formattedDate = date.toISOString().split('T')[0];
             console.log('formattedDate', formattedDate)
@@ -51,7 +52,8 @@ export default async function SimpleCalendar() {
     }
 
     useEffect(() => {
-        setDays(getDayList(monthCursor))
+        const newDays = getDayList(monthCursor)
+        setDays(newDays)
     }, [monthCursor])
 
     
@@ -77,13 +79,13 @@ export default async function SimpleCalendar() {
                 </button>
             </div>
             <div className="mt-10 grid grid-cols-7 text-center text-xs leading-6 text-gray-500">
+                <div>S</div>
                 <div>M</div>
                 <div>T</div>
                 <div>W</div>
                 <div>T</div>
                 <div>F</div>
-                <div>S</div>
-                <div>S</div>
+                <div>S</div>    
             </div>
             <div className="mt-2 grid grid-cols-7 text-sm">
                 {days.map((day, dayIdx) => (
