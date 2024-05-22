@@ -6,6 +6,7 @@ import { FormSubmissionReturn, Status, asyncFieldValidation, errorHandler } from
 import { updateOnBoardingStep } from '@/app/api/get-started/update-onboarding-progress';
 import { Tables } from '@/types_db';
 import { sex } from '@/app/api/patient-get-started/options';
+import { ACCOUNT_TYPE } from '@/utils/enums';
 
 const formDataSchema = z.object({
     firstName: z.string().min(1),
@@ -42,7 +43,22 @@ export async function addPersonalInformation(userId: string, prevState: any, for
     // If so then we can have those be standard in a class and the rest be custom per form...
     return await asyncFieldValidation(formDataSchema, rawFormData)
         .then((validatedFields) => savePersonalInformation(validatedFields, userId))
-        .then(() => updateOnBoardingStep(userId, 'personal_info', true))
+        .then(async () => { 
+            const {data: {user}, error} = await supabase.auth.getUser()
+            if (!user) {
+                console.error(error);
+                throw new Error("Unable to get user.");
+            }
+            if (user.user_metadata['account_type'] as ACCOUNT_TYPE === ACCOUNT_TYPE.PATIENT) {
+                return "patient_on_boarding_complete"
+            }
+            if (user.user_metadata['account_type'] as ACCOUNT_TYPE === ACCOUNT_TYPE.PHARMACIST) {
+                return "pharmacist_on_boarding_complete"
+            } else {
+                throw new Error("Unable to get user.");
+            }
+        })
+        .then((onBoardingTable) => updateOnBoardingStep(onBoardingTable, userId, 'personal_info', true))
         .then(() => { return { status: Status.SUCCESS }})
         .catch(errorHandler<FieldErrors>)
 }

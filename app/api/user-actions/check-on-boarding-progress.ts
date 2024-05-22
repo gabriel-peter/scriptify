@@ -13,7 +13,7 @@ export async function checkPatientOnBoardingProgress() {
         redirect('/login')
     }
     const patientOnBoardingStatus = await supabase
-        .from("patient_on_boaring_complete")
+        .from("patient_on_boarding_complete")
         .select("*")
         .eq("user_id", user?.id).limit(1).single();
     return patientOnBoardingStatus;

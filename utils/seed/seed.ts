@@ -43,8 +43,8 @@ const insertProfiles = async () => {
     return await supabase.auth.signUp(data).then(async ({ error, data: { user } }) => {
         if (error) { console.error(error); throw new Error(error.message) }
         if (user?.user_metadata['account_type'] as ACCOUNT_TYPE === ACCOUNT_TYPE.PATIENT) {
-            console.log("patient_on_boaring_complete being created")
-            await supabase.from("patient_on_boaring_complete").insert({ user_id: user!.id }).throwOnError()
+            console.log("patient_on_boarding_complete being created")
+            await supabase.from("patient_on_boarding_complete").insert({ user_id: user!.id }).throwOnError()
         }
         if (user?.user_metadata['account_type'] as ACCOUNT_TYPE === ACCOUNT_TYPE.PHARMACIST) {
             console.log("pharmacist_on_boaring_complete being created")
@@ -68,7 +68,12 @@ const insertProfiles = async () => {
         }).throwOnError()
         return user
     }).then((user) => {
-        updateOnBoardingStep(user!.id, "personal_info", true, supabase)
+        if (user?.user_metadata['account_type'] as ACCOUNT_TYPE === ACCOUNT_TYPE.ADMIN) {
+            return user
+        }
+        updateOnBoardingStep(
+            user?.user_metadata['account_type'] as ACCOUNT_TYPE  === ACCOUNT_TYPE.PATIENT ? "patient_on_boarding_complete" : "pharmacist_on_boarding_complete"
+            , user?.id, "personal_info", true, supabase)
         return user
     });
 

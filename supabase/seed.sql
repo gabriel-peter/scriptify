@@ -51,7 +51,7 @@ SET row_security = on;
 
 
 --
--- Data for Name: patient_on_boaring_complete; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: patient_on_boarding_complete; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 

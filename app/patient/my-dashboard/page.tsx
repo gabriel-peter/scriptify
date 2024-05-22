@@ -2,7 +2,7 @@
 import { Database, Tables } from "@/types_db";
 import { createClient } from "@/utils/supabase/server";
 import { SupabaseClient, User } from "@supabase/supabase-js";
-import { Fragment, ReactNode } from 'react'
+import { Fragment, ReactNode, Suspense } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { EllipsisVerticalIcon } from '@heroicons/react/20/solid'
 import { cn } from "@/utils/cn";
@@ -12,6 +12,8 @@ import Link from "next/link";
 import { getUserDemographicInformationCurrentUser } from "@/app/api/user-actions/actions";
 import { Route } from "next";
 import { TranfserRequestView } from "@/components/data-views/transfer_requests/table-view";
+import { BasicList } from "@/components/lists/basic-list";
+import ProfilePhoto from "@/components/data-views/profile-photo";
 
 export default async function Dashboard() {
   const supabase = createClient()
@@ -21,29 +23,29 @@ export default async function Dashboard() {
   if (!user) {
     return <div>NO USER :(</div>
   }
-  const transfers = await getUserTransfers(supabase, user.id);
+  // const transfers = await getUserTransfers(supabase, user.id);
   const result = await getUserDemographicInformationCurrentUser();
   if (!result || result.error) {
     return <>ERROR</>
   }
-  console.debug("TRANSFERS", transfers);
-  return <PharmaceuticalPatientDashboard user={user} userInfo={result.data} prescriptionTransfers={transfers} />
+  // console.debug("TRANSFERS", transfers);
+  return <PharmaceuticalPatientDashboard user={user} userInfo={result.data} />
 }
 
-async function getUserTransfers(supabase: SupabaseClient<Database>, userId: string) {
-  const { data, error, status } = await supabase.from("transfer_requests").select("*").eq("user_id", userId);
-  return data;
-}
+// async function getUserTransfers(supabase: SupabaseClient<Database>, userId: string) {
+//   const { data, error, status } = await supabase.from("transfer_requests").select("*").eq("user_id", userId);
+//   return data;
+// }
 
 
 function PharmaceuticalPatientDashboard({
   user,
   userInfo,
-  prescriptionTransfers
+  // prescriptionTransfers
 }: {
   user: User,
   userInfo: Tables<"profiles">,
-  prescriptionTransfers: Tables<'transfer_requests'>[] | null
+  // prescriptionTransfers: Tables<'transfer_requests'>[] | null
 }) {
   return (
     <div className="min-h-screen">
@@ -59,19 +61,26 @@ function PharmaceuticalPatientDashboard({
           <p className="text-gray-600">Address: {stringifyAddress(userInfo)}</p>
           <p className="text-gray-600">Phone: +1234567890</p>
         </div> */}
+        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+          <NextAppointment appointment={{
+            doctor: "Dr. Michael Peter",
+            date: "March 5, 2024",
+            time: "9:30 am"
+          }}
+          />
+        </div>
 
-        <NextAppointment appointment={{
-          doctor: "Dr. Michael Peter",
-          date: "March 5, 2024",
-          time: "9:30 am"
-        }}
-        />
+        <Suspense fallback="Loading">
+          <MyPharmacist userId={user.id} />
+        </Suspense>
 
         {/* Medications */}
-        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-          <SectionHeadingWithAction title="Transfers in Progress" actionHref="/patient/transfer/new" actionTitle="Make new request" />
-          {prescriptionTransfers && <TranfserRequestView prescriptionTransfers={prescriptionTransfers} />}
-        </div>
+        {/* <div className="bg-white rounded-lg shadow-md p-6 mb-8"> */}
+        {/* <SectionHeadingWithAction title="Transfers in Progress" actionHref="/patient/transfer/new" actionTitle="Make new request" /> */}
+        <Suspense fallback="Loading">
+          <TranfserRequestView userId={user.id} />
+        </Suspense>
+        {/* </div> */}
 
         {/* Appointments */}
         <div className="bg-white rounded-lg shadow-md p-6">
@@ -106,12 +115,56 @@ function SectionHeadingWithAction({ title, actionHref, actionTitle }: { title: s
   )
 }
 
+async function MyPharmacist({ userId }: { userId: string }) {
+  const supabase = createClient()
+  const { data, error, count } = await supabase.from('pharmacist_to_patient_match')
+    .select(`*, users!pharmacist_to_patient_match_pharmacist_id_fkey(*, profiles!inner(*))`)
+    .eq('patient_id', userId)
+  console.log(data, error)
+  const pharmacists = data;
+  if (!pharmacists || pharmacists.length === 0) {
+    return <></>
+  }
+
+  return (
+    <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+      <h2>My Pharmacist(s)</h2>
+      <BasicList items={pharmacists} row={
+        (x) => {
+          return (
+            <>
+              <div className="flex items-start gap-x-3">
+                <ProfilePhoto userId={x.users?.profiles?.avatar_url} size={30} />
+                <p className="text-sm font-semibold leading-6 text-gray-900">{stringifyName(x.users?.profiles)}</p>
+              </div>
+              <div className="mt-1 flex items-center gap-x-2 text-xs leading-5 text-gray-500">
+                {/* <p className="whitespace-nowrap">
+                Submitted on <time
+                  dateTime={request.created_at!}
+                >{toHumanReadableTime(request.created_at!, true)}</time>
+              </p>
+              <svg viewBox="0 0 2 2" className="h-0.5 w-0.5 fill-current">
+                <circle cx={1} cy={1} r={1} />
+              </svg>
+              <p className="truncate">Pharmacy Email {request.pharmacy_email}</p> */}
+              </div>
+            </>
+          )
+        }
+      }
+        actionMenu={[{ name: "Request New Pharmacist", href: "#" }]}
+      />
+    </div>
+  )
+
+}
+
 function NextAppointment({ appointment }: { appointment: any }) {
   // Assuming appointment is an object with properties like date, time, doctor, etc.
   // If appointment is null, it means no upcoming appointment.
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+    <>
       <h2 className="text-lg font-semibold mb-4">Next Appointment</h2>
       {appointment ? (
         <div>
@@ -126,6 +179,6 @@ function NextAppointment({ appointment }: { appointment: any }) {
       ) : (
         <p className="text-gray-600">You have no upcoming appointments.</p>
       )}
-    </div>
+    </>
   );
 }

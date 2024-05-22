@@ -1,7 +1,8 @@
 "use server"
 import { selfGetPharmacist } from "@/app/api/pharmacist/get-pharmacist";
-import LazyProfilePhoto from "@/components/data-views/lazy-profile-photo";
 import ProfilePhoto from "@/components/data-views/profile-photo";
+import AvailabilityDrowndown from "./availability-dropdown";
+import { AvailabilityStatus } from "./utils";
 
 export default async function PharmacistDashboard() {
     const result = await selfGetPharmacist();
@@ -10,8 +11,11 @@ export default async function PharmacistDashboard() {
     return (
         <>
         <ul role="list" className="space-y-3">
+        {/* <li className="overflow-hidden bg-white px-4 py-4 shadow sm:rounded-md sm:px-6"> */}
+        <AvailabilityDrowndown currentStatus={AvailabilityStatus.AVAILABLE}/>
+        {/* </li> */}
           <li className="overflow-hidden bg-white px-4 py-4 shadow sm:rounded-md sm:px-6">
-            <h2>My Patients</h2>
+            
           <PatientList people={result.data.pharmacist_to_patient_match.map(e => e.users)}/>
 
           </li>
@@ -25,6 +29,8 @@ export default async function PharmacistDashboard() {
 
 function PatientList({people}: { people : {email: string, id:string, profiles: { avatar_url: string, first_name: string, last_name: string, state_enum: string}}[]}) {
     return (
+      <>
+      <h2>My Patients ({people.length})</h2>
       <ul role="list" className="divide-y divide-gray-100">
         {people.map((person) => (
           <li key={person.email} className="flex justify-between gap-x-6 py-5">
@@ -53,6 +59,6 @@ function PatientList({people}: { people : {email: string, id:string, profiles: {
           </li>
         ))}
       </ul>
+      </>
     )
   }
-  

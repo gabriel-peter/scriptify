@@ -84,7 +84,7 @@ export async function signup(formData: FormData) {
     redirect("/pharmacist/get-started/personal")
   } else if (user?.user_metadata["account_type"] as ACCOUNT_TYPE === ACCOUNT_TYPE.PATIENT) {
     try {
-      await supabase.from("patient_on_boaring_complete").insert({ user_id: user.id }).throwOnError()
+      await supabase.from("patient_on_boarding_complete").insert({ user_id: user.id }).throwOnError()
     } catch (e) {
       console.error(e)
       redirect(`/sign-up?error=unknown`)

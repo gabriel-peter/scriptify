@@ -86,12 +86,12 @@ create table pharmacist_clinical_specialties (
   preferred_chronic_conditions text[],
   pharmacist_gender text,
   pharmacist_sexual_orientation text,
-  pharmacist_race_or_ethnicity text,
+  pharmacist_race_or_ethnicity text
 );
 
 CREATE TABLE pharmacist_licenses (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  pharmacist_id references auth.users NOT NULL primary key,
+  id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
+  pharmacist_id uuid references auth.users NOT NULL,
   full_name TEXT NOT NULL,
   license_number TEXT NOT NULL UNIQUE,
   license_type TEXT NOT NULL,
@@ -183,7 +183,7 @@ create policy "Anyone can update their own avatar." on storage.objects
 
 
 -- Get Started Info
-create table patient_on_boaring_complete (
+create table patient_on_boarding_complete (
   user_id uuid references auth.users not null primary key,
   personal_info boolean NOT NULL DEFAULT false,
   transfer_info boolean NOT NULL DEFAULT false,
@@ -214,4 +214,36 @@ create table appointments (
   updated_at timestamp with time zone not null,
   meet_time timestamp with time zone not null,
   primary key(patient_id, pharmacist_id)
-)
+);
+
+create table prescriptions (
+  id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
+  patient_id uuid references auth.users not null,
+  -- approved_by uuid[] references auth.users not null, -- Pharmacist Approvals
+  name text,
+  label text,
+  price text,
+  quantity text,
+  ndc text,
+  dosage text,
+  drugFormId text,
+  drugCategoryId text,
+  drugClassId text,
+  drugTypeId text,
+  ageGroupId text,
+  refillable boolean,
+  refillLimit text,
+  tierOne text,
+  tierTwo text,
+  tierThree text,
+  tierFour text,
+  tierFive text,
+  erxRequired text,
+  active boolean,
+  minQuantity text,
+  maxQuantity text,
+  quantityAllowed text,
+  -- softDeleted boolean,
+  created_at timestamp with time zone not null,
+  updated_at timestamp with time zone not null
+);

@@ -9,6 +9,59 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      appointments: {
+        Row: {
+          created_at: string
+          meet_time: string
+          patient_id: string
+          pharmacist_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at: string
+          meet_time: string
+          patient_id: string
+          pharmacist_id: string
+          updated_at: string
+        }
+        Update: {
+          created_at?: string
+          meet_time?: string
+          patient_id?: string
+          pharmacist_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "appointments_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "appointments_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "appointments_pharmacist_id_fkey"
+            columns: ["pharmacist_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "appointments_pharmacist_id_fkey"
+            columns: ["pharmacist_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       insurance_details: {
         Row: {
           bin: string
@@ -117,7 +170,7 @@ export type Database = {
           },
         ]
       }
-      patient_on_boaring_complete: {
+      patient_on_boarding_complete: {
         Row: {
           clinical_info: boolean
           insurance_info: boolean
@@ -144,14 +197,14 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "patient_on_boaring_complete_user_id_fkey"
+            foreignKeyName: "patient_on_boarding_complete_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: true
             referencedRelation: "users"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "patient_on_boaring_complete_user_id_fkey"
+            foreignKeyName: "patient_on_boarding_complete_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: true
             referencedRelation: "users"
@@ -204,6 +257,108 @@ export type Database = {
           {
             foreignKeyName: "payments_details_user_id_fkey"
             columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pharmacist_clinical_specialties: {
+        Row: {
+          languages: string[]
+          pharmacist_gender: string | null
+          pharmacist_race_or_ethnicity: string | null
+          pharmacist_sexual_orientation: string | null
+          preferred_chronic_conditions: string[] | null
+          user_id: string
+        }
+        Insert: {
+          languages: string[]
+          pharmacist_gender?: string | null
+          pharmacist_race_or_ethnicity?: string | null
+          pharmacist_sexual_orientation?: string | null
+          preferred_chronic_conditions?: string[] | null
+          user_id: string
+        }
+        Update: {
+          languages?: string[]
+          pharmacist_gender?: string | null
+          pharmacist_race_or_ethnicity?: string | null
+          pharmacist_sexual_orientation?: string | null
+          preferred_chronic_conditions?: string[] | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pharmacist_clinical_specialties_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pharmacist_clinical_specialties_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pharmacist_licenses: {
+        Row: {
+          created_at: string | null
+          expiration_date: string
+          full_name: string
+          id: string
+          issue_date: string
+          issuing_state: Database["public"]["Enums"]["us_state"]
+          license_number: string
+          license_type: string
+          pharmacist_id: string
+          specializations: string | null
+          status: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          expiration_date: string
+          full_name: string
+          id?: string
+          issue_date: string
+          issuing_state: Database["public"]["Enums"]["us_state"]
+          license_number: string
+          license_type: string
+          pharmacist_id: string
+          specializations?: string | null
+          status: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          expiration_date?: string
+          full_name?: string
+          id?: string
+          issue_date?: string
+          issuing_state?: Database["public"]["Enums"]["us_state"]
+          license_number?: string
+          license_type?: string
+          pharmacist_id?: string
+          specializations?: string | null
+          status?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pharmacist_licenses_pharmacist_id_fkey"
+            columns: ["pharmacist_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pharmacist_licenses_pharmacist_id_fkey"
+            columns: ["pharmacist_id"]
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
@@ -336,6 +491,111 @@ export type Database = {
             columns: ["transfer_request_id"]
             isOneToOne: false
             referencedRelation: "transfer_requests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      prescriptions: {
+        Row: {
+          active: boolean | null
+          agegroupid: string | null
+          created_at: string
+          dosage: string | null
+          drugcategoryid: string | null
+          drugclassid: string | null
+          drugformid: string | null
+          drugtypeid: string | null
+          erxrequired: string | null
+          id: string
+          label: string | null
+          maxquantity: string | null
+          minquantity: string | null
+          name: string | null
+          ndc: string | null
+          patient_id: string
+          price: string | null
+          quantity: string | null
+          quantityallowed: string | null
+          refillable: boolean | null
+          refilllimit: string | null
+          tierfive: string | null
+          tierfour: string | null
+          tierone: string | null
+          tierthree: string | null
+          tiertwo: string | null
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean | null
+          agegroupid?: string | null
+          created_at: string
+          dosage?: string | null
+          drugcategoryid?: string | null
+          drugclassid?: string | null
+          drugformid?: string | null
+          drugtypeid?: string | null
+          erxrequired?: string | null
+          id?: string
+          label?: string | null
+          maxquantity?: string | null
+          minquantity?: string | null
+          name?: string | null
+          ndc?: string | null
+          patient_id: string
+          price?: string | null
+          quantity?: string | null
+          quantityallowed?: string | null
+          refillable?: boolean | null
+          refilllimit?: string | null
+          tierfive?: string | null
+          tierfour?: string | null
+          tierone?: string | null
+          tierthree?: string | null
+          tiertwo?: string | null
+          updated_at: string
+        }
+        Update: {
+          active?: boolean | null
+          agegroupid?: string | null
+          created_at?: string
+          dosage?: string | null
+          drugcategoryid?: string | null
+          drugclassid?: string | null
+          drugformid?: string | null
+          drugtypeid?: string | null
+          erxrequired?: string | null
+          id?: string
+          label?: string | null
+          maxquantity?: string | null
+          minquantity?: string | null
+          name?: string | null
+          ndc?: string | null
+          patient_id?: string
+          price?: string | null
+          quantity?: string | null
+          quantityallowed?: string | null
+          refillable?: boolean | null
+          refilllimit?: string | null
+          tierfive?: string | null
+          tierfour?: string | null
+          tierone?: string | null
+          tierthree?: string | null
+          tiertwo?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prescriptions_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "prescriptions_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "users"
             referencedColumns: ["id"]
           },
         ]

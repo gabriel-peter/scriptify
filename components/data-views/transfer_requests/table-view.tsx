@@ -1,23 +1,44 @@
-"use client"
-import { Tables } from "@/types_db";
+"use server"
+import { BasicList } from "@/components/lists/basic-list";
 import { cn } from "@/utils/cn";
+import { createClient } from "@/utils/supabase/server";
 import { toHumanReadableTime } from "@/utils/time";
-import { Menu, Transition } from "@headlessui/react";
-import { EllipsisVerticalIcon } from "@heroicons/react/20/solid";
-import { Fragment } from "react";
+import Link from "next/link";
 
 const statuses = {
-    complete: 'text-green-700 bg-green-50 ring-green-600/20',
-    pending: 'text-gray-600 bg-gray-50 ring-gray-500/10',
-    "pharmacist-filled": 'text-yellow-800 bg-yellow-50 ring-yellow-600/20',
-  }
+  complete: 'text-green-700 bg-green-50 ring-green-600/20',
+  pending: 'text-gray-600 bg-gray-50 ring-gray-500/10',
+  "pharmacist-filled": 'text-yellow-800 bg-yellow-50 ring-yellow-600/20',
+}
 
-export function TranfserRequestView({ prescriptionTransfers }: { prescriptionTransfers: Tables<'transfer_requests'>[] }) {
-    return (
-      <ul role="list" className="divide-y divide-gray-100">
-        {prescriptionTransfers?.map((request, indx) => (
-          <li key={indx} className="flex items-center justify-between gap-x-6 py-5">
-            <div className="min-w-0">
+export async function TranfserRequestView({ userId }: { userId: string }) {
+  const { data, error, count } = await createClient().from("transfer_requests").select("*").eq("user_id", userId);
+  if (!data) {
+    return <div></div>
+  }
+  const prescriptionTransfers = data;
+  return (
+    <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+
+      <div className="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
+        <div className="-ml-4 -mt-2 flex flex-wrap items-center justify-between sm:flex-nowrap">
+          {/* <div className="ml-4 mt-2"> */}
+          <h3 className="text-lg font-semibold mb-4">Transfers in Progress</h3>
+          {/* </div> */}
+          <div className="flex-shrink-0">
+            <Link
+              href={"/patient/transfer/new"}
+              className="relative inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+              Make new request
+            </Link>
+          </div>
+        </div>
+      </div>
+      <BasicList
+        items={prescriptionTransfers}
+        row={(request) => {
+          return (
+            <>
               <div className="flex items-start gap-x-3">
                 <p className="text-sm font-semibold leading-6 text-gray-900">{request.pharmacy_name}</p>
                 <p
@@ -40,68 +61,9 @@ export function TranfserRequestView({ prescriptionTransfers }: { prescriptionTra
                 </svg>
                 <p className="truncate">Pharmacy Email {request.pharmacy_email}</p>
               </div>
-            </div>
-            <div className="flex flex-none items-center gap-x-4">
-              <Menu as="div" className="relative flex-none">
-                <Menu.Button className="-m-2.5 block p-2.5 text-gray-500 hover:text-gray-900">
-                  <span className="sr-only">Open options</span>
-                  <EllipsisVerticalIcon className="h-5 w-5" aria-hidden="true" />
-                </Menu.Button>
-                <Transition
-                  as={Fragment}
-                  enter="transition ease-out duration-100"
-                  enterFrom="transform opacity-0 scale-95"
-                  enterTo="transform opacity-100 scale-100"
-                  leave="transition ease-in duration-75"
-                  leaveFrom="transform opacity-100 scale-100"
-                  leaveTo="transform opacity-0 scale-95"
-                >
-                  <Menu.Items className="absolute right-0 z-10 mt-2 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
-                    <Menu.Item>
-                      {({ active }) => (
-                        <a
-                          href="#"
-                          className={cn(
-                            active ? 'bg-gray-50' : '',
-                            'block px-3 py-1 text-sm leading-6 text-gray-900'
-                          )}
-                        >
-                          Edit<span className="sr-only">, {}</span>
-                        </a>
-                      )}
-                    </Menu.Item>
-                    <Menu.Item>
-                      {({ active }) => (
-                        <a
-                          href="#"
-                          className={cn(
-                            active ? 'bg-gray-50' : '',
-                            'block px-3 py-1 text-sm leading-6 text-gray-900'
-                          )}
-                        >
-                          Move<span className="sr-only">, {}</span>
-                        </a>
-                      )}
-                    </Menu.Item>
-                    <Menu.Item>
-                      {({ active }) => (
-                        <a
-                          href="#"
-                          className={cn(
-                            active ? 'bg-gray-50' : '',
-                            'block px-3 py-1 text-sm leading-6 text-gray-900'
-                          )}
-                        >
-                          Delete<span className="sr-only">, {}</span>
-                        </a>
-                      )}
-                    </Menu.Item>
-                  </Menu.Items>
-                </Transition>
-              </Menu>
-            </div>
-          </li>
-        ))}
-      </ul>
-    )
-  }
+            </>)
+        }}
+      />
+    </div>
+  )
+}
