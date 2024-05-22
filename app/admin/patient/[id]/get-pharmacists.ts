@@ -1,7 +1,6 @@
 "use server"
 import { Status } from "@/components/forms/validation-helpers";
 import { Database, Tables } from "@/types_db";
-import { ACCOUNT_TYPE } from "@/utils/enums";
 import { createClient } from "@/utils/supabase/server";
 import { AsyncReturnType } from "@/utils/supabase/types";
 import { SupabaseClient } from "@supabase/supabase-js";

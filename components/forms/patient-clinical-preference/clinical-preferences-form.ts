@@ -30,7 +30,7 @@ export default async function savePatientClinicalPreferences(userId: string, pre
 
     return await asyncFieldValidation(clinicalInformationSchema, rawFormData)
     .then((validatedFields) => dbSaveClinicalPreferences(validatedFields, userId))
-    .then(() => updateOnBoardingStep(userId, "clinical_info", true))
+    .then(() => updateOnBoardingStep("patient_on_boarding_complete", userId, "clinical_info", true))
     .then(() =>  { return {status: Status.SUCCESS, message: "Succesful Update"}})
     .catch(errorHandler<FieldErrors>)
 }

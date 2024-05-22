@@ -1,19 +1,20 @@
-"use client"
+"use server"
 import { login } from './action'
-import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
-import { LoginError, showErrorBanner } from './error-handler'
+import { ErrorBanner } from './error-handler'
+import Image from 'next/image'
 
-export default function LoginPage() {
-  const searchParams = useSearchParams()
-  const errorParam = searchParams.get("error") as LoginError | null
+export default async function LoginPage() {
   return (
       <>
-        {showErrorBanner(errorParam)}
+        <ErrorBanner/>
         <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
           <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-            <img
+            <Image
               className="mx-auto h-10 w-auto"
+              width={80}
+              height={80}
+              priority
               src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
               alt="Your Company"
             />
@@ -23,7 +24,7 @@ export default function LoginPage() {
           </div>
   
           <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form className="space-y-6" action="#" method="POST">
+            <form className="space-y-6" method="POST">
               <div>
                 <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
                   Email address

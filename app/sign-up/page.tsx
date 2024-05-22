@@ -1,20 +1,21 @@
-"use client"
+"use server"
 import { signup } from '../login/action'
-import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
-import { LoginError, showErrorBanner } from '../login/error-handler'
 import { ACCOUNT_TYPE } from '@/utils/enums'
+import { ErrorBanner } from '../login/error-handler'
+import Image from 'next/image'
 
-export default function LoginPage() {
-    const searchParams = useSearchParams()
-    const errorParam = searchParams.get("error") as LoginError | null
+export default async function LoginPage() {
     return (
         <>
-            {showErrorBanner(errorParam)}
+            <ErrorBanner/>
             <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-                    <img
+                    <Image
                         className="mx-auto h-10 w-auto"
+                        height={80}
+                        width={80}
+                        priority
                         src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
                         alt="Your Company"
                     />

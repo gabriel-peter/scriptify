@@ -34,7 +34,7 @@ export default async function saveMedicalInsuranceForm(userId: string, prevState
 
     return await asyncFieldValidation(insuranceFormSchema, insuranceFormData)
         .then((validatedFields) => saveInsuranceInfromation(validatedFields, userId))
-        .then(() => updateOnBoardingStep(userId, 'insurance_info', true))
+        .then(() => updateOnBoardingStep("patient_on_boarding_complete", userId, 'insurance_info', true))
         .then(() => { return { status: Status.SUCCESS } })
         .catch(errorHandler<FieldErrors>)
 }

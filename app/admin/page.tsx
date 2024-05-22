@@ -1,6 +1,5 @@
 "use client"
 
-import AdminUserList from "@/app/admin/user-list";
 import { getUsersPaginated, GetUsersPaginatedFilter, UserProfileResponse } from "./actions";
 import { Suspense, useEffect, useState } from "react";
 import Paginator, { resetPageIndices } from "@/components/tables/pagination-footer";

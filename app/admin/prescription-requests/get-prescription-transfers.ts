@@ -6,8 +6,7 @@ import { SupabaseClient } from "@supabase/supabase-js"
 
 const getAllTransferRequests = async (supabase: SupabaseClient<Database>, queryFilters: GetTransferedRequestsFilters) => {
 
-    let query = supabase.from("transfer_requests")
-        .select(`
+    let query = supabase.from("transfer_requests").select(`
     pharmacy_name,
     pharmacy_email,
     pharmacy_phone_number,

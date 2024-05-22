@@ -1,4 +1,6 @@
+"use client"
 import FailedSubmission from "@/components/alerts/failed-submit-alert"
+import { useSearchParams } from "next/navigation"
 
 export enum LoginError {
   invalid_credentials = "invalid_credentials",
@@ -22,7 +24,9 @@ function convertErrorParam(errorParam: LoginError | null) {
   }
 }
 
-export function showErrorBanner(errorMessage: LoginError | null) {
-  if (!errorMessage) { return <></> }
-  return <FailedSubmission title="Error occurred while logging in" errorList={[convertErrorParam(errorMessage as LoginError)]} />
+export function ErrorBanner() {
+  const searchParams = useSearchParams()
+  const errorParam = searchParams.get("error") as LoginError | null
+  if (!errorParam) { return <></> }
+  return <FailedSubmission title="Error occurred while logging in" errorList={[convertErrorParam(errorParam)]} />
 }
