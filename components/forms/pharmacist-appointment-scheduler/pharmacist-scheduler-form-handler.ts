@@ -1,8 +1,7 @@
 'use server'
-
 import { asyncFieldValidation, CustomClientError, errorHandler, FormSubmissionReturn, Status } from "../validation-helpers";
 import { TypeOf, z } from 'zod';
-import { localizedDate } from "@/utils/time";
+import { localizedDate, toHumanReadableDate } from "@/utils/time";
 import { createClient } from "@/utils/supabase/server";
 import moment from 'moment';
 
@@ -13,7 +12,6 @@ const scheduleAppointmentSchema = z.object({
 });
 
 export type FieldErrors = z.inferFlattenedErrors<typeof scheduleAppointmentSchema>["fieldErrors"];
-
 
 export async function scheduleAppointment({patientId, pharmacistId, meetingDate}: {patientId: string, pharmacistId: string, meetingDate: Date}, prevState: any, formData: FormData):
 Promise<FormSubmissionReturn<FieldErrors>> {
@@ -56,6 +54,9 @@ async function saveConflictFreeNewAppointment(validatedFields: z.SafeParseSucces
     } else {
         console.debug(data)
         console.error(error)
-        throw new CustomClientError(`You have a meeting conflict on \n${data[0].start_time} - ${data[0].end_time}`) // return conflicting meeting(s)
+        throw new CustomClientError(`You have a meeting conflict on \n
+        ${toHumanReadableDate({hour: 'numeric', minute: 'numeric'}, data[0].start_time)}
+         - ${toHumanReadableDate({hour: 'numeric', minute: 'numeric'}, data[0].end_time)}
+        `) // return conflicting meeting(s)
     }
 }

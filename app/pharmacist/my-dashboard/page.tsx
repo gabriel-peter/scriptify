@@ -12,6 +12,8 @@ import { Route } from "next";
 import PageContainer from "@/components/containers/page-container";
 import { stringifyName } from "@/utils/user-attribute-modifiers";
 import { standardButtonStyling } from "@/components/forms/styling";
+import { createClient } from "@/utils/supabase/server";
+import { toHumanReadableDate } from "@/utils/time";
 
 export default async function PharmacistDashboard() {
   const { user, profile } = await getUserProfileOrRedirect()
@@ -36,9 +38,47 @@ export default async function PharmacistDashboard() {
 }
 
 async function MyAppointments({ userId }: { userId: string }) {
+  const { error, data, count } = await createClient().from('appointments')
+    .select('*, users!appointments_patient_id_fkey(*, profiles!inner(*))')
+    .eq('pharmacist_id', userId)
+    .gte('start_time', new Date().toISOString())
+    .limit(5)
+
   return (
     <PaddedContainer>
-      <SectionHeadingWithAction title='Upcoming Appointments' actionHref={"/pharmacist/appointments"} actionTitle={"View All Appointments"} />
+      <SectionHeadingWithAction title={`Upcoming Appointments (${data?.length})`} actionHref={"/pharmacist/appointments"} actionTitle={"View All Appointments"} />
+      <BasicList_Server 
+      items={data} 
+      actionBuilder={
+        (patient) => {
+          return (
+            [
+              { name: "Cancel Appointment", href: 'todo' }
+            ]
+          )
+        }
+      }
+      row={(appointment) => (
+        <>
+          <div className="flex min-w-0 gap-x-4">
+            <ProfilePhoto size={40} userId={appointment.users.id} />
+            <div className="min-w-0 flex-auto">
+              <p className="text-sm font-semibold leading-6 text-gray-900">{appointment.users.profiles.first_name + " " + appointment.users.profiles.last_name}</p>
+              <p className="mt-1 truncate text-xs leading-5 text-gray-500">{appointment.users.email}</p>
+            </div>
+          </div>
+          <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
+            <p className="mt-1 text-xs leading-5 text-gray-500">
+              {' '}
+              <time dateTime={appointment.start_time}>{toHumanReadableDate({ month: "long", "day": "numeric", hour: 'numeric', minute: 'numeric' }, appointment.start_time, true)}</time>
+              {' '}
+              -
+              {' '}
+              <time dateTime={appointment.end_time}>{toHumanReadableDate({ month: "long", "day": "numeric", hour: 'numeric', minute: 'numeric' }, appointment.end_time, true)}</time>
+            </p>
+          </div>
+        </>
+      )} />
     </PaddedContainer>
   )
 
@@ -70,16 +110,17 @@ async function MyPatients({ userId }: { userId: string }) {
 
   return (
     <PaddedContainer>
-      <div className="flex justify-between">
-      <h2>My Patients ({patients.length})</h2>
-      {patients.length === 0 && 
-      <button 
-      className={standardButtonStyling}
-      // onClick={() => console.log('TODO open patient finder')}
-      >
-        Find Patients
-        </button> }
-      </div>
+      {/* <div className="flex justify-between">
+        <h2>My Patients ({patients.length})</h2>
+        {patients.length === 0 &&
+          <button
+            className={standardButtonStyling}
+          // onClick={() => console.log('TODO open patient finder')}
+          >
+            Find Patients
+          </button>}
+      </div> */}
+      <SectionHeadingWithAction title={`My Patients (${patients.length})`} actionHref={"/pharmacist/patient/finder"} actionTitle={"Find new patients"} />
       <BasicList_Server
         items={patients}
         actionBuilder={

@@ -31,7 +31,7 @@ export default async function PharmacistNewAppointmentPage({
 
     return (
         <PageContainer>
-            Schedule an appointment for <strong>{stringifyName(data.profiles)}</strong>
+            <div className="mb-5">Schedule an appointment for <strong>{stringifyName(data.profiles)}</strong></div>
             <NewAppointmentScheduler pharmacistId={pharmacist.id} patientId={patientId}/>
         </PageContainer>
     )

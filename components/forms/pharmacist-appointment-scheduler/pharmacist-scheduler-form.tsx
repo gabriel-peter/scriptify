@@ -1,5 +1,4 @@
 'use client'
-
 import { useFormState } from "react-dom";
 import AbstractForm from "../abstract-form-full-page"
 import { scheduleAppointment } from "./pharmacist-scheduler-form-handler";
@@ -26,11 +25,9 @@ export default function PharmacistSchedulerForm({ pharmacistId, patientId, date,
                         header={`Schedule an appointment on ${localizedDate(date)}`}
                         successAction={() => {}}
                     >
-
                         <GenericInput label="Meeting Reason" id='meeting-reason' errorState={state.error?.meetingReason} errorMessage={""} />
                         <CustomDropdown id={"duration"} label={"Durations (minutes)"} options={[15, 30, 45, 60]} errorState={state.error?.duration} />
                         <CustomDropdown id={"start-time"} label={"Start Time"} options={generateTimeOptions('09:00', 15, 17)} errorState={state.error?.startTime} />
-
                     </AbstractForm>
                 )}
         </>

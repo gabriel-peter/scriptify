@@ -22,9 +22,6 @@ export function NativeDropdown({ id, label, options }: { id: string, label: stri
   )
 }
 
-
-
-
 export default function CustomDropdown({
   id,
   label,

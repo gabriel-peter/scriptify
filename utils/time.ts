@@ -33,7 +33,6 @@ export function localizedDate(date: Date) {
 
 export function formatDateWithTimezoneOffset(date: Date) {
     const offset = date.getTimezoneOffset()
-    console.log(offset)
     date = new Date(date.getTime() - (offset*60*1000))
     return date.toISOString().split('T')[0]
 }
