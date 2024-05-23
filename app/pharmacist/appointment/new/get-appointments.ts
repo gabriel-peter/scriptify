@@ -9,6 +9,7 @@ export async function getAppointmentsForDay(localIsoDate: string, pharmacistId: 
     .eq("pharmacist_id", pharmacistId)
     .gte('start_time', localIsoDate)
     .lt('end_time', moment(localIsoDate).endOf('D').toISOString())
+    // .then(({data, error}) => data?.filter(d => d !== null))
 }
 
 export type GetAppointmentForDayResponse = AsyncReturnType<typeof getAppointmentsForDay>

@@ -10,6 +10,7 @@ import { BasicList_Server } from "@/components/lists/basic-list-server";
 import ProfilePhoto from "@/components/data-views/profile-photo";
 import { SectionHeadingWithAction } from "@/components/lists/basic-list-section-header";
 import PaddedContainer from "@/components/containers/padded-container";
+import { toHumanReadableDate } from "@/utils/time";
 
 export default async function Dashboard() {
   const supabase = createClient()
@@ -38,7 +39,7 @@ function PharmaceuticalPatientDashboard({
 
       {/* Main Content */}
       <div className="container mx-auto mt-8 px-4">
-        <h2 className="text-xl font-semibold mb-4">Welcome, {stringifyName(userInfo)}</h2>
+        <h2 className="text-xl font-semibold mb-4 mb-5">Welcome, {stringifyName(userInfo)}</h2>
 
         <div className="bg-white rounded-lg shadow-md p-6 mb-8">
           <NextAppointment appointment={{
@@ -61,22 +62,51 @@ function PharmaceuticalPatientDashboard({
 
         {/* Appointments */}
         <Suspense fallback="Loading">
-          <MyAppointments />
+          <MyAppointments userId={user.id} />
         </Suspense>
       </div>
     </div>
   );
 }
 
-async function MyAppointments() {
+async function MyAppointments({userId}: {userId: string}) {
+  const {data, error} = await createClient().from('appointments')
+  .select('*, users!appointments_pharmacist_id_fkey(*, profiles!inner(*))')
+  .eq('patient_id', userId)
+  .gte('start_time', new Date().toISOString()) // TODO this will be server localized...
+  .limit(5);
+
   return (
     <PaddedContainer>
-      <SectionHeadingWithAction title="Upcoming Appointments" actionHref="/appointment/new" actionTitle="Request an appointment" />
+      <SectionHeadingWithAction title={`Upcoming Appointments (${data?.length || 0})`} actionHref="/appointment/new" actionTitle="Request an appointment" />
+      {data ? 
       <BasicList_Server
-        items={['Appointment 1', 'Appointment 2', 'Appointment 3']}
-        row={(row) => (<p>{row}</p>)}
-        actionBuilder={[{ name: 'Cancel', href: '#' }]}
-      />
+        items={data}
+        row={(appointment) => (
+          <>
+          <div className="flex min-w-0 gap-x-4">
+            <ProfilePhoto size={40} userId={appointment.users.id} />
+            <div className="min-w-0 flex-auto">
+              <p className="text-sm font-semibold leading-6 text-gray-900">{appointment.users.profiles.first_name + " " + appointment.users.profiles.last_name}</p>
+              <p className="mt-1 truncate text-xs leading-5 text-gray-500">{appointment.users.email}</p>
+            </div>
+          </div>
+          <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
+            <p className="mt-1 text-xs leading-5 text-gray-500">
+              {' '}
+              <time dateTime={appointment.start_time}>{toHumanReadableDate({ month: "long", "day": "numeric", hour: 'numeric', minute: 'numeric' }, appointment.start_time, true)}</time>
+              {' '}
+              -
+              {' '}
+              <time dateTime={appointment.end_time}>{toHumanReadableDate({ month: "long", "day": "numeric", hour: 'numeric', minute: 'numeric' }, appointment.end_time, true)}</time>
+            </p>
+          </div>
+        </>
+        )}
+        actionBuilder={(row) => [{ name: 'Cancel', href: '#' }]}
+      /> : 
+      "No Upcoming Appointments"
+}
     </PaddedContainer>
   )
 }
@@ -118,7 +148,7 @@ async function MyPharmacist({ userId }: { userId: string }) {
           )
         }
       }
-        actionBuilder={[{ name: "Request New Pharmacist", href: "#" }]}
+        actionBuilder={(row) => [{ name: "Request New Pharmacist", href: "#" }]}
       />
     </PaddedContainer>
   )
