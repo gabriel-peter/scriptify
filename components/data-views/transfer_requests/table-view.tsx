@@ -1,5 +1,5 @@
 "use server"
-import { BasicList } from "@/components/lists/basic-list";
+import { BasicList_Server } from "@/components/lists/basic-list-server";
 import { SectionHeadingWithAction } from "@/components/lists/basic-list-section-header";
 import { cn } from "@/utils/cn";
 import { createClient } from "@/utils/supabase/server";
@@ -24,7 +24,7 @@ export async function MyTransfers({ userId }: { userId: string }) {
       <SectionHeadingWithAction title="Transfers in Progress" actionHref="/patient/transfer/new" actionTitle="Make new request" />
 
       {/* List */}
-      <BasicList
+      <BasicList_Server
         items={prescriptionTransfers}
         row={(request) => {
           return (

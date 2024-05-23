@@ -3,7 +3,7 @@ import { selfGetPharmacist } from "@/app/api/pharmacist/get-pharmacist";
 import ProfilePhoto from "@/components/data-views/profile-photo";
 import AvailabilityDrowndown from "./availability-dropdown";
 import { AvailabilityStatus } from "./utils";
-import { BasicList } from "@/components/lists/basic-list";
+import { BasicList_Server } from "@/components/lists/basic-list-server";
 import { getUserProfileOrRedirect } from "@/app/api/user-actions/actions";
 import { Suspense } from "react";
 import PaddedContainer from "@/components/containers/padded-container";
@@ -80,7 +80,7 @@ async function MyPatients({ userId }: { userId: string }) {
         Find Patients
         </button> }
       </div>
-      <BasicList
+      <BasicList_Server
         items={patients}
         actionBuilder={
           (patient) => {

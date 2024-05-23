@@ -6,7 +6,7 @@ import { Suspense } from 'react'
 import { stringifyName } from "@/utils/user-attribute-modifiers";
 import { getUserDemographicInformationCurrentUser } from "@/app/api/user-actions/actions";
 import { MyTransfers } from "@/components/data-views/transfer_requests/table-view";
-import { BasicList } from "@/components/lists/basic-list";
+import { BasicList_Server } from "@/components/lists/basic-list-server";
 import ProfilePhoto from "@/components/data-views/profile-photo";
 import { SectionHeadingWithAction } from "@/components/lists/basic-list-section-header";
 import PaddedContainer from "@/components/containers/padded-container";
@@ -72,7 +72,7 @@ async function MyAppointments() {
   return (
     <PaddedContainer>
       <SectionHeadingWithAction title="Upcoming Appointments" actionHref="/appointment/new" actionTitle="Request an appointment" />
-      <BasicList
+      <BasicList_Server
         items={['Appointment 1', 'Appointment 2', 'Appointment 3']}
         row={(row) => (<p>{row}</p>)}
         actionBuilder={[{ name: 'Cancel', href: '#' }]}
@@ -95,7 +95,7 @@ async function MyPharmacist({ userId }: { userId: string }) {
   return (
     <PaddedContainer>
       <h2>My Pharmacist(s)</h2>
-      <BasicList items={pharmacists} row={
+      <BasicList_Server items={pharmacists} row={
         (x) => {
           return (
             <>

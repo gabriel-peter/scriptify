@@ -5,10 +5,8 @@ import AbstractForm from "../abstract-form-full-page"
 import { scheduleAppointment } from "./pharmacist-scheduler-form-handler";
 import { FormSubmissionReturn, Status } from "../validation-helpers";
 import CustomDropdown from "../dropdown";
-import { generateTimeOptions } from "@/app/pharmacist/appointment/new/new-appointment-scheduler";
 import GenericInput from "../generic-input";
-import { localizedDate } from "@/utils/time";
-import { standardButtonStyling } from "../styling";
+import { generateTimeOptions, localizedDate } from "@/utils/time";
 import { ReactNode } from "react";
 
 export default function PharmacistSchedulerForm({ pharmacistId, patientId, date, successMessage}: { pharmacistId: string, patientId: string, date: Date, successMessage: (x: FormSubmissionReturn<any>) => ReactNode }) {

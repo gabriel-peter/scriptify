@@ -30,3 +30,30 @@ export function toHumanReadableDate(options: Intl.DateTimeFormatOptions, dateStr
 export function localizedDate(date: Date) {
     return date.toLocaleDateString('en-US', { timeZone: 'UTC', day: "numeric", month: 'long', year: 'numeric' })
 }
+
+export function formatDateWithTimezoneOffset(date: Date) {
+    const offset = date.getTimezoneOffset()
+    console.log(offset)
+    date = new Date(date.getTime() - (offset*60*1000))
+    return date.toISOString().split('T')[0]
+}
+
+// AI-Generated
+export function generateTimeOptions(startTime: string, intervalMinutes: number, endTime: number) {
+    const times: string[] = [];
+    let currentTime = new Date(`1970-01-01T${startTime}:00`);
+
+    while (currentTime.getHours() < endTime) {
+        let hours = currentTime.getHours();
+        let minutes = currentTime.getMinutes();
+
+        // Format the hours and minutes to HH:MM
+        const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+        times.push(formattedTime);
+
+        // Add interval
+        currentTime.setMinutes(currentTime.getMinutes() + intervalMinutes);
+    }
+
+    return times;
+}

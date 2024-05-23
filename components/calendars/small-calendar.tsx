@@ -4,13 +4,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid'
 
 import { cn } from '@/utils/cn'
 import PaddedContainer from '../containers/padded-container'
-
-export function formatDateWithTimezoneOffset(date: Date) {
-    const offset = date.getTimezoneOffset()
-    console.log(offset)
-    date = new Date(date.getTime() - (offset*60*1000))
-    return date.toISOString().split('T')[0]
-}
+import { formatDateWithTimezoneOffset } from '@/utils/time'
 
 type Day = { date: string, isCurrentMonth: boolean, isSelected: boolean, isToday: boolean };
 

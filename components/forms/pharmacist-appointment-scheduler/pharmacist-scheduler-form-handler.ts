@@ -1,8 +1,7 @@
 'use server'
 
-import { start } from "repl";
 import { asyncFieldValidation, CustomClientError, errorHandler, FormSubmissionReturn, Status } from "../validation-helpers";
-import { date, TypeOf, z } from 'zod';
+import { TypeOf, z } from 'zod';
 import { localizedDate } from "@/utils/time";
 import { createClient } from "@/utils/supabase/server";
 import moment from 'moment';
@@ -34,10 +33,10 @@ async function saveConflictFreeNewAppointment(validatedFields: z.SafeParseSucces
     const client = createClient();
 
     const startDateTime = moment(`${arg1.meetingDate.toISOString()}`, 'YYYYYY-MM-DDTHH:mm:ss.sssZ').add(moment.duration(validatedFields.data.startTime))
-    console.log('startDateTime', startDateTime)
+    console.debug('startDateTime', startDateTime)
     
-    const endDateTime = startDateTime.add(validatedFields.data.duration, 'minute')
-    console.log('endDateTime', endDateTime)
+    const endDateTime = moment(startDateTime).add(validatedFields.data.duration, 'minute')
+    console.debug('endDateTime', endDateTime)
     
     const {data, count, error} = await client.from('appointments').select('*')
     .eq("pharmacist_id", arg1.pharmacistId)
@@ -55,7 +54,7 @@ async function saveConflictFreeNewAppointment(validatedFields: z.SafeParseSucces
         }).throwOnError()
         return validatedFields
     } else {
-        console.log(data)
+        console.debug(data)
         console.error(error)
         throw new CustomClientError(`You have a meeting conflict on \n${data[0].start_time} - ${data[0].end_time}`) // return conflicting meeting(s)
     }
