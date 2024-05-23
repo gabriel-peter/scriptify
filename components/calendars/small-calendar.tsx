@@ -4,6 +4,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid'
 import { Menu, Transition } from '@headlessui/react'
 import { EllipsisVerticalIcon } from '@heroicons/react/24/outline'
 import { cn } from '@/utils/cn'
+import PaddedContainer from '../containers/basic-container'
 
 const meetings = [
     {
@@ -19,12 +20,21 @@ const meetings = [
     // More meetings...
 ]
 
+function formatDateWithTimezoneOffset(date: Date) {
+    const offset = date.getTimezoneOffset()
+    console.log(offset)
+    date = new Date(date.getTime() - (offset*60*1000))
+    return date.toISOString().split('T')[0]
+}
+
 type Day = { date: string, isCurrentMonth: boolean, isSelected: boolean, isToday: boolean };
 
-export default async function SimpleCalendar() {
-    const today = new Date(2024, 8, 1)
-    // = new Date()
+export default function SimpleCalendar() {
+    const today = new Date()
+    console.log("Todays Date", today)
+    console.log("Client Timezone", Intl.DateTimeFormat().resolvedOptions().timeZone)
     const [monthCursor, setMonthCursor] = useState<Date>(today)
+    const [selectedDate, setSelectedDate] = useState<string>(formatDateWithTimezoneOffset(today))
     const [days, setDays] = useState<Day[]>(getDayList(monthCursor))
 
     function getDayList(selectedMonth: Date) {
@@ -33,19 +43,19 @@ export default async function SimpleCalendar() {
         const lastDay = new Date(currentYear, currentMonth + 1, 0).getDate();
         const lastDayOfPreviousMonth = new Date(currentYear, currentMonth, 0).getDate();
         const daysFromPreviousMonth = new Date(currentYear, currentMonth, 1).getDay();
-        console.log('lastDayOfPreviousMonth', lastDayOfPreviousMonth, 'daysFromPreviousMonth', daysFromPreviousMonth)
+        console.debug('lastDayOfPreviousMonth', lastDayOfPreviousMonth, 'daysFromPreviousMonth', daysFromPreviousMonth)
         let days: Day[] = []
         // Add the days from the previous month
         for (let day = lastDayOfPreviousMonth - daysFromPreviousMonth + 1; day <= lastDayOfPreviousMonth; day++) {
             const date = new Date(currentYear, currentMonth - 1, day);
-            const formattedDate = date.toISOString().split('T')[0];
-            console.log('formattedDate', formattedDate)
+            const formattedDate = formatDateWithTimezoneOffset(date);
+            console.debug('formattedDate', formattedDate)
             days.push({ date: formattedDate, isCurrentMonth: false, isSelected: false, isToday: today === date });
         }
 
         for (let day = 1; day <= lastDay; day++) {
-            const date = new Date(currentMonth, currentMonth, day);
-            const formattedDate = date.toISOString().split('T')[0];
+            const date = new Date(currentYear, currentMonth, day);
+            const formattedDate = formatDateWithTimezoneOffset(date);
             days.push({ date: formattedDate, isCurrentMonth: true, isSelected: false, isToday: today === date });
         }
         return days;
@@ -56,11 +66,16 @@ export default async function SimpleCalendar() {
         setDays(newDays)
     }, [monthCursor])
 
+    useEffect(() => {
+        console.log("selected date", selectedDate)
+        const newDays = days.map(day => ({...day, isSelected: day.date === selectedDate}))
+        setDays(newDays)
+    }, [selectedDate])
     
     return (
-        <div>
+        <PaddedContainer>
             <div className="flex items-center">
-                <h2 className="flex-auto text-sm font-semibold text-gray-900">{monthCursor.toLocaleString('default', { month: 'long', year: 'numeric' })}</h2>
+                <h2 className="flex-auto text-sm font-semibold text-gray-900">{monthCursor.toLocaleString('en-US', { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone, month: 'long', year: 'numeric' })}</h2>
                 <button
                     type="button"
                     onClick={() => setMonthCursor(new Date(monthCursor.getFullYear(), monthCursor.getMonth() - 1, 1))}
@@ -92,6 +107,7 @@ export default async function SimpleCalendar() {
                     <div key={day.date} className={cn(dayIdx > 6 && 'border-t border-gray-200', 'py-2')}>
                         <button
                             type="button"
+                            onClick={() => setSelectedDate(day.date)}
                             className={cn(
                                 day.isSelected && 'text-white',
                                 !day.isSelected && day.isToday && 'text-indigo-600',
@@ -111,7 +127,7 @@ export default async function SimpleCalendar() {
             </div>
             <section className="mt-12">
                 <h2 className="text-base font-semibold leading-6 text-gray-900">
-                    Schedule for <time dateTime="2022-01-21">January 21, 2022</time>
+                    Schedule for <time dateTime={selectedDate}>{new Date(selectedDate).toLocaleDateString('en-US', { timeZone: 'UTC', day: "numeric", month: 'long', year: 'numeric' })}</time>
                 </h2>
                 <ol className="mt-4 space-y-1 text-sm leading-6 text-gray-500">
                     {meetings.map((meeting) => (
@@ -180,6 +196,6 @@ export default async function SimpleCalendar() {
                     ))}
                 </ol>
             </section>
-        </div>
+        </PaddedContainer>
     )
 }
