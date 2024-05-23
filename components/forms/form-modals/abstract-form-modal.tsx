@@ -2,7 +2,7 @@ import { Transition, Dialog } from "@headlessui/react";
 import { CheckIcon } from "@heroicons/react/24/outline";
 import { Fragment, ReactNode } from "react";
 
-export default function FormModal({ open, setOpen, children, buttonName }: { open: boolean, setOpen: (x: boolean) => void, children: ReactNode, buttonName: string }) {
+export default function FormModal({ open, setOpen, children, buttonName }: { open: boolean, setOpen: (x: boolean) => void, children: ReactNode, buttonName?: string }) {
     return (
         <>
             <Transition.Root show={open} as={Fragment}>
@@ -20,7 +20,8 @@ export default function FormModal({ open, setOpen, children, buttonName }: { ope
                     </Transition.Child>
 
                     <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-                        <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                        {/* removed: min-h-full */}
+                        <div className="flex items-end justify-center p-4 text-center sm:items-center sm:p-0">
                             <Transition.Child
                                 as={Fragment}
                                 enter="ease-out duration-300"
@@ -48,13 +49,13 @@ export default function FormModal({ open, setOpen, children, buttonName }: { ope
                 </Dialog>
             </Transition.Root>
             {/* BUTTON */}
-            <button
+            {buttonName && <button
                 type="button"
                 onClick={() => setOpen(true)}
                 className="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
             >
                 {buttonName}
-            </button>
+            </button>}
         </>
     )
 }

@@ -4,32 +4,34 @@ import ProfilePhoto from "@/components/data-views/profile-photo";
 import AvailabilityDrowndown from "./availability-dropdown";
 import { AvailabilityStatus } from "./utils";
 import { BasicList } from "@/components/lists/basic-list";
-import { getUserOrRedirect } from "@/app/api/user-actions/actions";
+import { getUserProfileOrRedirect } from "@/app/api/user-actions/actions";
 import { Suspense } from "react";
-import PaddedContainer from "@/components/containers/basic-container";
+import PaddedContainer from "@/components/containers/padded-container";
 import { SectionHeadingWithAction } from "@/components/lists/basic-list-section-header";
 import { Route } from "next";
+import PageContainer from "@/components/containers/page-container";
+import { stringifyName } from "@/utils/user-attribute-modifiers";
+import { standardButtonStyling } from "@/components/forms/styling";
 
 export default async function PharmacistDashboard() {
-  const user = await getUserOrRedirect()
+  const { user, profile } = await getUserProfileOrRedirect()
   return (
-    <div className="min-h-screen">
-      <div className="container mx-auto mt-8 px-4">
+    <PageContainer>
+      <h2>Welcome <strong>{stringifyName(profile)}</strong></h2>
 
-        <Suspense fallback="Loading">
-          <MyAvailability userId={user.id} />
-        </Suspense>
+      <Suspense fallback="Loading">
+        <MyAvailability userId={user.id} />
+      </Suspense>
 
-        <Suspense fallback="Loading">
-          <MyPatients userId={user.id} />
-        </Suspense>
+      <Suspense fallback="Loading">
+        <MyPatients userId={user.id} />
+      </Suspense>
 
-        <Suspense>
-          <MyAppointments userId={user.id} />
-        </Suspense>
+      <Suspense>
+        <MyAppointments userId={user.id} />
+      </Suspense>
 
-      </div>
-    </div>
+    </PageContainer>
   )
 }
 
@@ -68,8 +70,16 @@ async function MyPatients({ userId }: { userId: string }) {
 
   return (
     <PaddedContainer>
+      <div className="flex justify-between">
       <h2>My Patients ({patients.length})</h2>
-
+      {patients.length === 0 && 
+      <button 
+      className={standardButtonStyling}
+      // onClick={() => console.log('TODO open patient finder')}
+      >
+        Find Patients
+        </button> }
+      </div>
       <BasicList
         items={patients}
         actionBuilder={

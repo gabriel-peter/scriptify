@@ -26,3 +26,7 @@ export function toHumanReadableDate(options: Intl.DateTimeFormatOptions, dateStr
     }
     return Intl.DateTimeFormat("en-US", options).format(date);
 }
+
+export function localizedDate(date: Date) {
+    return date.toLocaleDateString('en-US', { timeZone: 'UTC', day: "numeric", month: 'long', year: 'numeric' })
+}

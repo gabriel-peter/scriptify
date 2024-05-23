@@ -9,7 +9,7 @@ import { MyTransfers } from "@/components/data-views/transfer_requests/table-vie
 import { BasicList } from "@/components/lists/basic-list";
 import ProfilePhoto from "@/components/data-views/profile-photo";
 import { SectionHeadingWithAction } from "@/components/lists/basic-list-section-header";
-import PaddedContainer from "@/components/containers/basic-container";
+import PaddedContainer from "@/components/containers/padded-container";
 
 export default async function Dashboard() {
   const supabase = createClient()

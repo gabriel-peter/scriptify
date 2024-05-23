@@ -208,12 +208,15 @@ create table pharmacist_to_patient_match (
 );
 
 create table appointments (
+  id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
   patient_id uuid references auth.users not null,
   pharmacist_id uuid references auth.users not null,
-  created_at TIMESTAMPTZ DEFAULT NOW() NOT NULL,
-  updated_at TIMESTAMPTZ DEFAULT NOW() NOT NULL,
-  meet_time timestamp with time zone not null,
-  primary key(patient_id, pharmacist_id)
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  meeting_reason text not null,
+  updated_at TIMESTAMPTZ DEFAULT NOW(),
+  start_time timestamp with time zone not null,
+  end_time timestamp with time zone not null,
+  duration_minutes int not null
 );
 
 create table prescriptions (

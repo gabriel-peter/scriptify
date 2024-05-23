@@ -38,6 +38,12 @@ export class StorageError extends Error {
     }
 }
 
+export class CustomClientError extends Error {
+    constructor(msg: string) {
+        super(msg);
+    }
+}
+
 export async function asyncFieldValidation<U extends ZodType<any, any, any>>(formDataSchema: z.ZodObject<TypeOf<U>>, rawFormData: any): Promise<z.SafeParseSuccess<TypeOf<U>>> {
     const validatedFields = formDataSchema.safeParse(rawFormData)
     // Throw early if the form data is invalid
@@ -60,6 +66,11 @@ export function errorHandler<T>(error: any) {
         console.log("Caught PSQL error")
         // TODO handle codes?
     } else if (error instanceof StorageError) {
+        return {
+            status: Status.ERROR,
+            message: error.message
+        }
+    } else if (error instanceof CustomClientError) {
         return {
             status: Status.ERROR,
             message: error.message

@@ -11,25 +11,34 @@ export type Database = {
     Tables: {
       appointments: {
         Row: {
-          created_at: string
-          meet_time: string
+          created_at: string | null
+          duration_minutes: number
+          end_time: string
+          id: string
           patient_id: string
           pharmacist_id: string
-          updated_at: string
+          start_time: string
+          updated_at: string | null
         }
         Insert: {
-          created_at: string
-          meet_time: string
+          created_at?: string | null
+          duration_minutes: number
+          end_time: string
+          id?: string
           patient_id: string
           pharmacist_id: string
-          updated_at: string
+          start_time: string
+          updated_at?: string | null
         }
         Update: {
-          created_at?: string
-          meet_time?: string
+          created_at?: string | null
+          duration_minutes?: number
+          end_time?: string
+          id?: string
           patient_id?: string
           pharmacist_id?: string
-          updated_at?: string
+          start_time?: string
+          updated_at?: string | null
         }
         Relationships: [
           {

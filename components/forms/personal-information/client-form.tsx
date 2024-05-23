@@ -15,42 +15,42 @@ import { Route } from 'next'
 import FailedSubmission from '@/components/alerts/failed-submit-alert'
 
 
-export default function PersonalInformationForm({userId, successRedirectUrl}:{userId: string, successRedirectUrl: Route<string>}) {
+export default function PersonalInformationForm({ userId, successRedirectUrl }: { userId: string, successRedirectUrl: Route<string> }) {
   const errorParam = useSearchParams().get("error")
   const addPersonalInformationWithUserId = addPersonalInformation.bind(null, userId);
   const [state, formAction] = useFormState(addPersonalInformationWithUserId, { status: Status.NOT_SUBMITTED });
   const router = useRouter()
   return (
     <>
-    {errorParam === 'mandatory_complete' && <FailedSubmission title="Error occurred while visting page." 
-    errorList={["You must complete the 'Personal Information' page to complete your on-boarding process."]} />}
-    <AbstractForm 
-    formAction={formAction} 
-    state={state}
-     header='Personal Information' 
-    successAction={() => router.push(successRedirectUrl)}
-    >
-      <div>
-        <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-          <NameInput errorState={state?.error} />
-          <div className="sm:col-span-3">
-          <CustomDropdown errorState={state.error?.sex} id={'sex'} label={'Sex'} options={Object.values(sex)}/>
-          </div>
-          <GenericInput
-                type="date"
-                label={"Date of Birth"}
-                id='date-of-birth'
-                errorState={state?.error?.dateOfBirth}
-                errorMessage={"Invalid Date."}
+      {errorParam === 'mandatory_complete' && <FailedSubmission title="Error occurred while visting page."
+        errorList={["You must complete the 'Personal Information' page to complete your on-boarding process."]} />}
+      <AbstractForm
+        formAction={formAction}
+        state={state}
+        header='Personal Information'
+        successAction={() => router.push(successRedirectUrl)}
+      >
+        <div>
+          <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+            <NameInput errorState={state?.error} />
+            <div className="sm:col-span-3">
+              <CustomDropdown errorState={state.error?.sex} id={'sex'} label={'Sex'} options={Object.values(sex)} />
+            </div>
+            <GenericInput
+              type="date"
+              label={"Date of Birth"}
+              id='date-of-birth'
+              errorState={state?.error?.dateOfBirth}
+              errorMessage={"Invalid Date."}
             />
-          {/* <EmailInput errorState={state?.error?.email} label={'Add your Email'} /> */}
-          <PhoneNumberInput errorState={state?.error?.phoneNumber} label={'Add your Phone Number'} />
-          <AddressSubForm errorState={state?.error} />
-        </div >
-      </div>
-      <UploadFileInput title='Upload Drivers License' instruction='Upload a file' supportedFileTypes={['PNG', 'JPG', 'GIF']} maxSize='10MB' />
-      <UploadFileInput title='Upload Profile Photo' instruction='Upload a file' supportedFileTypes={['PNG', 'JPG', 'GIF']} maxSize='10MB' />
-    </AbstractForm>
+            {/* <EmailInput errorState={state?.error?.email} label={'Add your Email'} /> */}
+            <PhoneNumberInput errorState={state?.error?.phoneNumber} label={'Add your Phone Number'} />
+            <AddressSubForm errorState={state?.error} />
+          </div >
+        </div>
+        <UploadFileInput title='Upload Drivers License' instruction='Upload a file' supportedFileTypes={['PNG', 'JPG', 'GIF']} maxSize='10MB' />
+        <UploadFileInput title='Upload Profile Photo' instruction='Upload a file' supportedFileTypes={['PNG', 'JPG', 'GIF']} maxSize='10MB' />
+      </AbstractForm>
     </>
   );
 }

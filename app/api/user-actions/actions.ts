@@ -40,7 +40,7 @@ export async function getUserOrRedirect(): Promise<User> {
     return user
 }
 
-export async function getUserProfileOrRedirect(): Promise<{user: User, profile: Tables<"profiles">} | null> {
+export async function getUserProfileOrRedirect(): Promise<{user: User, profile: Tables<"profiles">}> {
     const supabase = createClient(); // TODO make this a join
     const {
       data: { user },
@@ -49,8 +49,7 @@ export async function getUserProfileOrRedirect(): Promise<{user: User, profile: 
         redirect('/login')
     }
     const result = await getUserDemographicInformationCurrentUser()
-    if (!result) { return null }
-    if (result.error) {
+    if (!result || result.error) {
         console.log(result.error)
         return redirect("/error")
     }

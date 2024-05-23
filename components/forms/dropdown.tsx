@@ -34,7 +34,7 @@ export default function CustomDropdown({
 }: {
   id: string,
   label: string,
-  options: string[],
+  options: string[] | number[],
   errorState: any | undefined,
   errorMessage?: string,
 }) {
