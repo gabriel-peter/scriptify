@@ -9,6 +9,7 @@ import { Database } from "@/types_db";
 import { SupabaseClient, User } from "@supabase/supabase-js";
 import { ACCOUNT_TYPE } from "@/utils/enums";
 import { ReactNode } from "react";
+import PageContainer from "@/components/containers/page-container";
 
 
 export default async function SettingsPage() {
@@ -29,10 +30,10 @@ export default async function SettingsPage() {
     }
 
     return (
-        <>
+        <PageContainer>
             <DemographicInfoView /> {/* Applicable to all acouunt types */}
             {getAccountTypePanels(user)}
-        </>
+        </PageContainer>
     )
 }
 
