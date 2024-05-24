@@ -120,7 +120,7 @@ async function MyPatients({ userId }: { userId: string }) {
             Find Patients
           </button>}
       </div> */}
-      <SectionHeadingWithAction title={`My Patients (${patients.length})`} actionHref={"/pharmacist/patient/finder"} actionTitle={"Find new patients"} />
+      <SectionHeadingWithAction title={`My Patients (${patients.length})`} actionHref={"/pharmacist/my-patient/find"} actionTitle={"Find new patients"} />
       <BasicList_Server
         items={patients}
         actionBuilder={
