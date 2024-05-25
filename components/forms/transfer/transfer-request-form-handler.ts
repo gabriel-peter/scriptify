@@ -2,8 +2,8 @@
 import { sendTransferRequestEmail } from '@/utils/email/email-handlers';
 import { createClient } from '@/utils/supabase/server';
 import { TypeOf, z } from 'zod'
-import { FormSubmissionReturn, Status, asyncFieldValidation, errorHandler } from '@/components/forms/validation-helpers';
-import { updateOnBoardingStep } from '@/app/api/get-started/update-onboarding-progress';
+import { FormSubmissionReturn, Status, asyncFieldValidation, errorHandler } from '@/app/actions/validation-helpers';
+import { updateOnBoardingStep } from '@/app/actions/on-boarding/update-onboarding-progress';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { Database } from '@/types_db';
 

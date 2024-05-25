@@ -1,4 +1,4 @@
-import { states } from "@/app/api/patient-get-started/options";
+import { states } from "@/app/actions/options";
 import AbstractInput from "./abstract-input";
 import CustomDropdown, { NativeDropdown } from "./dropdown";
 import { inputStyling } from "./styling";

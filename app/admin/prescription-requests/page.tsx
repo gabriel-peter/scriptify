@@ -1,6 +1,6 @@
 "use client"
 import Table from "@/components/tables/standard-table";
-import { AllTransferRequestsResponse, GetTransferedRequestsFilters, getTransferedPrescriptions } from "./get-prescription-transfers"
+import { AllTransferRequestsResponse, GetTransferedRequestsFilters, getTransferedPrescriptions } from "../../actions/transfer-requests/get-prescription-transfers"
 import { Suspense, useEffect, useState } from "react";
 import { toHumanReadableDate } from "@/utils/time";
 import { cn } from "@/utils/cn";

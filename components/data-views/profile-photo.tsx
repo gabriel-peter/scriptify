@@ -1,5 +1,5 @@
 "use client"
-import { getProfilePhotoUrl } from "@/app/api/user-actions/get-profile-photo-url"
+import { getProfilePhotoUrl } from "@/app/actions/user/get-profile-photo-url"
 import { createClient } from "@/utils/supabase/client"
 import Image from 'next/image'
 import { useEffect, useMemo, useState } from "react"

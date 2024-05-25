@@ -1,5 +1,5 @@
 "use client";
-import { checkPatientOnBoardingProgress } from '@/app/api/user-actions/check-on-boarding-progress';
+import { checkPatientOnBoardingProgress } from '@/app/actions/user/check-on-boarding-progress';
 import GetStartedLayout, { OnBoardingStepType } from '@/components/layouts/get-started-layout';
 import { useRouter } from 'next/navigation';
 import { Suspense, useEffect, useState } from 'react';

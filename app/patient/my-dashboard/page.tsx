@@ -4,7 +4,7 @@ import { createClient } from "@/utils/supabase/server";
 import { User } from "@supabase/supabase-js";
 import { Suspense } from 'react'
 import { stringifyName } from "@/utils/user-attribute-modifiers";
-import { getUserDemographicInformationCurrentUser } from "@/app/api/user-actions/actions";
+import { getUserDemographicInformationCurrentUser } from "@/app/actions/user/get";
 import { MyTransfers } from "@/components/data-views/transfer_requests/table-view";
 import { BasicList_Server } from "@/components/lists/basic-list-server";
 import ProfilePhoto from "@/components/data-views/profile-photo";
@@ -69,7 +69,7 @@ function PharmaceuticalPatientDashboard({
   );
 }
 
-async function MyAppointments({userId}: {userId: string}) {
+export async function MyAppointments({userId}: {userId: string}) {
   const {data, error} = await createClient().from('appointments')
   .select('*, users!appointments_pharmacist_id_fkey(*, profiles!inner(*))')
   .eq('patient_id', userId)
@@ -111,7 +111,7 @@ async function MyAppointments({userId}: {userId: string}) {
   )
 }
 
-async function MyPharmacist({ userId }: { userId: string }) {
+export async function MyPharmacist({ userId }: { userId: string }) {
   const supabase = createClient()
   const { data, error, count } = await supabase.from('pharmacist_to_patient_match')
     .select(`*, users!pharmacist_to_patient_match_pharmacist_id_fkey(*, profiles!inner(*))`)

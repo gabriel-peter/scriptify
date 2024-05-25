@@ -3,7 +3,7 @@
 import { cn } from "@/utils/cn"
 import { UserCircleIcon, FingerPrintIcon, BellIcon, CubeIcon, CreditCardIcon, UsersIcon, ClipboardDocumentIcon } from "@heroicons/react/20/solid"
 import { ReactNode } from "react"
-import { getUserOrRedirect } from "../api/user-actions/actions"
+import { getUserOrRedirect } from "../actions/user/get"
 import { ACCOUNT_TYPE } from "@/utils/enums"
 
 function getNavigation(accountType: ACCOUNT_TYPE) {

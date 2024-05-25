@@ -1,7 +1,7 @@
 "use server";
 import { Route } from "next";
 import TransferPrescriptions from "./client-form";
-import { getUserProfileOrRedirect } from "@/app/api/user-actions/actions";
+import { getUserProfileOrRedirect } from "@/app/actions/user/get";
 import { redirect } from "next/navigation";
 
 export default async function TransferPrescriptionsPage({successRedirectUrl}:{successRedirectUrl: Route<string>}) {

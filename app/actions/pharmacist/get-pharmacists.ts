@@ -1,10 +1,10 @@
 "use server"
-import { Status } from "@/components/forms/validation-helpers";
+import { Status } from "@/app/actions/validation-helpers";
 import { Database, Tables } from "@/types_db";
 import { createClient } from "@/utils/supabase/server";
 import { AsyncReturnType } from "@/utils/supabase/types";
 import { SupabaseClient } from "@supabase/supabase-js";
-import { getPatientById, GetPatientByIdResponse } from "../get-patient";
+import { getPatientById, GetPatientByIdResponse } from "../patient/get-patient";
 
 
 export type GetPharmacistQueryFilters = {

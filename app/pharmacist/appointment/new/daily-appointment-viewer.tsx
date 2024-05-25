@@ -2,7 +2,7 @@
 
 import { formatDateWithTimezoneOffset, localizedDate, toHumanReadableDate, toHumanReadableTime } from "@/utils/time"
 import { ReactNode, useEffect, useState } from "react"
-import { GetAppointmentForDayResponse, getAppointmentsForDay } from "./get-appointments"
+import { GetAppointmentForDayResponse, getAppointmentsForDay } from "../../../actions/appointment/get-appointments"
 import { BasicList_Client } from "@/components/lists/basic-list-client"
 import ProfilePhoto from "@/components/data-views/profile-photo"
 import { stringifyName } from "@/utils/user-attribute-modifiers"

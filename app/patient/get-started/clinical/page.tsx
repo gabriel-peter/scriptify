@@ -1,6 +1,6 @@
 "use server"
 
-import { getUserOrRedirect } from "@/app/api/user-actions/actions"
+import { getUserOrRedirect } from "@/app/actions/user/get"
 import ClinicalPreference from "@/components/forms/patient-clinical-preference/form"
 
 export default async function ClinicalPreferenceFormPage() {

@@ -73,3 +73,7 @@ AWS SES SMTP Creds
 
 AKIAQQ2Q76JP5HZCNDVD
 BIdamI2O+nl6k4tUEDZIskCltnP0Fruu3Yc176mTuPuC
+
+
+## AWS AMPLIFY
+TODO look into aws integration with amplify... https://ui.docs.amplify.aws/react/connected-components/in-app-messaging

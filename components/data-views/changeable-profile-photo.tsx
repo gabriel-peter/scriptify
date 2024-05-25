@@ -1,8 +1,8 @@
 "use client"
 import { useEffect, useRef, useState } from "react";
 import { useFormState } from "react-dom";
-import { Status } from "../forms/validation-helpers";
-import updateUserProfilePhoto from "@/app/api/user-actions/update-profile-photo";
+import { Status } from "../../app/actions/validation-helpers";
+import updateUserProfilePhoto from "@/app/actions/user/update-profile-photo";
 import { SubmitButton } from "../forms/submit-button";
 import ProfilePhoto from "./profile-photo";
 

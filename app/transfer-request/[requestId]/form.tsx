@@ -4,7 +4,7 @@ import GenericInput from "@/components/forms/generic-input";
 import { useState } from "react";
 import { useFormState } from "react-dom";
 import handlePrescriptionTransferRequestForm, { PrescriptionFormatedErrorType, TransferPrescriptionFormValidatedFieldsType } from "./external-pharmacist-prescription-transfer";
-import { Status } from "@/components/forms/validation-helpers";
+import { Status } from "@/app/actions/validation-helpers";
 import { useRouter } from "next/router";
 
 export default function TransferPage({ params, metadata }: { params: { requestId: string }, metadata: any /*TODO*/ }) {

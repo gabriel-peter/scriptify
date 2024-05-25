@@ -1,5 +1,5 @@
 "use client"
-import updateName from "@/app/api/user-actions/update-name-action"
+import updateName from "@/app/actions/user/update-name-action"
 import { inputStyling } from "../styling"
 import { UpdateRow } from "./base-single-line-form"
 import { useRouter } from "next/navigation"

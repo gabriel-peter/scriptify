@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from "react";
-import { getPatientsPaginated, GetPatientsPaginatedFilter, PatientsPaginatedResponse } from "./get-patients";
+import { getPatientsPaginated, GetPatientsPaginatedFilter, PatientsPaginatedResponse } from "../../../actions/patient/get-patients";
 import Paginator, { resetPageIndices } from "@/components/tables/pagination-footer";
 import Table from "@/components/tables/standard-table";
 import { UsersIcon } from "@heroicons/react/24/solid";
@@ -9,8 +9,9 @@ import { stringifyName } from "@/utils/user-attribute-modifiers";
 import Link from "next/link";
 import { ActionDropDown } from "@/components/tables/action-dropdown";
 import SearchBar from "@/components/search/simple-searchbar";
-import { states } from "@/app/api/patient-get-started/options";
+import { states } from "@/app/actions/options";
 import ColumnFilter from "@/components/tables/column-filter-dropdown";
+import { useRouter } from "next/navigation";
 
 const statesWithUndefined: (string | undefined)[] = [undefined]; 
 states.map(state => statesWithUndefined.push(state))
@@ -80,6 +81,7 @@ export default function PatientFinderPage() {
 
 
 function TableContent({ patients }: { patients: PatientsPaginatedResponse | undefined }) {
+    const router = useRouter();
     // const users = await getUsersPaginated(queryFilters)
     // .then((users) => {setCount(users.count); return users});
     if (!patients || !patients.data) {
@@ -112,7 +114,7 @@ function TableContent({ patients }: { patients: PatientsPaginatedResponse | unde
             </td>
             <td className="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-gray-500 sm:pr-0">
                 <ActionDropDown actions={[
-                    { name: 'View Profile', handler: () => { } },
+                    { name: 'View Profile', handler: () => router.push(`/pharmacist/my-patient/${user.id}`) },
                     // { name: 'Resend Email', handler: () => { } },
                     // { name: 'Remove', handler: () => { } },
                     // { name: 'Flag', handler: () => { } }

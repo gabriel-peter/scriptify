@@ -1,5 +1,5 @@
 "use client"
-import { handleResetPasswordRequest } from "@/app/api/user-actions/password-reset-action";
+import { handleResetPasswordRequest } from "@/app/actions/user/password-reset-action";
 import { inputStyling } from "../styling";
 import { UpdateRow } from "./base-single-line-form";
 import { useRouter } from "next/navigation";

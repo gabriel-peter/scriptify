@@ -1,6 +1,6 @@
 "use client"
 
-import { getUsersPaginated, GetUsersPaginatedFilter, UserProfileResponse } from "./actions";
+import { getUsersPaginated, GetUsersPaginatedFilter, UserProfileResponse } from "../actions/admin/user-search";
 import { Suspense, useEffect, useState } from "react";
 import Paginator, { resetPageIndices } from "@/components/tables/pagination-footer";
 import SearchBar from "@/components/search/simple-searchbar";

@@ -1,5 +1,5 @@
 "use server"
-import { GetUsersPaginatedFilter } from "@/app/admin/actions";
+import { GetUsersPaginatedFilter } from "@/app/actions/admin/user-search";
 import { Database } from "@/types_db";
 import { ACCOUNT_TYPE } from "@/utils/enums";
 import { createClient } from "@/utils/supabase/server";
@@ -34,7 +34,7 @@ const patientQuery = async (client: SupabaseClient<Database>, filters: GetPatien
 };
 export type PatientsPaginatedResponse = AsyncReturnType<typeof patientQuery>
 
-export async function getPatientsPaginated(filters: GetUsersPaginatedFilter): Promise<UserProfileResponse> {
+export async function getPatientsPaginated(filters: GetUsersPaginatedFilter): Promise<PatientsPaginatedResponse> {
     const supabase = createClient()
     const result = await patientQuery(supabase, filters);
     console.log(result)

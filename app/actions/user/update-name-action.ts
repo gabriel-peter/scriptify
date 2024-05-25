@@ -1,5 +1,5 @@
 "use server"
-import { FormSubmissionReturn, Status, asyncFieldValidation } from "@/components/forms/validation-helpers";
+import { FormSubmissionReturn, Status, asyncFieldValidation } from "@/app/actions/validation-helpers";
 import { createClient } from "@/utils/supabase/server";
 import { TypeOf, z } from "zod";
 

@@ -1,11 +1,11 @@
 'use server'
 import { createClient } from '@/utils/supabase/server';
 import { TypeOf, z } from 'zod';
-import { earliestDob } from '@/components/forms/schema-validators';
-import { FormSubmissionReturn, Status, asyncFieldValidation, errorHandler } from '@/components/forms/validation-helpers';
-import { updateOnBoardingStep } from '@/app/api/get-started/update-onboarding-progress';
+import { earliestDob } from '@/app/actions/schema-validators';
+import { FormSubmissionReturn, Status, asyncFieldValidation, errorHandler } from '@/app/actions/validation-helpers';
+import { updateOnBoardingStep } from '@/app/actions/on-boarding/update-onboarding-progress';
 import { Tables } from '@/types_db';
-import { sex } from '@/app/api/patient-get-started/options';
+import { sex } from '@/app/actions/options';
 import { ACCOUNT_TYPE } from '@/utils/enums';
 
 const formDataSchema = z.object({

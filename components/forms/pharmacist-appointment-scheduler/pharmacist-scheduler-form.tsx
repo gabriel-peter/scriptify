@@ -2,7 +2,7 @@
 import { useFormState } from "react-dom";
 import AbstractForm from "../abstract-form-full-page"
 import { scheduleAppointment } from "./pharmacist-scheduler-form-handler";
-import { FormSubmissionReturn, Status } from "../validation-helpers";
+import { FormSubmissionReturn, Status } from "../../../app/actions/validation-helpers";
 import CustomDropdown from "../dropdown";
 import GenericInput from "../generic-input";
 import { generateTimeOptions, localizedDate } from "@/utils/time";

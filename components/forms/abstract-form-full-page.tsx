@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react";
 import { SubmitButton } from "./submit-button";
-import { FormSubmissionReturn, Status } from "./validation-helpers";
+import { FormSubmissionReturn, Status } from "../../app/actions/validation-helpers";
 
 export default function AbstractForm<T>({
     children,

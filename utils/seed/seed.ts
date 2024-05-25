@@ -2,9 +2,9 @@ import { Database, type Tables } from "@/types_db";
 import { da, faker } from '@faker-js/faker';
 import { User, createClient } from "@supabase/supabase-js";
 import { ACCOUNT_TYPE } from "../enums";
-import { updateOnBoardingStep } from "@/app/api/get-started/update-onboarding-progress";
+import { updateOnBoardingStep } from "@/app/actions/on-boarding/update-onboarding-progress";
 import { transferPrescription } from "@/components/forms/transfer/transfer-request-form-handler";
-import { Status } from "@/components/forms/validation-helpers";
+import { Status } from "@/app/actions/validation-helpers";
 const supabase = createClient<Database>(
     'http://127.0.0.1:54321',
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0'

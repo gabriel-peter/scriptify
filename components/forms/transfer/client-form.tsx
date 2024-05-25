@@ -6,7 +6,7 @@ import PhoneNumberInput from "@/components/forms/phone-number-input";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useFormState } from "react-dom";
-import { Status } from "@/components/forms/validation-helpers";
+import { Status } from "@/app/actions/validation-helpers";
 import { transferPrescription } from "./transfer-request-form-handler";
 import { User } from "@supabase/supabase-js";
 import { Tables } from "@/types_db";

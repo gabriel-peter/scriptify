@@ -3,7 +3,7 @@ import { Fragment, useState } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import { cn } from "@/utils/cn";
-import { AvailabilityStatus } from './utils';
+import { AvailabilityStatus } from '../../actions/utils';
 
 const colorMap = {
     'Available': 'bg-green-400',

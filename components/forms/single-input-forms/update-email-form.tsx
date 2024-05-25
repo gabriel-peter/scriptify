@@ -1,5 +1,5 @@
 "use client"
-import updateEmail from "@/app/api/user-actions/email-update-action";
+import updateEmail from "@/app/actions/user/email-update-action";
 import { UpdateRow } from "./base-single-line-form";
 import { inputStyling } from "../styling";
 import { useRouter } from "next/navigation";

@@ -1,10 +1,10 @@
 "use client"
-import { langaugePreferences, meetingPreference, race, sexualOrientation, chronicConditions } from "@/app/api/patient-get-started/options"
+import { langaugePreferences, meetingPreference, race, sexualOrientation, chronicConditions } from "@/app/actions/options"
 import AbstractForm from "@/components/forms/abstract-form-full-page";
 import CheckboxGroup from "@/components/forms/checkbox-group";
 import { useFormState } from "react-dom";
 import { NativeDropdown } from "@/components/forms/dropdown";
-import { Status } from "@/components/forms/validation-helpers";
+import { Status } from "@/app/actions/validation-helpers";
 import { useRouter } from "next/navigation";
 import savePatientClinicalPreferences from "./clinical-preferences-form";
 

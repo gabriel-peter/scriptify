@@ -3,7 +3,7 @@
 import { ReactNode, useEffect, useState } from "react"
 import { SubmitButton } from "../submit-button"
 import { useFormState } from "react-dom"
-import { FormSubmissionReturn, Status } from "../validation-helpers"
+import { FormSubmissionReturn, Status } from "../../../app/actions/validation-helpers"
 import ActionResultDialog from "../../dialogs/error-or-success-dialog"
 import { useRouter } from "next/navigation"
 

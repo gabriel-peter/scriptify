@@ -27,6 +27,7 @@ export function ActionDropDown({ actions }: { actions: { name: string, handler: 
                         {actions.map((action) => <Menu.Item>
                             {({ active }) => (
                                 <button
+                                    onClick={() => action.handler()}
                                     className={cn(
                                         active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                                         'block px-4 py-2 text-sm'

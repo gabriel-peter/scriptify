@@ -3,7 +3,7 @@ import { cn } from "@/utils/cn"
 import { Menu, Transition } from "@headlessui/react"
 import { EllipsisVerticalIcon } from "@heroicons/react/20/solid"
 import { Fragment } from "react"
-import { removePharmacistPatientAssignment } from "./assign-pharmacist"
+import { removePharmacistPatientAssignment } from "../../../actions/admin/assign-pharmacist"
 import { Tables } from "@/types_db"
 
 export default function PatientCurrentPharmacistMenuOptions({pharmacist, userId}:{pharmacist: Tables<'pharmacist_to_patient_match'>, userId: string}) {

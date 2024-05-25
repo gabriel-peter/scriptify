@@ -1,6 +1,6 @@
 import 'server-only'
 // NOTES: server only because we pass userIds
-import { Status } from "@/components/forms/validation-helpers";
+import { Status } from "@/app/actions/validation-helpers";
 import { Database } from "@/types_db";
 import { createClient } from "@/utils/supabase/server";
 import { SupabaseClient } from "@supabase/supabase-js";

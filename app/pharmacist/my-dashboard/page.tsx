@@ -1,10 +1,10 @@
 "use server"
-import { selfGetPharmacist } from "@/app/api/pharmacist/get-pharmacist";
+import { selfGetPharmacist } from "@/app/actions/pharmacist/get-pharmacist";
 import ProfilePhoto from "@/components/data-views/profile-photo";
 import AvailabilityDrowndown from "./availability-dropdown";
-import { AvailabilityStatus } from "./utils";
+import { AvailabilityStatus } from "../../actions/utils";
 import { BasicList_Server } from "@/components/lists/basic-list-server";
-import { getUserProfileOrRedirect } from "@/app/api/user-actions/actions";
+import { getUserProfileOrRedirect } from "@/app/actions/user/get";
 import { Suspense } from "react";
 import PaddedContainer from "@/components/containers/padded-container";
 import { SectionHeadingWithAction } from "@/components/lists/basic-list-section-header";

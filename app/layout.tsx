@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import DashboardNavigationBar from "../components/nav/main-nav";
-import {getOptionalUserProfile} from "@/app/api/user-actions/actions";
+import {getOptionalUserProfile} from "@/app/actions/user/get";
 import { Suspense } from "react";
 
 const inter = Inter({ subsets: ["latin"] });

@@ -1,6 +1,6 @@
 "use server"
 
-import { GetPatientByIdResponse, getPatientProfile } from "../get-patient"
+import { GetPatientByIdResponse, getPatientProfile } from "../../../actions/patient/get-patient"
 import {
     Bars3Icon,
     CalendarIcon,
@@ -22,8 +22,8 @@ import { MyTransfers } from "@/components/data-views/transfer_requests/table-vie
 import { Tables } from "@/types_db";
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment, Suspense } from "react";
-import { removePharmacistPatientAssignment } from "./assign-pharmacist";
-import { getPharmacistsByUserIds } from "./get-pharmacists";
+import { removePharmacistPatientAssignment } from "../../../actions/admin/assign-pharmacist";
+import { getPharmacistsByUserIds } from "../../../actions/pharmacist/get-pharmacists";
 import PatientCurrentPharmacistMenuOptions from "./current-pharmacist-menu";
 
 const tabs = [

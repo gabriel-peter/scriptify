@@ -1,5 +1,5 @@
 "use server"
-import { checkPatientOnBoardingProgress } from '@/app/api/user-actions/check-on-boarding-progress';
+import { checkPatientOnBoardingProgress } from '@/app/actions/user/check-on-boarding-progress';
 import { redirect } from 'next/navigation'
 import { ReactNode } from "react";
 

@@ -1,10 +1,10 @@
 "use server"
-import { FormSubmissionReturn, Status } from "@/components/forms/validation-helpers";
+import { FormSubmissionReturn, Status } from "@/app/actions/validation-helpers";
 import { Database } from "@/types_db";
 import { createClient } from "@/utils/supabase/server";
 import { SupabaseClient } from "@supabase/supabase-js";
-import { getUserOrRedirect } from "./actions";
-import { earliestDob } from "@/components/forms/schema-validators";
+import { getUserOrRedirect } from "./get";
+import { earliestDob } from "@/app/actions/schema-validators";
 
 
 export default async function updateDateOfBirth(prevState: any, formData: FormData): Promise<FormSubmissionReturn<any>> {

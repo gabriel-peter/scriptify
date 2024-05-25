@@ -1,9 +1,9 @@
 "use client"
 import { useRouter } from "next/navigation"
 import { UpdateRow } from "./base-single-line-form"
-import updateDateOfBirth from "@/app/api/user-actions/update-date-of-birth-action"
-import { langaugePreferences } from "@/app/api/patient-get-started/options"
-import updateLanguage from "@/app/api/user-actions/update-language-action"
+import updateDateOfBirth from "@/app/actions/user/update-date-of-birth-action"
+import { langaugePreferences } from "@/app/actions/options"
+import updateLanguage from "@/app/actions/user/update-language-action"
 
 export default function UpdateLanguageForm({ value }: { value: string }) {
     const router = useRouter()

@@ -2,7 +2,7 @@
 import { useRouter } from "next/navigation"
 import { inputStyling } from "../styling"
 import { UpdateRow } from "./base-single-line-form"
-import updateDateOfBirth from "@/app/api/user-actions/update-date-of-birth-action"
+import updateDateOfBirth from "@/app/actions/user/update-date-of-birth-action"
 
 export default function UpdatDateOfBirthForm({ value }: { value: string }) {
     const router = useRouter()

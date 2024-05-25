@@ -1,5 +1,5 @@
 "use server"
-import { getUserDemographicInformationCurrentUser } from '@/app/api/user-actions/actions'
+import { getUserDemographicInformationCurrentUser } from '@/app/actions/user/get'
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import UpdateEmailForm from '../forms/single-input-forms/update-email-form'
