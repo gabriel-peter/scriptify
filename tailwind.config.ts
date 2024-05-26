@@ -6,6 +6,7 @@ const config: Config = {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  darkMode: 'selector', // Manual Toggle: https://tailwindcss.com/docs/dark-mode
   theme: {
     extend: {
       backgroundImage: {

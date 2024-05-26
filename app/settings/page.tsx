@@ -2,7 +2,7 @@
 import { createClient } from "@/utils/supabase/server";
 import SavedCreditCard from "@/components/data-views/credit-card-details";
 import MedicalInsuranceInfo from "@/components/data-views/insurance-details";
-import { getUserInsuranceInformation, getUserPaymentInformation } from "../actions/user/get";
+import { getUserInsuranceInformation, getUserOrRedirect, getUserPaymentInformation } from "../actions/user/get";
 import DemographicInfoView from "@/components/data-views/demographic-details";
 import ChangableProfilePhoto from "@/components/data-views/changeable-profile-photo";
 import { Database } from "@/types_db";
@@ -13,19 +13,12 @@ import PageContainer from "@/components/containers/page-container";
 
 
 export default async function SettingsPage() {
-    const supabase = createClient()
-
-    const {
-        data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) {
-        return <div>NO USER :(</div>
-    }
+    const user = await getUserOrRedirect()
 
     function getAccountTypePanels(user: User): ReactNode {
         switch(user.user_metadata['account_type'] as ACCOUNT_TYPE) {
-            case ACCOUNT_TYPE.PATIENT: return patientInfo(supabase, user)
-            case ACCOUNT_TYPE.PHARMACIST: return pharmacistInfo(supabase, user)
+            case ACCOUNT_TYPE.PATIENT: return patientInfo(user)
+            case ACCOUNT_TYPE.PHARMACIST: return pharmacistInfo(user)
         }
     }
 
@@ -39,7 +32,7 @@ export default async function SettingsPage() {
 
 
 
-async function patientInfo(supabase: SupabaseClient<Database>, user: User) {
+async function patientInfo(user: User) {
     const [ccDetails, insurance] = await Promise.all([
         getUserPaymentInformation(user.id),
         getUserInsuranceInformation(user.id)
@@ -52,7 +45,7 @@ async function patientInfo(supabase: SupabaseClient<Database>, user: User) {
     )
 }
 
-async function pharmacistInfo(supabase: SupabaseClient<Database>, user: User) {
+async function pharmacistInfo(user: User) {
     return (
         <>
             TODO

@@ -4,7 +4,8 @@ import InsuranceFormModal from "../forms/form-modals/insurance-form-modal";
 
 export default async function MedicalInsuranceInfo({ userId, insurance }: {userId: string, insurance: Tables<"insurance_details"> | null}) {
     return (
-      <div className="bg-white shadow sm:rounded-lg mx-3.5 my-5">
+      // <div className="bg-white shadow sm:rounded-lg mx-3.5 my-5">
+      <>
       {insurance === null ? (
         <>
         <InsuranceFormModal userId={userId} buttonName="Add Insurance"/>
@@ -37,7 +38,7 @@ export default async function MedicalInsuranceInfo({ userId, insurance }: {userI
         </div>
       </div>
       )}
-      </div>
+      </>
     );
   }
 

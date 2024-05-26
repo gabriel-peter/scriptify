@@ -1,4 +1,4 @@
-"use client";
+"use server";
 import { checkPharmacistOnBoardingProgress } from '@/app/actions/user/check-on-boarding-progress';
 import GetStartedLayout, { OnBoardingStepType } from '@/components/layouts/get-started-layout';
 import { redirect } from 'next/navigation';

@@ -127,7 +127,8 @@ async function MyPatients({ userId }: { userId: string }) {
           (patient) => {
             return (
               [
-                { name: "Schedule an appointment", href: scheduleAppointmentUrl(patient?.id) }
+                { name: "Schedule an appointment", href: scheduleAppointmentUrl(patient?.id) },
+                { name: "View Profile", href: `/pharmacist/my-patient/${patient?.id}` }
               ]
             )
           }

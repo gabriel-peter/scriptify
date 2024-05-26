@@ -1,7 +1,7 @@
 'use client';
 import { Fragment, useCallback, useEffect, useState } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Bars3Icon, BellIcon, XMarkIcon, Cog6ToothIcon } from '@heroicons/react/24/outline'
 import { type User } from '@supabase/supabase-js'
 import Image from 'next/image'
 import { cn } from '@/utils/cn';
@@ -75,7 +75,7 @@ export default function DashboardNavigationBar({ loggedInUser }: { loggedInUser:
         .map(e => ({ name: e.name, href: e.href, current: pathname === e.href } as const));
     const userMenuOptions: NavLink[] = getProfileButtonLinks(loggedInUser?.user)
 
-   
+
     return (
         <div>
             <div className="min-h-full">
@@ -90,6 +90,7 @@ export default function DashboardNavigationBar({ loggedInUser }: { loggedInUser:
                                                 className="h-8 w-8"
                                                 width={8}
                                                 height={8}
+                                                priority
                                                 src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
                                                 alt="Your Company"
                                             />
@@ -114,6 +115,7 @@ export default function DashboardNavigationBar({ loggedInUser }: { loggedInUser:
                                             </div>
                                         </div>
                                     </div>
+                                    {/* HERER */}
                                     <div className="hidden md:block">
                                         <div className="ml-4 flex items-center md:ml-6">
                                             <button
@@ -128,10 +130,15 @@ export default function DashboardNavigationBar({ loggedInUser }: { loggedInUser:
                                             {/* Profile dropdown */}
                                             <Menu as="div" className="relative ml-3">
                                                 <div>
-                                                    <Menu.Button className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                                                    <Menu.Button
+                                                        className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+
+                                                    // className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                                                    >
                                                         <span className="absolute -inset-1.5" />
                                                         <span className="sr-only">Open user menu</span>
-                                                        <ProfilePhoto size={35} />
+                                                        <Cog6ToothIcon className="h-6 w-6" aria-hidden="true" />
+                                                        {/* <ProfilePhoto size={35} />  // TODO THIS CAUSES A REACT HYDRATION ERROR */}
                                                     </Menu.Button>
                                                 </div>
                                                 <Transition
@@ -147,7 +154,7 @@ export default function DashboardNavigationBar({ loggedInUser }: { loggedInUser:
                                                         {userMenuOptions.map((item) => (
                                                             <Menu.Item key={item.name}>
                                                                 {({ active }) => (
-                                                                    <a
+                                                                    <Link
                                                                         href={item.href}
                                                                         className={cn(
                                                                             active ? 'bg-gray-100' : '',
@@ -155,7 +162,7 @@ export default function DashboardNavigationBar({ loggedInUser }: { loggedInUser:
                                                                         )}
                                                                     >
                                                                         {item.name}
-                                                                    </a>
+                                                                    </Link>
                                                                 )}
                                                             </Menu.Item>
                                                         ))}
@@ -177,6 +184,7 @@ export default function DashboardNavigationBar({ loggedInUser }: { loggedInUser:
                                         </Disclosure.Button>
                                     </div>
                                 </div>
+                                {/* Here */}
                             </div>
 
                             <Disclosure.Panel className="md:hidden">
@@ -184,7 +192,7 @@ export default function DashboardNavigationBar({ loggedInUser }: { loggedInUser:
                                     {navigation.map((item) => (
                                         <Disclosure.Button
                                             key={item.name}
-                                            as="a"
+                                            as={Link}
                                             href={item.href}
                                             className={cn(
                                                 item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
@@ -218,7 +226,7 @@ export default function DashboardNavigationBar({ loggedInUser }: { loggedInUser:
                                         {userMenuOptions.map((item) => (
                                             <Disclosure.Button
                                                 key={item.name}
-                                                as="a"
+                                                as={Link}
                                                 href={item.href}
                                                 className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
                                             >
@@ -231,16 +239,6 @@ export default function DashboardNavigationBar({ loggedInUser }: { loggedInUser:
                         </>
                     )}
                 </Disclosure>
-
-                {/* <header className="bg-white shadow-sm">
-                    <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
-                        <h1 className="text-lg font-semibold leading-6 text-gray-900">Dashboard</h1>
-                    </div>
-                </header> */}
-
-                {/* {children} */}
-                {/* </div>
-                </main> */}
             </div>
         </div>
     )

@@ -22,6 +22,8 @@ import { Suspense } from "react"
 import ProfilePhoto from '@/components/data-views/profile-photo'
 import { stringifyName } from '@/utils/user-attribute-modifiers'
 import { ClientActions } from './client-actions'
+import { createClient } from '@/utils/supabase/server'
+import { redirect } from 'next/navigation'
 
 export default async function MyPatientPage({ params }: { params: { patientId: string } }) {
     const user = await getUserOrRedirect();
@@ -52,7 +54,15 @@ export default async function MyPatientPage({ params }: { params: { patientId: s
 
 
 async function PatientDemographics({ patientId, pharmacistId }: { patientId: string, pharmacistId: string }) {
-    const userProfile = await getUserDemographicInformationForUserId(patientId)
+    const userProfile = await createClient().from('users')
+    .select("*, profiles!inner(*), pharmacist_to_patient_match!pharmacist_to_patient_match_patient_id_fkey(*)")
+    .eq('id', patientId).single();
+
+    if (!userProfile.data) {
+        redirect('/error')
+    }
+    
+    await getUserDemographicInformationForUserId(patientId)
     return (
         <>
             <header className="relative isolate">
@@ -77,10 +87,10 @@ async function PatientDemographics({ patientId, pharmacistId }: { patientId: str
                                 <div className="text-sm leading-6 text-gray-500">
                                     Patient
                                 </div>
-                                <div className="mt-1 text-base font-semibold leading-6 text-gray-900">{stringifyName(userProfile?.data)}</div>
+                                <div className="mt-1 text-base font-semibold leading-6 text-gray-900">{stringifyName(userProfile?.data.profiles)}</div>
                             </h1>
                         </div>
-                        <ClientActions patientId={patientId} pharmacistId={pharmacistId} />
+                        <ClientActions patientId={patientId} pharmacistId={pharmacistId} assignment={userProfile.data.pharmacist_to_patient_match} />
                     </div>
                 </div>
             </header>

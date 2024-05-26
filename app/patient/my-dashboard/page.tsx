@@ -119,7 +119,10 @@ export async function MyPharmacist({ userId }: { userId: string }) {
   console.log(data, error)
   const pharmacists = data;
   if (!pharmacists || pharmacists.length === 0) {
-    return <></>
+    return <PaddedContainer>
+    <h2>My Pharmacist</h2>
+    <p className="mt-6 text-base leading-7 text-gray-600">We are currently matching you with a pharmacist</p>
+    </PaddedContainer>
   }
 
   return (

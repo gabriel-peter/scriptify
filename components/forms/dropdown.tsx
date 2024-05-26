@@ -39,7 +39,7 @@ export default function CustomDropdown({
 
   return (
     <AbstractInput error={errorState} errorMessage={errorMessage}>
-      <input className="hidden" id={id} name={id} value={selected} /> {/* Value sent to form */}
+      <input className="hidden" readOnly id={id} name={id} value={selected} /> {/* Value sent to form */}
       <Listbox value={selected} onChange={setSelected}>
         {({ open }) => (
           <>

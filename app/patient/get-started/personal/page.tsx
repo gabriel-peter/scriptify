@@ -1,4 +1,4 @@
-import "server-only"
+'use server'
 
 import PersonalInformationFormPage from "@/components/forms/personal-information/server-page"
 

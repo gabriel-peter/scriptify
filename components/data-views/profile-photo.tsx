@@ -34,7 +34,7 @@ export default function ProfilePhoto({ size, userId }: { size: number, userId?: 
                     src={memoizedUrl}
                     alt="Avatar"
                     // priority
-                    loading="lazy"
+                    // loading="lazy"
                     className="inline-block h-8 w-8 rounded-full"
                     style={{ height: size, width: size }}
                 />

@@ -1,21 +1,29 @@
 "use client"
 
-export function ClientActions({patientId, pharmacistId}: {patientId: string, pharmacistId: string}) {
+import { assignPharmacistToPatient, removePharmacistPatientAssignment } from "@/app/actions/admin/assign-pharmacist"
+import LoadingButton from "@/components/buttons/loading-button"
+import BasicSpinner from "@/components/loading/basic-spinner"
+import { Tables } from "@/types_db"
+import { Route } from "next"
+import { revalidatePath } from "next/cache"
+import { redirect, usePathname, useRouter } from "next/navigation"
+import { useState } from "react"
 
+export function ClientActions({ patientId, pharmacistId, assignment }: { patientId: string, pharmacistId: string, assignment: Tables<'pharmacist_to_patient_match'>[] }) {
+    const pathname = usePathname() as Route
     return (
         <div className="flex items-center gap-x-4 sm:gap-x-6">
-            <button type="button" className="hidden text-sm font-semibold leading-6 text-gray-900 sm:block">
-                Copy URL
-            </button>
-            <a href="#" className="hidden text-sm font-semibold leading-6 text-gray-900 sm:block">
-                Edit
-            </a>
-            <button
-                // onClick={() => }
-                className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            >
-                Assign to Me
-            </button>
+            {
+                assignment.length > 0 ?
+                    <LoadingButton
+                        title='Unassign to Me'
+                        serverAction={() => removePharmacistPatientAssignment({ patientId, pharmacistId }, pathname)}
+                    /> :
+                    <LoadingButton
+                        title='Assign to Me'
+                        serverAction={() => assignPharmacistToPatient({ patientId, pharmacistId }, pathname)}
+                    />
+            }
         </div>
     )
 }
