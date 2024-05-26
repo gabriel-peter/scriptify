@@ -1,8 +1,6 @@
 "use client";
 import AbstractForm from "@/components/forms/abstract-form-full-page";
-import EmailInput from "@/components/forms/email-input";
 import GenericInput from "@/components/forms/generic-input";
-import PhoneNumberInput from "@/components/forms/phone-number-input";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useFormState } from "react-dom";
@@ -11,8 +9,11 @@ import { transferPrescription } from "./transfer-request-form-handler";
 import { User } from "@supabase/supabase-js";
 import { Tables } from "@/types_db";
 import { Route } from "next";
+import { Input, InputGroup } from "@/components/catalyst-ui/input";
+import { Textarea } from "@/components/catalyst-ui/textarea";
+import { Field, Fieldset, Label } from "@/components/catalyst-ui/fieldset";
 
-export default function TransferPrescriptions({ userWithProfile, successRedirectUrl }: { userWithProfile: {user: User, profile: Tables<"profiles">}, successRedirectUrl: Route<string> }) {
+export default function TransferPrescriptions({ userWithProfile, successRedirectUrl }: { userWithProfile: { user: User, profile: Tables<"profiles"> }, successRedirectUrl: Route<string> }) {
     const router = useRouter();
     const [openForm, setOpenForm] = useState(false);
     return (
@@ -46,7 +47,7 @@ export default function TransferPrescriptions({ userWithProfile, successRedirect
         </>);
 }
 
-function TransferForm({ setOpenForm, userWithProfile, successRedirectUrl }: { setOpenForm: any, userWithProfile: {user: User, profile: Tables<"profiles">}, successRedirectUrl: Route<string> }) {
+function TransferForm({ setOpenForm, userWithProfile, successRedirectUrl }: { setOpenForm: any, userWithProfile: { user: User, profile: Tables<"profiles"> }, successRedirectUrl: Route<string> }) {
     const transferPrescriptionWithUserId = transferPrescription.bind(null, userWithProfile.user.id)
     const [state, formAction] = useFormState(transferPrescriptionWithUserId, { status: Status.NOT_SUBMITTED })
     const router = useRouter()
@@ -64,43 +65,49 @@ function TransferForm({ setOpenForm, userWithProfile, successRedirectUrl }: { se
                 errorState={state?.error?.pharmacyName}
                 errorMessage={"Invalid Pharmacy Name"}
             />
-            <EmailInput
+            <GenericInput
                 label="Email of your Pharmacy"
+                id="email"
+                type="email"
                 errorState={state?.error?.email}
             />
-            <PhoneNumberInput
+            <GenericInput
                 label="Phone Number of your Pharmacy"
+                type="tel"
+                id="phone-number"
+                placeholder="+1 555-987-6543"
                 errorState={state?.error?.phoneNumber}
             />
-            <EmailTextBox profile={userWithProfile.profile}/>
+            <EmailTextBox profile={userWithProfile.profile} />
         </AbstractForm>
     )
 }
 
-function EmailTextBox({profile}:{profile: Tables<"profiles">}) {
+function EmailTextBox({ profile }: { profile: Tables<"profiles"> }) {
     return (
-        <div className="my-5 overflow-hidden rounded-lg border border-gray-300 shadow-sm">
-            <label htmlFor="title" className="sr-only">
-                Title
-            </label>
-            <input
-                type="text"
-                name="email-heading"
-                id="email-heading"
-                className="px-3 block w-full border-0 pt-2.5 text-lg font-medium placeholder:text-gray-400 focus:ring-1"
-                defaultValue={`Prescription Transfer for ${profile.first_name} ${profile.last_name}`}
-            />
-            <label htmlFor="description" className="sr-only">
-                Description
-            </label>
-            <textarea
-                rows={4}
-                name="email-body"
-                id="email-body"
-                className="px-3 block w-full resize-none border-0 py-0 text-gray-900 placeholder:text-gray-400 focus:ring-1 sm:text-sm sm:leading-6"
-                placeholder="Write a description..."
-                defaultValue={''}
-            />
-        </div>
+        <Fieldset>
+            <Field  >
+                <Label htmlFor="title" className="sr-only">
+                    Title
+                </Label>
+                <Input
+                    name="email-heading"
+                    id="email-heading"
+                    defaultValue={`Prescription Transfer for ${profile.first_name} ${profile.last_name}`}
+                />
+            </Field>
+            <Field>
+                <Label htmlFor="description" className="sr-only">
+                    Description
+                </Label>
+                <Textarea
+                    rows={4}
+                    name="email-body"
+                    id="email-body"
+                    placeholder="Write a brief email on which prescriptions you would like transfered..."
+                    defaultValue={''}
+                />
+            </Field>
+        </Fieldset>
     )
 }

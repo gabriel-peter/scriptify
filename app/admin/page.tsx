@@ -4,13 +4,14 @@ import { getUsersPaginated, GetUsersPaginatedFilter, UserProfileResponse } from 
 import { Suspense, useEffect, useState } from "react";
 import Paginator, { resetPageIndices } from "@/components/tables/pagination-footer";
 import SearchBar from "@/components/search/simple-searchbar";
-import Table from "@/components/tables/standard-table";
+import CustomTable from "@/components/tables/standard-table";
 import { ACCOUNT_TYPE } from "@/utils/enums";
 import ColumnFilter from "@/components/tables/column-filter-dropdown";
 import { stringifyName } from "@/utils/user-attribute-modifiers";
-import { ActionDropDown } from "@/components/tables/action-dropdown";
 import Link from "next/link";
 import { UsersIcon } from "@heroicons/react/24/solid";
+import ListActionMenu from "@/components/lists/basic-list-action-menu";
+import { TableCell, TableHeader } from "@/components/catalyst-ui/table";
 
 export default function AdminHomePage() {
     const PAGE_SIZE = 15;
@@ -25,7 +26,7 @@ export default function AdminHomePage() {
     }, [queryFilters, setQueryFilters, count, setCount])
     return (
         <>
-            <Table
+            <CustomTable
                 customStyle="bottom-0"
                 searchBar={<SearchBar
                     text={queryFilters.nameSearch}
@@ -38,13 +39,13 @@ export default function AdminHomePage() {
                 />}
                 title={"User Search"}
                 headers={[
-                    <th scope="col" className="py-3.5 pl-4 pr-4 text-left text-sm font-semibold text-gray-900 sm:pl-0">
+                    <TableHeader scope="col" className="py-3.5 pl-4 pr-4 text-left text-sm font-semibold text-gray-900 sm:pl-0">
                         Full Name
-                    </th>,
-                    <th scope="col" className="py-3.5 pl-4 pr-4 text-left text-sm font-semibold text-gray-900">
+                    </TableHeader>,
+                    <TableHeader scope="col" className="py-3.5 pl-4 pr-4 text-left text-sm font-semibold text-gray-900">
                         Email
-                    </th>,
-                    <th scope="col" className="px-4 py-3.5 text-left text-sm font-semibold text-gray-900">
+                    </TableHeader>,
+                    <TableHeader scope="col" className="px-4 py-3.5 text-left text-sm font-semibold text-gray-900">
                         <ColumnFilter columnName="Account Tpye" filterHandlers={
                             (['PHARMACIST', 'ADMIN', 'PATIENT', undefined] as ACCOUNT_TYPE[]).map((value) => {
                                 return {
@@ -58,16 +59,16 @@ export default function AdminHomePage() {
                                 }
                             })
                         } />
-                    </th>,
-                    <th scope="col" className="py-3.5 pl-4 pr-4 text-left text-sm font-semibold text-gray-900 sm:pr-0">
+                    </TableHeader>,
+                    <TableHeader scope="col" className="py-3.5 pl-4 pr-4 text-left text-sm font-semibold text-gray-900 sm:pr-0">
                         Actions
-                    </th>
+                    </TableHeader>
                 ]}
             >
                 {/* <Suspense fallback={<p>"Loading Users..."</p>}> */}
                 <TableContent users={users} />
                 {/* </Suspense> */}
-            </Table>
+            </CustomTable>
             <Paginator
                 resultCount={count || 0}
                 queryFilters={queryFilters}
@@ -95,28 +96,28 @@ function TableContent({ users }: { users: UserProfileResponse | undefined }) {
     }
     return users.data.map((user, indx) => (
         <tr key={indx} className="divide-x divide-gray-200">
-            <td className="whitespace-nowrap py-4 pl-4 pr-4 text-sm font-medium text-gray-900 sm:pl-0">
+            <TableCell className="whitespace-nowrap py-4 pl-4 pr-4 text-sm font-medium text-gray-900 sm:pl-0">
                 <Link
                     href={`/admin/patient/${user.id}`}
                     className="hover:underline"
                 >
                     {stringifyName(user.profiles!)}
                 </Link>
-            </td>
-            <td className="whitespace-nowrap p-4 text-sm text-gray-500">
+            </TableCell>
+            <TableCell className="whitespace-nowrap p-4 text-sm text-gray-500">
                 {user.email}
-            </td>
-            <td className="whitespace-nowrap p-4 text-sm text-gray-500">
+            </TableCell>
+            <TableCell className="whitespace-nowrap p-4 text-sm text-gray-500">
                 {user.account_type?.toString()}
-            </td>
-            <td className="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-gray-500 sm:pr-0">
-                <ActionDropDown actions={[
-                    { name: 'See Transfers', handler: () => { } },
-                    { name: 'Resend Email', handler: () => { } },
-                    { name: 'Remove', handler: () => { } },
-                    { name: 'Flag', handler: () => { } }
+            </TableCell>
+            <TableCell className="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-gray-500 sm:pr-0">
+                <ListActionMenu actions={[
+                    { name: 'See Transfers', methodCall: () => { } },
+                    { name: 'Resend Email', methodCall: () => { } },
+                    { name: 'Remove', methodCall: () => { } },
+                    { name: 'Flag', methodCall: () => { } }
                 ]} />
-            </td>
+            </TableCell>
         </tr>
     ))
 }

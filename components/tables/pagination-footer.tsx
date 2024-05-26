@@ -19,8 +19,9 @@ export default function Paginator(
 
 ) {
   return (
+    <div className="w-full fixed bottom-0 left-0">
     <nav
-      className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6"
+      className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6 mr-5"
       aria-label="Pagination"
     >
       <div className="hidden sm:block">
@@ -60,5 +61,6 @@ export default function Paginator(
         </button>
       </div>
     </nav>
+    </div>
   )
 }

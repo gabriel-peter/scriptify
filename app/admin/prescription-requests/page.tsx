@@ -1,5 +1,5 @@
 "use client"
-import Table from "@/components/tables/standard-table";
+import CustomTable from "@/components/tables/standard-table";
 import { AllTransferRequestsResponse, GetTransferedRequestsFilters, getTransferedPrescriptions } from "../../actions/transfer-requests/get-prescription-transfers"
 import { Suspense, useEffect, useState } from "react";
 import { toHumanReadableDate } from "@/utils/time";
@@ -9,9 +9,10 @@ import { stringifyName } from "@/utils/user-attribute-modifiers";
 import Paginator, { resetPageIndices } from "@/components/tables/pagination-footer";
 import SearchBar from "@/components/search/simple-searchbar";
 import ColumnFilter from "@/components/tables/column-filter-dropdown";
-import { ActionDropDown } from "@/components/tables/action-dropdown";
 import { PaginationFilters } from "@/utils/supabase/types";
 import Link from "next/link";
+import { TableCell, TableHead, TableHeader, TableRow } from "@/components/catalyst-ui/table";
+import ListActionMenu from "@/components/lists/basic-list-action-menu";
 
 function getRequestStatusStyling(requestStatus: Database['public']['Enums']['transfer_request_status']) {
     const colorMap = () => {
@@ -46,19 +47,19 @@ export default function PrescriptionRequestPage() {
     }
     return (
         <>
-            <Table
+            <CustomTable
                 title={"Prescription Transfers"}
                 headers={[
-                    <th scope="col" className="py-3.5 pl-4 pr-4 text-left text-sm font-semibold text-gray-900 sm:pl-0">
+                    <TableHeader scope="col" className="py-3.5 pl-4 pr-4 text-left text-sm font-semibold text-gray-900 sm:pl-0">
                         Pharmacy Name
-                    </th>,
-                    <th scope="col" className="py-3.5 pl-4 pr-4 text-left text-sm font-semibold text-gray-900">
+                    </TableHeader>,
+                    <TableHeader scope="col" className="py-3.5 pl-4 pr-4 text-left text-sm font-semibold text-gray-900">
                         Patient Name
-                    </th>,
-                    <th scope="col" className="px-4 py-3.5 text-left text-sm font-semibold text-gray-900">
+                    </TableHeader>,
+                    <TableHeader scope="col" className="px-4 py-3.5 text-left text-sm font-semibold text-gray-900">
                         Pharmacy Email
-                    </th>,
-                    <th scope="col" className="px-4 py-3.5 text-left text-sm font-semibold text-gray-900">
+                    </TableHeader>,
+                    <TableHeader scope="col" className="px-4 py-3.5 text-left text-sm font-semibold text-gray-900">
                         <ColumnFilter columnName="Status" filterHandlers={
                             (['pending', 'pharmacist-filled', 'complete', undefined] as Database['public']['Enums']['transfer_request_status'][]).map((value) => {
                                 return {
@@ -67,13 +68,13 @@ export default function PrescriptionRequestPage() {
                                 }
                             })
                         } />
-                    </th>,
-                    <th scope="col" className="py-3.5 pl-4 pr-4 text-left text-sm font-semibold text-gray-900">
+                    </TableHeader>,
+                    <TableHeader scope="col" className="py-3.5 pl-4 pr-4 text-left text-sm font-semibold text-gray-900">
                         Last Updated
-                    </th>,
-                    <th scope="col" className="py-3.5 pl-4 pr-4 text-left text-sm font-semibold text-gray-900 sm:pr-0">
-                        Actions
-                    </th>
+                    </TableHeader>,
+                    <TableHeader className="relative w-0">
+                    <span className="sr-only">Actions</span>
+                  </TableHeader>
                 ]}
                 searchBar={
                     <SearchBar text={queryFilters.patientNameSearch} setText={(value) => setQueryFilters({ ...queryFilters, ...resetPageIndices(PAGE_SIZE), patientNameSearch: value })} />
@@ -89,20 +90,20 @@ export default function PrescriptionRequestPage() {
                 description="Look-up prescription tranfers, filter by status & search by patient first name."
             >
                 {transfers.map((transfer, indx) => (
-                    <tr key={indx} className="divide-x divide-gray-200">
-                        <td className="whitespace-nowrap py-4 pl-4 pr-4 text-sm font-medium text-gray-900 sm:pl-0">
+                    <TableRow key={indx} className="divide-x divide-gray-200">
+                        <TableCell className="whitespace-nowrap py-4 pl-4 pr-4 text-sm font-medium text-gray-900 sm:pl-0">
                             {transfer.pharmacy_name}
-                        </td>
-                        <td className="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-gray-900">
+                        </TableCell>
+                        <TableCell className="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-gray-900">
                             <Link
                                 href={`/admin/patient/${transfer.users.id}`}
                                 className="hover:underline"
                             >
                                 {stringifyName(transfer.users.profiles)}
                             </Link>
-                        </td>
-                        <td className="whitespace-nowrap p-4 text-sm text-gray-500">{transfer.pharmacy_email}</td>
-                        <td className="whitespace-nowrap p-4 text-sm text-gray-500">
+                        </TableCell>
+                        <TableCell className="whitespace-nowrap p-4 text-sm text-gray-500">{transfer.pharmacy_email}</TableCell>
+                        <TableCell className="whitespace-nowrap p-4 text-sm text-gray-500">
                             <span className={cn(
                                 getRequestStatusStyling(transfer.request_status!),
                                 "inline-flex items-center rounded-md px-2 py-1 text-xs font-medium  ring-1 ring-inset"
@@ -110,8 +111,8 @@ export default function PrescriptionRequestPage() {
 
                                 {transfer.request_status}
                             </span>
-                        </td>
-                        <td className="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-gray-500 sm:pr-0">{
+                        </TableCell>
+                        <TableCell className="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-gray-500 sm:pr-0">{
                             toHumanReadableDate({
                                 weekday: "short",
                                 year: "numeric",
@@ -120,18 +121,15 @@ export default function PrescriptionRequestPage() {
                                 hour: "numeric",
                                 minute: "numeric",
                             }, transfer.updated_at || "ERROR")
-                        }</td>
-                        <td className="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-gray-500 sm:pr-0">
-                            <ActionDropDown actions={[
-                                { name: 'See Transfers', handler: () => { } },
-                                { name: 'Resend Email', handler: () => { } },
-                                { name: 'Remove', handler: () => { } },
-                                { name: 'Flag', handler: () => { } }
-                            ]} />
-                        </td>
-                    </tr>
+                        }</TableCell>
+                        <TableCell className="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-gray-500 sm:pr-0">
+                        <ListActionMenu actions={[
+                            {name: 'Inspect', href:'/TODO'}
+                        ]} />
+                        </TableCell>
+                    </TableRow>
                 ))}
-            </Table>
+            </CustomTable>
             <Paginator
                 pageSize={PAGE_SIZE}
                 resultCount={totalCount || 0}

@@ -4,6 +4,8 @@ import { Listbox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import { cn } from '@/utils/cn'
 import AbstractInput from './abstract-input'
+import { Label, Field } from '../catalyst-ui/fieldset'
+import { Select } from '../catalyst-ui/select'
 
 export function NativeDropdown({ id, label, options }: { id: string, label: string, options: string[] }) {
   return (
@@ -20,6 +22,17 @@ export function NativeDropdown({ id, label, options }: { id: string, label: stri
       </select>
     </div>
   )
+}
+
+export function CustomSelect({ id, label, options }: { id: string, label: string, options: string[] }) {
+  return (
+    <Field>
+      <Label>{label}</Label>
+      <Select name={id}>
+        {options.map(o => <option value={o}>{o}</option>)}
+      </Select>
+    </Field>
+  );
 }
 
 export default function CustomDropdown({

@@ -3,6 +3,7 @@ import { usePathname } from 'next/navigation';
 import ProgressionBar from '../forms/form-progression-bar';
 import { useEffect, useState } from 'react';
 import { Route } from 'next';
+import { Heading } from '../catalyst-ui/heading';
 
 export type OnBoardingStepType<T> = { id: T, name: string, href: Route<string>, status?: string };
 

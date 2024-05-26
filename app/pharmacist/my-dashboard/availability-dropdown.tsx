@@ -4,6 +4,7 @@ import { Listbox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import { cn } from "@/utils/cn";
 import { AvailabilityStatus } from '../../actions/utils';
+import { Select } from '@/components/catalyst-ui/select';
 
 const colorMap = {
     'Available': 'bg-green-400',
@@ -11,7 +12,39 @@ const colorMap = {
     'Offline': 'bg-gray-200'
 }
 
-export default function AvailabilityDrowndown({currentStatus}: {currentStatus: AvailabilityStatus}) {
+export default function AvailabilityDrowndown({ currentStatus }: { currentStatus: AvailabilityStatus }) {
+    const [selected, setSelected] = useState(currentStatus)
+    function updateAvailability(option: AvailabilityStatus) {
+        setSelected(option);
+    }
+
+    return (
+        <Select value={selected} onChange={(e) => updateAvailability(e.target.value as AvailabilityStatus)}>
+            {Object.values(AvailabilityStatus).map((option) => (
+                <option value={option}> 
+                <div className="flex items-center">
+                    <span
+                        className={cn(
+                            colorMap[option],
+                            'inline-block h-2 w-2 flex-shrink-0 rounded-full'
+                        )}
+                        aria-hidden="true"
+                    />
+                    {/* <span
+            className={cn(selected ? 'font-semibold' : 'font-normal', 'ml-3 block truncate')}
+        > */}
+                    {option}
+                    {/* <span className="sr-only"> is {option ? 'online' : 'offline'}</span>
+        </span> */}
+                </div>
+                </option>
+            ))}
+        </Select>
+    )
+
+}
+
+export function Dep_AvailabilityDrowndown({ currentStatus }: { currentStatus: AvailabilityStatus }) {
     const [selected, setSelected] = useState(currentStatus)
     function updateAvailability(option: AvailabilityStatus) {
         setSelected(option);
@@ -47,6 +80,7 @@ export default function AvailabilityDrowndown({currentStatus}: {currentStatus: A
                             leaveTo="opacity-0"
                         >
                             <Listbox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+
                                 {Object.values(AvailabilityStatus).map((option) => (
                                     <Listbox.Option
                                         key={option}

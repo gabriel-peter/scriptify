@@ -3,15 +3,16 @@
 import { useEffect, useState } from "react";
 import { getPatientsPaginated, GetPatientsPaginatedFilter, PatientsPaginatedResponse } from "../../../actions/patient/get-patients";
 import Paginator, { resetPageIndices } from "@/components/tables/pagination-footer";
-import Table from "@/components/tables/standard-table";
+import CustomTable from "@/components/tables/standard-table";
 import { UsersIcon } from "@heroicons/react/24/solid";
 import { stringifyName } from "@/utils/user-attribute-modifiers";
 import Link from "next/link";
-import { ActionDropDown } from "@/components/tables/action-dropdown";
 import SearchBar from "@/components/search/simple-searchbar";
 import { states } from "@/app/actions/options";
 import ColumnFilter from "@/components/tables/column-filter-dropdown";
 import { useRouter } from "next/navigation";
+import { TableCell, TableHeader, TableRow } from "@/components/catalyst-ui/table";
+import ListActionMenu from "@/components/lists/basic-list-action-menu";
 
 const statesWithUndefined: (string | undefined)[] = [undefined]; 
 states.map(state => statesWithUndefined.push(state))
@@ -28,7 +29,7 @@ export default function PatientFinderPage() {
         getPatientsPaginated(queryFilters).then((result) => { setPatients(result); setCount(result.count) })
     }, [queryFilters, setQueryFilters, count, setCount])
     return ( <>
-        <Table
+        <CustomTable
             customStyle="bottom-0"
             searchBar={<SearchBar
                 text={queryFilters.nameSearch}
@@ -41,13 +42,13 @@ export default function PatientFinderPage() {
             />}
             title={"Patient Search"}
             headers={[
-                <th scope="col" className="py-3.5 pl-4 pr-4 text-left text-sm font-semibold text-gray-900 sm:pl-0">
+                <TableHeader scope="col" className="py-3.5 pl-4 pr-4 text-left text-sm font-semibold dark:text-white text-gray-900 sm:pl-0">
                     Full Name
-                </th>,
-                <th scope="col" className="py-3.5 pl-4 pr-4 text-left text-sm font-semibold text-gray-900">
+                </TableHeader>,
+                <TableHeader scope="col" className="py-3.5 pl-4 pr-4 text-left text-sm font-semibold dark:text-white text-gray-900">
                     Email
-                </th>,
-                <th scope="col" className="px-4 py-3.5 text-left text-sm font-semibold text-gray-900">
+                </TableHeader>,
+                <TableHeader scope="col" className="px-4 py-3.5 text-left text-sm font-semibold dark:text-white text-gray-900">
                     <ColumnFilter columnName="State" filterValue={queryFilters.stateFilter} filterHandlers={
                         (statesWithUndefined).map((value) => {
                             return {
@@ -61,16 +62,16 @@ export default function PatientFinderPage() {
                             }
                         })
                     } />
-                </th>,
-                <th scope="col" className="py-3.5 pl-4 pr-4 text-left text-sm font-semibold text-gray-900 sm:pr-0">
+                </TableHeader>,
+                <TableHeader scope="col" className="py-3.5 pl-4 pr-4 text-left text-sm font-semibold text-gray-900 sm:pr-0">
                     Actions
-                </th>
+                </TableHeader>
             ]}
         >
             {/* <Suspense fallback={<p>"Loading Users..."</p>}> */}
             <TableContent patients={patients} />
             {/* </Suspense> */}
-        </Table>
+        </CustomTable>
         <Paginator
             resultCount={count || 0}
             queryFilters={queryFilters}
@@ -97,29 +98,28 @@ function TableContent({ patients }: { patients: PatientsPaginatedResponse | unde
     </div>)
     }
     return patients.data.map((user, indx) => (
-        <tr key={indx} className="divide-x divide-gray-200">
-            <td className="whitespace-nowrap py-4 pl-4 pr-4 text-sm font-medium text-gray-900 sm:pl-0">
+        <TableRow key={indx} 
+        // className="divide-x divide-gray-200"
+        >
+            <TableCell className="whitespace-nowrap py-4 pl-4 pr-4 text-sm font-medium dark:text-white text-gray-900 sm:pl-0">
                 <Link
                     href={`/admin/patient/${user.id}`}
                     className="hover:underline"
                 >
                     {stringifyName(user.profiles!)}
                 </Link>
-            </td>
-            <td className="whitespace-nowrap p-4 text-sm text-gray-500">
+            </TableCell>
+            <TableCell className="whitespace-nowrap p-4 text-sm text-gray-500">
                 {user.email}
-            </td>
-            <td className="whitespace-nowrap p-4 text-sm text-gray-500">
+            </TableCell>
+            <TableCell className="whitespace-nowrap p-4 text-sm text-gray-500">
                 {user.profiles?.state_enum}
-            </td>
-            <td className="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-gray-500 sm:pr-0">
-                <ActionDropDown actions={[
-                    { name: 'View Profile', handler: () => router.push(`/pharmacist/my-patient/${user.id}`) },
-                    // { name: 'Resend Email', handler: () => { } },
-                    // { name: 'Remove', handler: () => { } },
-                    // { name: 'Flag', handler: () => { } }
+            </TableCell>
+            <TableCell className="whitespace-nowrap py-4 pl-4 pr-4 text-sm dark:text-white text-gray-500 sm:pr-0">
+                <ListActionMenu actions={[
+                    { name: 'View Profile', methodCall: () => router.push(`/pharmacist/my-patient/${user.id}`) },
                 ]} />
-            </td>
-        </tr>
+            </TableCell>
+        </TableRow>
     ))
 }

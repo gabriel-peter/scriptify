@@ -21,7 +21,9 @@ export default function PaymentForm({ userId, successAction, redirectUrl }: { us
         successAction={successAction ? () => successAction() : () => router.push(redirectUrl!)}
         secondaryButton={() => <button type='button' onClick={successAction ? () => successAction() : () => router.push(redirectUrl!)}>Skip</button>}
       >
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-4">
         <NameInput errorState={state?.error} />
+        </div>
         <CreditCardInput errorState={state?.error} userId={userId} />
       </AbstractForm>
   )

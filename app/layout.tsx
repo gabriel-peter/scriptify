@@ -1,10 +1,11 @@
-// "use server"
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import DashboardNavigationBar from "../components/nav/main-nav";
 import {getOptionalUserProfile} from "@/app/actions/user/get";
 import { Suspense } from "react";
+import NavLayout from "@/components/nav/stacked-nav";
+import ThemeProvider from "./theme-context";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,14 +21,18 @@ export default async function RootLayout({
 }>) {
   const loggedInUser = await getOptionalUserProfile()
   return (
-    <html lang="en">
+    <html lang="en" className="dark bg-white lg:bg-zinc-100 dark:bg-zinc-900 dark:lg:bg-zinc-950">
       <body className={inter.className}>
-        <DashboardNavigationBar loggedInUser={loggedInUser} />
+      {/* <ThemeProvider> */}
+        {/* <DashboardNavigationBar loggedInUser={loggedInUser} /> */}
+        <NavLayout loggedInUser={loggedInUser}>
         <main>
           <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
             {children}
           </div>
         </main>
+        </NavLayout>
+        {/* </ThemeProvider> */}
       </body>
     </html>
   );

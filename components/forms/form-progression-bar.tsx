@@ -39,8 +39,8 @@ export default function ProgressionBar<T>({steps}: {steps: OnBoardingStepType<T>
                           </span>
                         </span>
                         <span className="ml-4 mt-0.5 flex min-w-0 flex-col">
-                          <span className="text-sm font-medium">{step.name}</span>
-                          {/* <span className="text-sm font-medium text-gray-500">{step.description}</span> */}
+                          {/* <span className="text-sm font-medium">{step.name}</span> */}
+                          <span className="text-sm font-medium text-gray-500">{step.name}</span>
                         </span>
                       </span>
                     </div>

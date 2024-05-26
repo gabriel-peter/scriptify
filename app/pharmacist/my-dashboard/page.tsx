@@ -14,12 +14,13 @@ import { stringifyName } from "@/utils/user-attribute-modifiers";
 import { standardButtonStyling } from "@/components/forms/styling";
 import { createClient } from "@/utils/supabase/server";
 import { toHumanReadableDate } from "@/utils/time";
+import { Heading } from "@/components/catalyst-ui/heading";
 
 export default async function PharmacistDashboard() {
   const { user, profile } = await getUserProfileOrRedirect()
   return (
     <PageContainer>
-      <h2>Welcome <strong>{stringifyName(profile)}</strong></h2>
+      <Heading>Welcome <strong>{stringifyName(profile)}</strong></Heading>
 
       <Suspense fallback="Loading">
         <MyAvailability userId={user.id} />
@@ -138,7 +139,7 @@ async function MyPatients({ userId }: { userId: string }) {
             <div className="flex min-w-0 gap-x-4">
               <ProfilePhoto size={40} userId={patient.id} />
               <div className="min-w-0 flex-auto">
-                <p className="text-sm font-semibold leading-6 text-gray-900">{patient.profiles.first_name + " " + patient.profiles.last_name}</p>
+                <p className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">{patient.profiles.first_name + " " + patient.profiles.last_name}</p>
                 <p className="mt-1 truncate text-xs leading-5 text-gray-500">{patient.email}</p>
               </div>
             </div>

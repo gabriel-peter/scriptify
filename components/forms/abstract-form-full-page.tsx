@@ -1,6 +1,7 @@
 import React, { ReactElement } from "react";
 import { SubmitButton } from "./submit-button";
 import { FormSubmissionReturn, Status } from "../../app/actions/validation-helpers";
+import { Heading, Subheading } from "../catalyst-ui/heading";
 
 export default function AbstractForm<T>({
     children,
@@ -26,11 +27,17 @@ export default function AbstractForm<T>({
         <form action={formAction}>
             <div className="space-y-12 mt-5">
                 <div className="border-b border-gray-900/10 pb-12">
-                    <h2 className="text-base font-semibold leading-7 text-gray-900">{header}</h2>
+                    <Heading 
+                    // className="text-base font-semibold leading-7 text-gray-900"
+                    >
+                        {header}
+                        </Heading>
                     { description && 
-                    <p className="mt-1 text-sm leading-6 text-gray-600">
+                    <Subheading
+                    // className="mt-1 text-sm leading-6 text-gray-600"
+                    >
                         {description}
-                    </p>}
+                    </Subheading>}
                     {children}
                 </div>
                 <p className="mt-2 text-sm text-red-600">{state.status === Status.ERROR && state.message}</p>

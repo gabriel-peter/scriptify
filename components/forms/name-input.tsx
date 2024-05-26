@@ -1,36 +1,42 @@
 import { inputStyling } from "./styling";
 import AbstractInput from "./abstract-input";
+import { Input } from "../catalyst-ui/input";
+import { Field, Label } from "../catalyst-ui/fieldset";
 
-export default function NameInput({errorState}: {errorState: {firstName?: string[], lastName?: string[]} | undefined}) {
+export default function NameInput({ errorState }: { errorState: { firstName?: string[], lastName?: string[] } | undefined }) {
     return (
         <>
-            <div className="sm:col-span-3">
-                <label htmlFor="first-name" className="block text-sm font-medium leading-6 text-gray-900">
+            <Field
+            >
+                <Label htmlFor="first-name"
+                >
                     First name
-                </label>
+                </Label>
                 <AbstractInput error={errorState?.firstName} errorMessage="Invalid First Name.">
-                    <input
+                    <Input
                         type="text"
                         name="first-name"
                         id="first-name"
                         autoComplete="given-name"
-                        className={inputStyling}                    />
+                    />
                 </AbstractInput>
-            </div>
+            </Field>
 
-            <div className="sm:col-span-3">
-                <label htmlFor="last-name" className="block text-sm font-medium leading-6 text-gray-900">
+            <Field
+            >
+                <Label htmlFor="last-name"
+                >
                     Last name
-                </label>
+                </Label>
                 <AbstractInput error={errorState?.lastName} errorMessage="Invalid Last Name.">
-                    <input
+                    <Input
                         type="text"
                         name="last-name"
                         id="last-name"
                         autoComplete="family-name"
-                        className={inputStyling}                    />
+                    />
                 </AbstractInput>
-            </div>
+            </Field>
         </>
     )
 }

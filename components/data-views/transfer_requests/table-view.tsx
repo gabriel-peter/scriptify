@@ -5,6 +5,9 @@ import { cn } from "@/utils/cn";
 import { createClient } from "@/utils/supabase/server";
 import { toHumanReadableTime } from "@/utils/time";
 import Link from "next/link";
+import PaddedContainer from "@/components/containers/padded-container";
+import { Heading, Subheading } from "@/components/catalyst-ui/heading";
+import { Text } from "@/components/catalyst-ui/text";
 
 const statuses = {
   complete: 'text-green-700 bg-green-50 ring-green-600/20',
@@ -19,7 +22,7 @@ export async function MyTransfers({ userId }: { userId: string }) {
   }
   const prescriptionTransfers = data;
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+    <PaddedContainer>
       {/* Header */}
       <SectionHeadingWithAction title="Transfers in Progress" actionHref="/patient/transfer/new" actionTitle="Make new request" />
 
@@ -34,7 +37,10 @@ export async function MyTransfers({ userId }: { userId: string }) {
                   className="hover:underline"
                   href={"#"}
                 >
-                  <p className="text-sm font-semibold leading-6 text-gray-900">{request.pharmacy_name}</p>
+                  <Subheading level={2}>
+                  {/* // className="text-sm font-semibold leading-6 text-gray-900"> */}
+                  {request.pharmacy_name}
+                  </Subheading>
                 </Link>
                 <p
                   className={cn(
@@ -46,20 +52,20 @@ export async function MyTransfers({ userId }: { userId: string }) {
                 </p>
               </div>
               <div className="mt-1 flex items-center gap-x-2 text-xs leading-5 text-gray-500">
-                <p className="whitespace-nowrap">
+                <Text className="whitespace-nowrap">
                   Submitted on <time
                     dateTime={request.created_at!}
                   >{toHumanReadableTime(request.created_at!, true)}</time>
-                </p>
+                </Text>
                 <svg viewBox="0 0 2 2" className="h-0.5 w-0.5 fill-current">
                   <circle cx={1} cy={1} r={1} />
                 </svg>
-                <p className="truncate">Pharmacy Email {request.pharmacy_email}</p>
+                <Text>Pharmacy Email {request.pharmacy_email}</Text>
               </div>
             </>
           )
         }}
       />
-    </div>
+    </PaddedContainer>
   )
 }

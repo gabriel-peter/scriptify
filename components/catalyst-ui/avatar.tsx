@@ -45,7 +45,7 @@ export function Avatar({
           </text>
         </svg>
       )}
-      {src && <img src={src} alt={alt} />}
+       {src && <img src={src} alt={alt} />} {/* TODO change to next js image? */}
     </span>
   )
 }

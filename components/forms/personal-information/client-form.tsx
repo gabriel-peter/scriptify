@@ -2,7 +2,6 @@
 import AbstractForm from '@/components/forms/abstract-form-full-page'
 import AddressSubForm from '@/components/forms/address-sub-form'
 import NameInput from '@/components/forms/name-input'
-import PhoneNumberInput from '@/components/forms/phone-number-input'
 import UploadFileInput from '@/components/forms/upload-file-input'
 import { useFormState } from 'react-dom'
 import GenericInput from '@/components/forms/generic-input'
@@ -43,8 +42,13 @@ export default function PersonalInformationForm({ userId, successRedirectUrl }: 
               errorState={state?.error?.dateOfBirth}
               errorMessage={"Invalid Date."}
             />
-            {/* <EmailInput errorState={state?.error?.email} label={'Add your Email'} /> */}
-            <PhoneNumberInput errorState={state?.error?.phoneNumber} label={'Add your Phone Number'} />
+            <GenericInput
+              errorState={state?.error?.phoneNumber}
+              label={'Add your Phone Number'}
+              type='tel'
+              id="phone-number"
+              placeholder="+1 555-987-6543"
+            />
             <AddressSubForm errorState={state?.error} />
           </div >
         </div>

@@ -11,6 +11,7 @@ import ProfilePhoto from "@/components/data-views/profile-photo";
 import { SectionHeadingWithAction } from "@/components/lists/basic-list-section-header";
 import PaddedContainer from "@/components/containers/padded-container";
 import { toHumanReadableDate } from "@/utils/time";
+import { Heading } from "@/components/catalyst-ui/heading";
 
 export default async function Dashboard() {
   const supabase = createClient()
@@ -39,16 +40,16 @@ function PharmaceuticalPatientDashboard({
 
       {/* Main Content */}
       <div className="container mx-auto mt-8 px-4">
-        <h2 className="text-xl font-semibold mb-4 mb-5">Welcome, {stringifyName(userInfo)}</h2>
+        <Heading>Welcome, {stringifyName(userInfo)}</Heading>
 
-        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+        {/* <div className="bg-white rounded-lg shadow-md p-6 mb-8">
           <NextAppointment appointment={{
             doctor: "Dr. Michael Peter",
             date: "March 5, 2024",
             time: "9:30 am"
           }}
           />
-        </div>
+        </div> */}
 
         {/* My Pharmacists */}
         <Suspense fallback="Loading">
@@ -87,7 +88,7 @@ export async function MyAppointments({userId}: {userId: string}) {
           <div className="flex min-w-0 gap-x-4">
             <ProfilePhoto size={40} userId={appointment.users.id} />
             <div className="min-w-0 flex-auto">
-              <p className="text-sm font-semibold leading-6 text-gray-900">{appointment.users.profiles.first_name + " " + appointment.users.profiles.last_name}</p>
+              <p className="text-sm font-semibold leading-6 dark:text-white text-gray-900">{appointment.users.profiles.first_name + " " + appointment.users.profiles.last_name}</p>
               <p className="mt-1 truncate text-xs leading-5 text-gray-500">{appointment.users.email}</p>
             </div>
           </div>
@@ -120,21 +121,21 @@ export async function MyPharmacist({ userId }: { userId: string }) {
   const pharmacists = data;
   if (!pharmacists || pharmacists.length === 0) {
     return <PaddedContainer>
-    <h2>My Pharmacist</h2>
+    <Heading>{`My Pharmacists`}</Heading>
     <p className="mt-6 text-base leading-7 text-gray-600">We are currently matching you with a pharmacist</p>
     </PaddedContainer>
   }
 
   return (
     <PaddedContainer>
-      <h2>My Pharmacist(s)</h2>
+    <Heading>{`My Pharmacists (${pharmacists.length})`}</Heading>
       <BasicList_Server items={pharmacists} row={
         (x) => {
           return (
             <>
               <div className="flex items-start gap-x-3">
                 <ProfilePhoto userId={x.users?.profiles?.avatar_url} size={30} />
-                <p className="text-sm font-semibold leading-6 text-gray-900">{stringifyName(x.users?.profiles)}</p>
+                <p className="text-sm font-semibold leading-6 dark:text-white text-gray-900">{stringifyName(x.users?.profiles)}</p>
               </div>
               <div className="mt-1 flex items-center gap-x-2 text-xs leading-5 text-gray-500">
                 {/* <p className="whitespace-nowrap">

@@ -2,6 +2,7 @@
 import { useFormStatus } from 'react-dom'
 import { useEffect } from 'react'
 import { standardButtonStyling } from './styling'
+import { Button } from '../catalyst-ui/button'
 
 export function SubmitButton({customTitle, successAction, isSuccess}: {customTitle?: string, successAction: () => void, isSuccess: boolean}) {
     const { pending } = useFormStatus()
@@ -15,12 +16,12 @@ export function SubmitButton({customTitle, successAction, isSuccess}: {customTit
     }, [successAction, isSuccess])
 
     return (
-        <button
+        <Button
             type="submit"
             disabled={pending}
             className={standardButtonStyling}
         >
              {pending ? 'Saving...' : customTitle || 'Save' }
-        </button>
+        </Button>
     )
 }
