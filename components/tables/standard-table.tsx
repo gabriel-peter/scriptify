@@ -8,7 +8,7 @@ export default function CustomTable({
     actionButton,
 }: {
     children: ReactNode,
-    headers: ReactElement<'Framgment'>,
+    headers: ReactElement<'Fragment'>,
     actionButton?: JSX.Element,
 }) {
     return (
@@ -26,7 +26,7 @@ export default function CustomTable({
             </div> */}
             <div className="mt-8 flow-root">
                 {/* {searchBar} */}
-                <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                {/* <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8"> */}
                     <Table bleed className="[--gutter:theme(spacing.6)] sm:[--gutter:theme(spacing.8)]">
                         <TableHead>
                             <TableRow>
@@ -37,7 +37,7 @@ export default function CustomTable({
                             {children}
                         </TableBody>
                     </Table>
-                </div>
+                {/* </div> */}
             </div>
         </div>
     )

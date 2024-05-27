@@ -4,6 +4,7 @@ import { clsx } from 'clsx'
 import type React from 'react'
 import { createContext, useContext, useState } from 'react'
 import { Link } from './link'
+import { Route } from 'next'
 
 const TableContext = createContext<{ bleed: boolean; dense: boolean; grid: boolean; striped: boolean }>({
   bleed: false,
@@ -54,7 +55,7 @@ export function TableRow({
   title,
   className,
   ...props
-}: { href?: string; target?: string; title?: string } & React.ComponentPropsWithoutRef<'tr'>) {
+}: { href?: Route<string>; target?: string; title?: string } & React.ComponentPropsWithoutRef<'tr'>) {
   let { striped } = useContext(TableContext)
 
   return (

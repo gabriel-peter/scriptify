@@ -11,7 +11,6 @@ import { ACCOUNT_TYPE } from "@/utils/enums";
 import { ReactNode } from "react";
 import PageContainer from "@/components/containers/page-container";
 
-
 export default async function SettingsPage() {
     const user = await getUserOrRedirect()
 
@@ -25,12 +24,10 @@ export default async function SettingsPage() {
     return (
         <PageContainer>
             <DemographicInfoView /> {/* Applicable to all acouunt types */}
-            {getAccountTypePanels(user)}
+            {/* {getAccountTypePanels(user)} */}
         </PageContainer>
     )
 }
-
-
 
 async function patientInfo(user: User) {
     const [ccDetails, insurance] = await Promise.all([

@@ -58,7 +58,7 @@ const PHARMACIST_NAV_LINKS: NavLink[] = [
     href: `/pharmacist/my-dashboard`,
   }, {
     name: 'Prescriptions',
-    href: '/pharmacist/triage'
+    href: '/pharmacist/qv1'
   }
 ];
 
@@ -126,19 +126,20 @@ function backgroundColorByAccountType(user: User | undefined): string {
 //   )
 // }
 
-export default function NavLayout({ loggedInUser, children }: { loggedInUser: { user: User, profile: Tables<"profiles"> | null } | null, children: ReactNode }) {
-  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
-    const savedTheme = localStorage.getItem('theme');
-    return savedTheme ? savedTheme as 'dark' : 'light';
-  });
+type Theme = 'dark' | 'light'
 
+export default function NavLayout({ loggedInUser, children }: { loggedInUser: { user: User, profile: Tables<"profiles"> | null } | null, children: ReactNode }) {
+  const [theme, setTheme] = useState<Theme | null>(null);
+  // TODO fix flicker bug
   // Effect to apply theme class to <html> element
   useEffect(() => {
+    if (theme !== null) {
     const root = document.documentElement;
     root.classList.remove('light', 'dark');
     root.classList.add(theme);
     root.style.colorScheme = theme;
     localStorage.setItem('theme', theme); // Save theme preference
+    }
   }, [theme]);
 
   // Toggle theme handler

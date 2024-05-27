@@ -114,6 +114,7 @@ async function seed(profileCount: number, transferCount: number) {
         console.log('Inserted profiles:', user);
     };
     const patients = users.filter(user => user?.user_metadata['account_type'] === ACCOUNT_TYPE.PATIENT)
+    addPrescriptions(patients)
     console.log("PATIENTS", patients)
     const pharmacists = users.filter(user => user?.user_metadata['account_type'] === ACCOUNT_TYPE.PHARMACIST).filter(e => e !== null)
     console.log("PHARMACISTS", pharmacists)
@@ -126,3 +127,5 @@ async function seed(profileCount: number, transferCount: number) {
 }
 
 seed(50, 3)
+
+

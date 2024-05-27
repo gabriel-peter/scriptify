@@ -1,4 +1,5 @@
-import "server-only"
+// import "server-only"
+'use server'
 import { Tables } from "@/types_db";
 import { createClient } from "@/utils/supabase/server";
 import { PostgrestSingleResponse, User } from "@supabase/supabase-js";
