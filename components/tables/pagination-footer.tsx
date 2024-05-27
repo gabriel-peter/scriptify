@@ -1,7 +1,6 @@
 "use client"
-
-import { cn } from "@/utils/cn"
 import { PaginationFilters } from "@/utils/supabase/types"
+import { Button } from "../catalyst-ui/button"
 
 
 export function resetPageIndices(PAGE_SIZE: number): PaginationFilters {
@@ -31,34 +30,35 @@ export default function Paginator(
         </p>
       </div>
       <div className="flex flex-1 justify-between sm:justify-end">
-        <button
+        <Button
           disabled={queryFilters.toIndex === 0}
           onClick={() => setQueryFilters({
             ...queryFilters,
             toIndex: Math.max(queryFilters.toIndex - pageSize, 0),
             fromIndex: Math.max(queryFilters.fromIndex - pageSize, pageSize),
           })}
-          className={cn(
-            queryFilters.toIndex === 0 ? "bg-gray-300" : "bg-white hover:bg-gray-50",
-            "relative inline-flex items-center rounded-md px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 focus-visible:outline-offset-0"
-          )}
+          // className={cn(
+          //   queryFilters.toIndex === 0 ? "bg-gray-300" : "bg-white hover:bg-gray-50",
+          //   "relative inline-flex items-center rounded-md px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 focus-visible:outline-offset-0"
+          // )}
         >
           Previous
-        </button>
-        <button
+        </Button>
+        <br/>
+        <Button
           disabled={queryFilters.fromIndex >= resultCount}
           onClick={() => setQueryFilters({
             ...queryFilters,
             toIndex: queryFilters.toIndex + pageSize,
             fromIndex: queryFilters.fromIndex + pageSize,
           })}
-          className={cn(
-            queryFilters.fromIndex >= resultCount ? "bg-gray-300" : "bg-white hover:bg-gray-50",
-            "relative ml-3 inline-flex items-center rounded-md px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 focus-visible:outline-offset-0"
-          )}
+          // className={cn(
+          //   queryFilters.fromIndex >= resultCount ? "bg-gray-300" : "bg-white hover:bg-gray-50",
+          //   "relative ml-3 inline-flex items-center rounded-md px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 focus-visible:outline-offset-0"
+          // )}
         >
           Next
-        </button>
+        </Button>
       </div>
     </nav>
     </div>

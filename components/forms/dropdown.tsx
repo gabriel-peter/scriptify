@@ -3,9 +3,7 @@ import { Fragment, useState } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import { cn } from '@/utils/cn'
-import AbstractInput from './abstract-input'
-import { Label, Field } from '../catalyst-ui/fieldset'
-import { Select } from '../catalyst-ui/select'
+import InputError from './abstract-input'
 
 export function NativeDropdown({ id, label, options }: { id: string, label: string, options: string[] }) {
   return (
@@ -24,17 +22,6 @@ export function NativeDropdown({ id, label, options }: { id: string, label: stri
   )
 }
 
-export function CustomSelect({ id, label, options }: { id: string, label: string, options: string[] }) {
-  return (
-    <Field>
-      <Label>{label}</Label>
-      <Select name={id}>
-        {options.map(o => <option value={o}>{o}</option>)}
-      </Select>
-    </Field>
-  );
-}
-
 export default function CustomDropdown({
   id,
   label,
@@ -51,7 +38,7 @@ export default function CustomDropdown({
   const [selected, setSelected] = useState(options[0])
 
   return (
-    <AbstractInput error={errorState} errorMessage={errorMessage}>
+    <InputError error={errorState} errorMessage={errorMessage}>
       <input className="hidden" readOnly id={id} name={id} value={selected} /> {/* Value sent to form */}
       <Listbox value={selected} onChange={setSelected}>
         {({ open }) => (
@@ -108,6 +95,6 @@ export default function CustomDropdown({
           </>
         )}
       </Listbox>
-    </AbstractInput>
+    </InputError>
   )
 }

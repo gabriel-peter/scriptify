@@ -3,7 +3,8 @@ import { langaugePreferences, meetingPreference, race, sexualOrientation, chroni
 import AbstractForm from "@/components/forms/abstract-form-full-page";
 import CustomCheckboxGroup from "@/components/forms/checkbox-group";
 import { useFormState } from "react-dom";
-import { CustomSelect, NativeDropdown } from "@/components/forms/dropdown";
+import { NativeDropdown } from "@/components/forms/dropdown";
+import { CustomSelect } from '../CustomSelect';
 import { Status } from "@/app/actions/validation-helpers";
 import { useRouter } from "next/navigation";
 import savePatientClinicalPreferences from "./clinical-preferences-form";

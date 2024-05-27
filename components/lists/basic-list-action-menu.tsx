@@ -78,9 +78,9 @@ export default function ListActionMenu({ actions }: { actions: ActionMenuProp[] 
       <DropdownMenu>
         {actions.map(e => {
             if (e.href) {
-                return <DropdownItem href={e.href}>{e.name}</DropdownItem>
+                return <DropdownItem key={e.name} href={e.href}>{e.name}</DropdownItem>
             } else if (e.methodCall) {
-                return <DropdownItem onClick={() => e.methodCall()}>{e.name}</DropdownItem>
+                return <DropdownItem key={e.name} onClick={() => e.methodCall()}>{e.name}</DropdownItem>
             }
         })}
       </DropdownMenu>

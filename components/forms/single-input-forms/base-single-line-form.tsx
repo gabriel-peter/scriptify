@@ -1,11 +1,10 @@
 "use client"
-
 import { ReactNode, useEffect, useState } from "react"
 import { SubmitButton } from "../submit-button"
 import { useFormState } from "react-dom"
 import { FormSubmissionReturn, Status } from "../../../app/actions/validation-helpers"
 import ActionResultDialog from "../../dialogs/error-or-success-dialog"
-import { useRouter } from "next/navigation"
+import { Text } from "@/components/catalyst-ui/text"
 
 export function UpdateRow(
     {
@@ -48,11 +47,11 @@ export function UpdateRow(
             />
             <form action={formAction}>
                 <div className="pt-6 sm:flex">
-                    <dt className="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">{title}</dt>
+                    <dt className="font-medium text-gray-900 dark:text-white sm:w-64 sm:flex-none sm:pr-6">{title}</dt>
                     {!isEdit ?
                         (
                             <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
-                                <div className="text-gray-900">{value}</div>
+                                <Text>{value}</Text>
                                 <button
                                     type="button"
                                     onClick={() => setIsEdit(true)}

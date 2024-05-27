@@ -4,7 +4,7 @@ import { Listbox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import { cn } from "@/utils/cn";
 import { AvailabilityStatus } from '../../actions/utils';
-import { Select } from '@/components/catalyst-ui/select';
+import { Dropdown, DropdownButton, DropdownItem, DropdownMenu } from '@/components/catalyst-ui/dropdown';
 
 const colorMap = {
     'Available': 'bg-green-400',
@@ -18,28 +18,36 @@ export default function AvailabilityDrowndown({ currentStatus }: { currentStatus
         setSelected(option);
     }
 
+    const rowOption = (option: AvailabilityStatus) => (
+        <div className="flex items-center">
+            <span
+                className={cn(
+                    colorMap[option],
+                    'inline-block h-2 w-2 flex-shrink-0 rounded-full'
+                )}
+                aria-hidden="true"
+            />
+            <span
+                className={cn(option ? 'font-semibold' : 'font-normal', 'ml-3 block truncate')}
+            >
+                {option}
+                <span className="sr-only"> is {option ? 'online' : 'offline'}</span>
+            </span>
+        </div>
+    );
+
     return (
-        <Select value={selected} onChange={(e) => updateAvailability(e.target.value as AvailabilityStatus)}>
-            {Object.values(AvailabilityStatus).map((option) => (
-                <option value={option}> 
-                <div className="flex items-center">
-                    <span
-                        className={cn(
-                            colorMap[option],
-                            'inline-block h-2 w-2 flex-shrink-0 rounded-full'
-                        )}
-                        aria-hidden="true"
-                    />
-                    {/* <span
-            className={cn(selected ? 'font-semibold' : 'font-normal', 'ml-3 block truncate')}
-        > */}
-                    {option}
-                    {/* <span className="sr-only"> is {option ? 'online' : 'offline'}</span>
-        </span> */}
-                </div>
-                </option>
-            ))}
-        </Select>
+        <Dropdown>
+            <DropdownButton aria-label="Account options">
+                {rowOption(selected)}
+            </DropdownButton>
+            <DropdownMenu>
+                {Object.values(AvailabilityStatus).map((option) => (
+                    <DropdownItem key={option} onClick={() => updateAvailability(option)}>
+                        {rowOption(option)}
+                    </DropdownItem>))}
+            </DropdownMenu>
+        </Dropdown>
     )
 
 }

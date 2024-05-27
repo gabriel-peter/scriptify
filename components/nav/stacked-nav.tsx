@@ -130,18 +130,20 @@ export default function NavLayout({ loggedInUser,  children}: { loggedInUser: { 
     <StackedLayout
       navbar={
         <Navbar>
-          <Dropdown>
-            <DropdownButton as={NavbarItem} className="max-lg:hidden">
+          {/* <Dropdown> */}
+            {/* <DropdownButton as={NavbarItem} className="max-lg:hidden"> */}
+            <NavbarItem className="max-lg:hidden">
               <Avatar src="/tailwind-logo.svg" />
-              <NavbarLabel>Tailwind Labs</NavbarLabel>
-              <ChevronDownIcon />
-            </DropdownButton>
-            <TeamDropdownMenu />
-          </Dropdown>
+              <NavbarLabel>Scriptify Rx</NavbarLabel>
+              </NavbarItem>
+              {/* <ChevronDownIcon /> */}
+            {/* </DropdownButton> */}
+            {/* <TeamDropdownMenu />
+          </Dropdown> */}
           <NavbarDivider className="max-lg:hidden" />
           <NavbarSection className="max-lg:hidden">
-            {navigation.map(({ name, href }) => (
-              <NavbarItem key={name} href={href}>
+            {navigation.map(({ name, href, current }) => (
+              <NavbarItem current={current} key={name} href={href}>
                 {name}
               </NavbarItem>
             ))}
@@ -160,7 +162,7 @@ export default function NavLayout({ loggedInUser,  children}: { loggedInUser: { 
               </DropdownButton>
               <DropdownMenu className="min-w-64" anchor="bottom end">
                 {userMenuOptions.map(option =>
-                  <DropdownItem href={option.href}>
+                  <DropdownItem key={option.name} href={option.href}>
                   {option.icon}
                   <DropdownLabel>{option.name}</DropdownLabel>
                 </DropdownItem>

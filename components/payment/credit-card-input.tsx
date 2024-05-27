@@ -1,7 +1,7 @@
 import { Field, Fieldset, Label, Legend } from "../catalyst-ui/fieldset";
 import { Input } from "../catalyst-ui/input";
 import { Select } from "../catalyst-ui/select";
-import AbstractInput from "../forms/abstract-input";
+import InputError from "../forms/abstract-input";
 
 export function CreditCardInput({ userId, errorState }: {
   userId: string, errorState?:
@@ -16,40 +16,40 @@ export function CreditCardInput({ userId, errorState }: {
             <Label htmlFor="card-number" className="sr-only">
               Card number
             </Label>
-            <AbstractInput error={errorState?.creditCardNumber} errorMessage="Invalid Credit Card Number.">
+            <InputError error={errorState?.creditCardNumber} errorMessage="Invalid Credit Card Number.">
               <Input
                 type="text"
                 name="card-number"
                 id="card-number"
                 placeholder="Card number"
               />
-            </AbstractInput>
+            </InputError>
             </Field>
             <Field>
               <Label htmlFor="card-expiration-date" className="sr-only">
                 Expiration date
               </Label>
-              <AbstractInput error={errorState?.expiration} errorMessage="Invalid Expiration Date.">
+              <InputError error={errorState?.expiration} errorMessage="Invalid Expiration Date.">
                 <Input
                   type="text"
                   name="card-expiration-date"
                   id="card-expiration-date"
                   placeholder="MM / YY"
                 />
-              </AbstractInput >
+              </InputError >
             </Field>
             <Field>
               <Label htmlFor="card-cvc" className="sr-only">
                 CVC
               </Label>
-              <AbstractInput error={errorState?.cvv} errorMessage="Invalid CVV.">
+              <InputError error={errorState?.cvv} errorMessage="Invalid CVV.">
                 <Input
                   type="text"
                   name="card-cvc"
                   id="card-cvc"
                   placeholder="CVC"
                 />
-              </AbstractInput>
+              </InputError>
             </Field>
             </div>
       </Fieldset>
@@ -60,7 +60,7 @@ export function CreditCardInput({ userId, errorState }: {
             <Label htmlFor="country" className="sr-only">
               Country
             </Label>
-            <AbstractInput error={undefined} errorMessage="Invalid Country.">
+            <InputError error={undefined} errorMessage="Invalid Country.">
               <Select
                 id="country"
                 name="country"
@@ -70,13 +70,13 @@ export function CreditCardInput({ userId, errorState }: {
                 <option>Canada</option>
                 <option>Mexico</option>
               </Select>
-            </AbstractInput>
+            </InputError>
           </Field>
           <Field>
             <Label htmlFor="postal-code" className="sr-only">
               ZIP / Postal code
             </Label>
-            <AbstractInput error={undefined} errorMessage="Invalid Zip / Postal Code.">
+            <InputError error={undefined} errorMessage="Invalid Zip / Postal Code.">
               <Input
                 type="text"
                 name="postal-code"
@@ -84,7 +84,7 @@ export function CreditCardInput({ userId, errorState }: {
                 autoComplete="postal-code"
                 placeholder="ZIP / Postal code"
               />
-            </AbstractInput>
+            </InputError>
           </Field>
         </div>
       </Fieldset>

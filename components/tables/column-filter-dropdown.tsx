@@ -12,7 +12,7 @@ export default function ColumnFilter({ columnName, filterHandlers, filterValue }
           <ChevronDownIcon />
         </DropdownButton>
         <DropdownMenu>
-        {filterHandlers.map((filter) => <DropdownItem onClick={() => filter.setFilter()}>{filter.name}</DropdownItem>)}
+        {filterHandlers.map((filter) => <DropdownItem key={filter.name} onClick={() => filter.setFilter()}>{filter.name}</DropdownItem>)}
         </DropdownMenu>
       </Dropdown>
         // <Menu as="div" className="relative inline-block text-left">

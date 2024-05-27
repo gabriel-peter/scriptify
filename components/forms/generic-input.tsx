@@ -1,7 +1,6 @@
 import { Field, Label } from "../catalyst-ui/fieldset";
 import { Input } from "../catalyst-ui/input";
-import AbstractInput from "./abstract-input";
-import { inputStyling } from "./styling";
+import InputError from "./abstract-input";
 
 export default function GenericInput({
     label,
@@ -20,18 +19,17 @@ export default function GenericInput({
 }) {
     return (
         <Field>
-            <Label htmlFor={id} >
-            {/* className="block text-sm font-medium leading-6 text-gray-900"> */}
+            <Label htmlFor={id}>
                 {label}
             </Label>
-            <AbstractInput error={errorState} errorMessage={errorMessage}>
+            <InputError error={errorState} errorMessage={errorMessage}>
                 <Input
                     type={type || "text"}
                     name={id}
                     id={id}
                     placeholder={placeholder || ""}
                 />
-            </AbstractInput>
+            </InputError>
         </Field>
     );
 }
