@@ -6,7 +6,7 @@ import InputError from "./abstract-input";
 export function CustomSelect({
   id, label, options, errorState, errorMessage
 }: {
-  id: string; label: string; options: string[]; errorState: any | undefined; errorMessage?: string;
+  id: string; label: string; options: any[]; errorState: any | undefined; errorMessage?: string;
 }) {
   return (
     <Field>

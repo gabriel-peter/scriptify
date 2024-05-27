@@ -7,6 +7,7 @@ import CustomDropdown from "../dropdown";
 import GenericInput from "../generic-input";
 import { generateTimeOptions, localizedDate } from "@/utils/time";
 import { ReactNode } from "react";
+import { CustomSelect } from "../CustomSelect";
 
 export default function PharmacistSchedulerForm({ pharmacistId, patientId, date, successMessage}: { pharmacistId: string, patientId: string, date: Date, successMessage: (x: FormSubmissionReturn<any>) => ReactNode }) {
     const scheduleAppointmentWithIds = scheduleAppointment.bind(null, { patientId, pharmacistId, meetingDate: date });
@@ -26,8 +27,8 @@ export default function PharmacistSchedulerForm({ pharmacistId, patientId, date,
                         successAction={() => {}}
                     >
                         <GenericInput label="Meeting Reason" id='meeting-reason' errorState={state.error?.meetingReason} errorMessage={""} />
-                        <CustomDropdown id={"duration"} label={"Durations (minutes)"} options={[15, 30, 45, 60]} errorState={state.error?.duration} />
-                        <CustomDropdown id={"start-time"} label={"Start Time"} options={generateTimeOptions('09:00', 15, 17)} errorState={state.error?.startTime} />
+                        <CustomSelect id={"duration"} label={"Durations (minutes)"} options={[15, 30, 45, 60]} errorState={state.error?.duration} />
+                        <CustomSelect id={"start-time"} label={"Start Time"} options={generateTimeOptions('09:00', 15, 17)} errorState={state.error?.startTime} />
                     </AbstractForm>
                 )}
         </>

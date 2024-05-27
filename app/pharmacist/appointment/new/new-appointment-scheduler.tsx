@@ -12,6 +12,8 @@ import { EllipsisVerticalIcon } from "@heroicons/react/20/solid"
 import moment from "moment"
 import { Fragment, useState } from "react"
 import { AppointmentViewer } from "./daily-appointment-viewer"
+import { Heading } from "@/components/catalyst-ui/heading"
+import { Button } from "@/components/catalyst-ui/button"
 
 export default function NewAppointmentScheduler({ pharmacistId, patientId }: { pharmacistId: string, patientId: string }) {
     const [selectedDate, setSelectedDate] = useState<string>(formatDateWithTimezoneOffset(new Date()))
@@ -38,14 +40,14 @@ function MySchedule({ date, pharmacistId, patientId }: { date: Date, pharmacistI
                     date={date}
                     successMessage={(state) => (
                         <>
-                            <p>{state.message}</p>
+                            <Heading>{state.message}</Heading>
                             <br />
-                            <button
-                                className={standardButtonStyling}
+                            <Button
+                                // className={standardButtonStyling}
                                 onClick={() => setOpen(false)}
                             >
                                 Dismiss
-                            </button>
+                            </Button>
                         </>
                     )}
                 />

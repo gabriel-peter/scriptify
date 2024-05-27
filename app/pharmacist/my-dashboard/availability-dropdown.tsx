@@ -38,7 +38,7 @@ export default function AvailabilityDrowndown({ currentStatus }: { currentStatus
 
     return (
         <Dropdown>
-            <DropdownButton aria-label="Account options">
+            <DropdownButton>
                 {rowOption(selected)}
             </DropdownButton>
             <DropdownMenu>

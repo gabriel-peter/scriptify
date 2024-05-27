@@ -53,7 +53,7 @@ export default function SimpleCalendar({selectedDate, setSelectedDate}: {selecte
     return (
         <PaddedContainer>
             <div className="flex items-center">
-                <h2 className="flex-auto text-sm font-semibold text-gray-900">{monthCursor.toLocaleString('en-US', { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone, month: 'long', year: 'numeric' })}</h2>
+                <h2 className="flex-auto text-sm font-semibold dark:text-white text-gray-900">{monthCursor.toLocaleString('en-US', { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone, month: 'long', year: 'numeric' })}</h2>
                 <button
                     type="button"
                     onClick={() => setMonthCursor(new Date(monthCursor.getFullYear(), monthCursor.getMonth() - 1, 1))}
@@ -71,7 +71,7 @@ export default function SimpleCalendar({selectedDate, setSelectedDate}: {selecte
                     <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
                 </button>
             </div>
-            <div className="mt-10 grid grid-cols-7 text-center text-xs leading-6 text-gray-500">
+            <div className="mt-10 grid grid-cols-7 text-center text-xs leading-6 dark:text-white text-gray-500">
                 <div>S</div>
                 <div>M</div>
                 <div>T</div>
@@ -89,11 +89,11 @@ export default function SimpleCalendar({selectedDate, setSelectedDate}: {selecte
                             className={cn(
                                 day.isSelected && 'text-white',
                                 !day.isSelected && day.isToday && 'text-indigo-600',
-                                !day.isSelected && !day.isToday && day.isCurrentMonth && 'text-gray-900',
-                                !day.isSelected && !day.isToday && !day.isCurrentMonth && 'text-gray-400',
-                                day.isSelected && day.isToday && 'bg-indigo-600',
+                                !day.isSelected && !day.isToday && day.isCurrentMonth && 'dark:text-white text-gray-900',
+                                !day.isSelected && !day.isToday && !day.isCurrentMonth && 'dark:text-white-100 text-gray-400',
+                                day.isSelected && day.isToday && 'light:bg-indigo-600 dark:border-white dark:border-1)',
                                 day.isSelected && !day.isToday && 'bg-gray-900',
-                                !day.isSelected && 'hover:bg-gray-200',
+                                !day.isSelected && 'hover:bg-gray-200 hover:dark:bg-white-100',
                                 (day.isSelected || day.isToday) && 'font-semibold',
                                 'mx-auto flex h-8 w-8 items-center justify-center rounded-full'
                             )}

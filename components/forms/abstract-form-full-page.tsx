@@ -27,15 +27,11 @@ export default function AbstractForm<T>({
         <form action={formAction}>
             <div className="space-y-12 mt-5">
                 <div className="border-b border-gray-900/10 pb-12">
-                    <Heading 
-                    // className="text-base font-semibold leading-7 text-gray-900"
-                    >
+                    <Heading>
                         {header}
                         </Heading>
                     { description && 
-                    <Subheading
-                    // className="mt-1 text-sm leading-6 text-gray-600"
-                    >
+                    <Subheading>
                         {description}
                     </Subheading>}
                     {children}

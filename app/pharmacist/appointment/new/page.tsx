@@ -4,6 +4,7 @@ import { createClient } from "@/utils/supabase/server";
 import { stringifyName } from "@/utils/user-attribute-modifiers";
 import { redirect } from "next/navigation";
 import NewAppointmentScheduler from "./new-appointment-scheduler";
+import { Heading } from "@/components/catalyst-ui/heading";
 
 export default async function PharmacistNewAppointmentPage({
     params,
@@ -31,7 +32,7 @@ export default async function PharmacistNewAppointmentPage({
 
     return (
         <PageContainer>
-            <div className="mb-5">Schedule an appointment for <strong>{stringifyName(data.profiles)}</strong></div>
+            <Heading>Schedule an appointment for <strong>{stringifyName(data.profiles)}</strong></Heading>
             <NewAppointmentScheduler pharmacistId={pharmacist.id} patientId={patientId}/>
         </PageContainer>
     )
