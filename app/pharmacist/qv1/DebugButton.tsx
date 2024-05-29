@@ -1,8 +1,6 @@
 "use client"
 import { Button } from "@/components/catalyst-ui/button";
-import { createClient } from "@/utils/supabase/server";
 import { addPrescriptions } from "./rx-seed";
-
 
 
 export default function DebugButton() {

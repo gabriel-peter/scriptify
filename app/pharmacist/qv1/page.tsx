@@ -4,7 +4,7 @@ import { Heading } from "@/components/catalyst-ui/heading";
 import { BasicList_Server } from "@/components/lists/basic-list-server";
 import { createClient } from "@/utils/supabase/server";
 import { ReactNode } from "react";
-import DebugButton from "./test";
+import DebugButton from "./DebugButton";
 import { Text } from "@/components/catalyst-ui/text";
 import CustomTable from "@/components/tables/standard-table";
 import Paginator from "@/components/tables/pagination-footer";

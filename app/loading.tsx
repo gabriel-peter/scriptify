@@ -1,3 +1,11 @@
+import { Text } from "@/components/catalyst-ui/text";
+import BasicSpinner from "@/components/loading/basic-spinner";
+
 export default function Loading() {
-    return (<p>Loading Data...</p>);
+    return (
+        <div className="flex justify-center align-items">
+            <BasicSpinner/>
+            <Text>Loading...</Text>
+        </div>
+    );
 }
